@@ -8,6 +8,7 @@ import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRawContainerProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
+import de.espend.idea.php.toolbox.dict.json.JsonType;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.provider.ClassInterfaceProvider;
 import de.espend.idea.php.toolbox.provider.ClassProvider;
@@ -40,6 +41,17 @@ public class ExtensionProviderUtil {
         Collection<JsonRegistrar> jsonRegistrars = new ArrayList<JsonRegistrar>();
         for(File file: getJsonFiles(project, phpToolboxApplicationService)) {
             jsonRegistrars.addAll(JsonParseUtil.getRegistrarJsonFromFile(file));
+        }
+
+        return jsonRegistrars;
+    }
+
+    @NotNull
+    public static Collection<JsonType> getTypes(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
+
+        Collection<JsonType> jsonRegistrars = new ArrayList<JsonType>();
+        for(File file: getJsonFiles(project, phpToolboxApplicationService)) {
+            jsonRegistrars.addAll(JsonParseUtil.getTypeFromJsonFromFile(file));
         }
 
         return jsonRegistrars;

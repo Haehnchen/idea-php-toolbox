@@ -42,6 +42,7 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
+    <php.typeProvider2 implementation="de.espend.idea.php.toolbox.type.PhpToolboxTypeProvider"/>
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler"/>
     <completion.contributor language="any" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxCompletionContributor"/>
   </extensions>

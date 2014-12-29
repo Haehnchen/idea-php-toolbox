@@ -5,9 +5,11 @@ import com.google.gson.*;
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
+import de.espend.idea.php.toolbox.dict.json.JsonType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -15,6 +17,16 @@ public class JsonParseUtil {
 
     @NotNull
     public static Collection<JsonRegistrar> getRegistrarJsonFromFile(@NotNull File file) {
+        return unSerializeRoot(file, "registrar", JsonRegistrar.class);
+    }
+
+    @NotNull
+    public static Collection<JsonType> getTypeFromJsonFromFile(@NotNull File file) {
+        return unSerializeRoot(file, "type", JsonType.class);
+    }
+
+    @NotNull
+    public static <T> Collection<T> unSerializeRoot(@NotNull File file, String root, final Class<T> clazz) {
 
         if(!file.exists()) {
             return Collections.emptyList();
@@ -37,12 +49,13 @@ public class JsonParseUtil {
             e.printStackTrace();
         }
 
-        if(!jsonObject.has("registrar")) {
+        if(!jsonObject.has(root)) {
             return Collections.emptyList();
         }
 
-        Type listType = new TypeToken<List<JsonRegistrar>>(){}.getType();
-        Collection<JsonRegistrar> jsonRegistrars = new Gson().fromJson(jsonObject.get("registrar"), listType);
+        Type type = new ListParameterizedType(clazz);
+
+        Collection<T> jsonRegistrars = new Gson().fromJson(jsonObject.get(root), type);
         if(jsonRegistrars != null) {
             return jsonRegistrars;
         }
@@ -51,6 +64,32 @@ public class JsonParseUtil {
         System.out.println(String.format("invalid file %s", file.getAbsolutePath()));
 
         return Collections.emptyList();
+    }
+
+
+    private static class ListParameterizedType implements ParameterizedType {
+
+        private Type type;
+
+        private ListParameterizedType(Type type) {
+            this.type = type;
+        }
+
+        @Override
+        public Type[] getActualTypeArguments() {
+            return new Type[] {type};
+        }
+
+        @Override
+        public Type getRawType() {
+            return ArrayList.class;
+        }
+
+        @Override
+        public Type getOwnerType() {
+            return null;
+        }
+
     }
 
     public static Map<String, Collection<JsonRawLookupElement>> getProviderJsonRawLookupElements(JsonObject jsonObject) {

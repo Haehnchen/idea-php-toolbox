@@ -17,6 +17,9 @@ public class JsonRawLookupElement {
     @SerializedName("tail_text")
     private String tailText;
 
+    @SerializedName("type")
+    private String type;
+
     private String icon;
     private String target;
 
@@ -49,6 +52,11 @@ public class JsonRawLookupElement {
         return target;
     }
 
+    @Nullable
+    public String getType() {
+        return type;
+    }
+
     public void setDefaultOptions(JsonRawLookupElement defaultOptions) {
 
         if(this.lookupString == null && defaultOptions.getLookupString() != null) {
@@ -73,6 +81,10 @@ public class JsonRawLookupElement {
 
         if(this.target == null && defaultOptions.getTarget() != null) {
             this.target = defaultOptions.getTarget();
+        }
+
+        if(this.type == null && defaultOptions.getType() != null) {
+            this.type = defaultOptions.getType();
         }
 
     }
