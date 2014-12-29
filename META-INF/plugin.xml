@@ -1,0 +1,63 @@
+<idea-plugin version="2" url="https://github.com/Haehnchen/idea-php-toolbox">
+  <id>de.espend.idea.php.toolbox</id>
+  <name>PHP Toolbox</name>
+  <version>0.1</version>
+  <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
+
+  <description><![CDATA[
+
+      <h1>PHP Toolbox</h1>
+
+      <h2>Features:</h2>
+      <ul>
+        <li></li>
+      </ul>
+
+      <h2>TODO:</h2>
+      <ul>
+        <li></li>
+      </ul>
+
+    ]]></description>
+
+  <change-notes><![CDATA[
+
+    <h2>0.1</h2>
+    <ul>
+      <li></li>
+    </ul>
+
+    ]]>
+  </change-notes>
+
+  <idea-version since-build="138.0"/>
+
+  <depends>com.jetbrains.twig</depends>
+  <depends>com.jetbrains.php</depends>
+  <depends>com.intellij.modules.platform</depends>
+
+  <!--
+   TODO: Add provider
+  <depends optional="true">de.espend.idea.php.annotation</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler"/>
+    <completion.contributor language="any" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxCompletionContributor"/>
+  </extensions>
+
+  <application-components>
+    <component>
+      <implementation-class>de.espend.idea.php.toolbox.PhpToolboxApplicationService</implementation-class>
+    </component>
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>
