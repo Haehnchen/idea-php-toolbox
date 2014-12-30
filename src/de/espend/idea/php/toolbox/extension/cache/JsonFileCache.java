@@ -47,7 +47,15 @@ public class JsonFileCache {
 
         }
 
-        return configs.values();
+        // filter null values, if we get invalid json file
+        List<JsonConfigFile> configList = new ArrayList<JsonConfigFile>();
+        for (JsonConfigFile jsonConfigFile : configs.values()) {
+            if(jsonConfigFile != null) {
+                configList.add(jsonConfigFile);
+            }
+        }
+
+        return configList;
     }
 
     public void clear() {
