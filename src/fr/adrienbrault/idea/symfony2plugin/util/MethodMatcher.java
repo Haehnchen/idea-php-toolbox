@@ -15,7 +15,7 @@ import java.util.List;
 public class MethodMatcher {
 
     @Nullable
-    public static MethodMatchParameter getMatchedSignatureWithDepth(PsiElement psiElement, CallToSignature[] callToSignatures) {
+    public static MethodMatchParameter getMatchedSignatureWithDepth(PsiElement psiElement, CallToSignature... callToSignatures) {
         return getMatchedSignatureWithDepth(psiElement, callToSignatures, 0);
     }
 
@@ -208,6 +208,23 @@ public class MethodMatcher {
 
             return false;
         }
+    }
+
+    @Nullable
+    public static MethodMatchParameter getMatchedArrayKeyPathSignatureWithDepth(PsiElement psiElement, CallToSignature callToSignature, String... keys) {
+        return getMatchedArrayKeyPathSignatureWithDepth(psiElement, new CallToSignature[] { callToSignature}, keys);
+    }
+
+    @Nullable
+    public static MethodMatchParameter getMatchedArrayKeyPathSignatureWithDepth(PsiElement psiElement, CallToSignature[] callToSignature, String... keys) {
+
+        ArrayCreationExpression matchingArrayPath = PhpElementsUtil.getArrayPath(psiElement, keys);
+        if(matchingArrayPath == null) {
+            return null;
+        }
+
+        return getMatchedSignatureWithDepth(matchingArrayPath, callToSignature);
+
     }
 
     public interface MethodParameterMatcherInterface {

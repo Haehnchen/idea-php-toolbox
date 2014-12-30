@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpIndex;
@@ -291,5 +292,89 @@ public class PhpElementsUtil {
         String methodRefName = ((MethodReference) psiElement).getName();
 
         return null != methodRefName && Arrays.asList(methodName).contains(methodRefName);
+    }
+
+
+    /**
+     * Get array creation element and array key path:
+     * ['test' => ['test2' => '<cursor>']]
+     *
+     * results in string path: ["test2", "test"]
+     *
+     *
+     * @param current PsiLeaf or string array which is inside ARRAY_VALUE context
+     * @param keyPath key path in reserve order
+     * @return array element
+     */
+    @Nullable
+    public static ArrayCreationExpression getArrayPath(final @NotNull PsiElement current, @NotNull String... keyPath) {
+
+        // we need a php psielement like string element,
+        // but we also support leaf items directly out of completion context
+        PsiElement psiElement = current;
+        if(current instanceof LeafPsiElement) {
+            psiElement = current.getParent();
+            if(psiElement == null) {
+                return null;
+            }
+        }
+
+        for (int i = 0; i < keyPath.length; i++) {
+
+            // exit on invalid item
+            psiElement = getArrayPathValue(psiElement, keyPath[i]);
+            if(psiElement == null) {
+                return null;
+            }
+
+            // last item we are done here
+            if(i == keyPath.length - 1) {
+                return (ArrayCreationExpression) psiElement;
+            }
+
+        }
+
+        return null;
+
+    }
+
+
+    /**
+     *
+     * array('key' => '<cursor>')
+     *
+     * Helper for to get find value getArrayPath
+     * @param psiElement array value as leaf
+     * @param key key name in current content
+     * @return parent array creation element
+     */
+    @Nullable
+    private static ArrayCreationExpression getArrayPathValue(PsiElement psiElement, String key) {
+
+        PsiElement arrayValue = psiElement.getContext();
+        if(arrayValue == null) {
+            return null;
+        }
+
+        if(arrayValue.getNode().getElementType() == PhpElementTypes.ARRAY_VALUE) {
+            PsiElement arrayHashElement = arrayValue.getContext();
+            if(arrayHashElement instanceof ArrayHashElement) {
+                PhpPsiElement arrayKey = ((ArrayHashElement) arrayHashElement).getKey();
+                if(arrayKey instanceof StringLiteralExpression && ((StringLiteralExpression) arrayKey).getContents().equals(key)) {
+                    PsiElement innerArrayKey = arrayKey.getParent();
+                    if(innerArrayKey != null && innerArrayKey.getNode().getElementType() == PhpElementTypes.ARRAY_KEY) {
+                        PsiElement innerArrayHashElement = innerArrayKey.getParent();
+                        if(innerArrayHashElement instanceof ArrayHashElement) {
+                            PsiElement arrayCreation = innerArrayHashElement.getParent();
+                            if(arrayCreation instanceof ArrayCreationExpression) {
+                                return (ArrayCreationExpression) arrayCreation;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
