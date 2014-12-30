@@ -16,7 +16,7 @@ public class JsonParseUtilTest extends Assert {
 
         File testFile = new File(this.getClass().getResource("test.json").getFile());
 
-        Map<String, Collection<JsonRawLookupElement>> elements = JsonParseUtil.getProviderJsonFromFile(testFile);
+        Map<String, Collection<JsonRawLookupElement>> elements = JsonParseUtil.getProviderJsonRawLookupElements(JsonParseUtil.getDeserializeConfig(testFile).getProviders());
         assertTrue(elements.keySet().contains("date_format"));
 
         JsonRawLookupElement date_format = elements.get("date_format").iterator().next();
@@ -34,7 +34,7 @@ public class JsonParseUtilTest extends Assert {
 
         File testFile = new File(this.getClass().getResource("test.json").getFile());
 
-        Collection<JsonRegistrar> elements = JsonParseUtil.getRegistrarJsonFromFile(testFile);
+        Collection<JsonRegistrar> elements = JsonParseUtil.getDeserializeConfig(testFile).getRegistrar();
         JsonRegistrar next = elements.iterator().next();
 
         assertTrue(next.getSignatures().contains("\\DateTime::format"));

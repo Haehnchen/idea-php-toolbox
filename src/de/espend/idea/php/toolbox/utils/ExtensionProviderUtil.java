@@ -5,11 +5,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
-import de.espend.idea.php.toolbox.dict.json.JsonRawContainerProvider;
-import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
-import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
-import de.espend.idea.php.toolbox.dict.json.JsonType;
+import de.espend.idea.php.toolbox.dict.json.*;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
+import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
 import de.espend.idea.php.toolbox.provider.ClassInterfaceProvider;
 import de.espend.idea.php.toolbox.provider.ClassProvider;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +16,9 @@ import java.io.File;
 import java.util.*;
 
 public class ExtensionProviderUtil {
+
+    final private static Map<Project, JsonFileCache> PROJECT_CACHE = new HashMap<Project, JsonFileCache>();
+    final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
 
     @NotNull
     public static PhpToolboxProviderInterface[] getProviders(Project project) {
@@ -39,8 +40,8 @@ public class ExtensionProviderUtil {
     public static Collection<JsonRegistrar> getRegistrar(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
 
         Collection<JsonRegistrar> jsonRegistrars = new ArrayList<JsonRegistrar>();
-        for(File file: getJsonFiles(project, phpToolboxApplicationService)) {
-            jsonRegistrars.addAll(JsonParseUtil.getRegistrarJsonFromFile(file));
+        for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
+            jsonRegistrars.addAll(jsonConfig.getRegistrar());
         }
 
         return jsonRegistrars;
@@ -50,8 +51,8 @@ public class ExtensionProviderUtil {
     public static Collection<JsonType> getTypes(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
 
         Collection<JsonType> jsonRegistrars = new ArrayList<JsonType>();
-        for(File file: getJsonFiles(project, phpToolboxApplicationService)) {
-            jsonRegistrars.addAll(JsonParseUtil.getTypeFromJsonFromFile(file));
+        for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
+            jsonRegistrars.addAll(jsonConfig.getTypes());
         }
 
         return jsonRegistrars;
@@ -61,32 +62,52 @@ public class ExtensionProviderUtil {
     public static Map<String, Collection<JsonRawLookupElement>> getProviders(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
 
         Map<String, Collection<JsonRawLookupElement>> jsonRegistrars = new HashMap<String, Collection<JsonRawLookupElement>>();
-
-        for(File file: getJsonFiles(project, phpToolboxApplicationService)) {
-            jsonRegistrars.putAll(JsonParseUtil.getProviderJsonFromFile(file));
+        for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
+            jsonRegistrars.putAll(JsonParseUtil.getProviderJsonRawLookupElements(jsonConfig.getProviders()));
         }
 
         return jsonRegistrars;
     }
 
     @NotNull
-    private static List<File> getJsonFiles(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
-        List<File> files = new ArrayList<File>(Arrays.asList(phpToolboxApplicationService.getApplicationJsonFiles()));
-        files.addAll(new ArrayList<File>(Arrays.asList(getProjectJsonFiles(project))));
-        return files;
+    private static Collection<JsonConfigFile> getJsonConfigs(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
+
+        Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
+
+        synchronized (PROJECT_CACHE) {
+            if(!PROJECT_CACHE.containsKey(project)) {
+                PROJECT_CACHE.put(project, new JsonFileCache());
+            }
+
+            jsonConfigFiles.addAll(PROJECT_CACHE.get(project).get(getProjectJsonFiles(project)));
+        }
+
+        synchronized (APPLICATION_CACHE) {
+            jsonConfigFiles.addAll(APPLICATION_CACHE.get(new HashSet<File>(Arrays.asList(phpToolboxApplicationService.getApplicationJsonFiles()))));
+        }
+
+        return jsonConfigFiles;
     }
 
     @NotNull
-    public static File[] getProjectJsonFiles(Project project) {
+    public static Set<File> getProjectJsonFiles(Project project) {
         VirtualFile phpToolbox = VfsUtil.findRelativeFile(project.getBaseDir(), ".idea", "phpToolbox");
+
+        Set<File> files = new HashSet<File>();
+
         if(phpToolbox != null) {
             File dir = VfsUtil.virtualToIoFile(phpToolbox);
             if(dir.isDirectory()) {
-                return dir.listFiles(new JsonParseUtil.JsonFileFilter());
+                files.addAll(Arrays.asList(dir.listFiles(new JsonParseUtil.JsonFileFilter())));
             }
         }
 
-        return new File[0];
+        VirtualFile rootFile = VfsUtil.findRelativeFile(project.getBaseDir(), ".phpToolbox.json");
+        if(rootFile != null) {
+            files.add(VfsUtil.virtualToIoFile(rootFile));
+        }
+
+        return files;
     }
 
 }
