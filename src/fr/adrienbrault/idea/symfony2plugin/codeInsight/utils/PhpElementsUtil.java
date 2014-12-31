@@ -11,6 +11,7 @@ import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import com.jetbrains.php.lang.patterns.PhpPatterns;
 import com.jetbrains.php.lang.psi.elements.*;
+import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
 import fr.adrienbrault.idea.symfony2plugin.dic.MethodReferenceBag;
 import fr.adrienbrault.idea.symfony2plugin.util.ParameterBag;
 import org.apache.commons.lang.StringUtils;
@@ -87,12 +88,6 @@ public class PhpElementsUtil {
             return null;
         }
 
-        MethodReference methodReference = (MethodReference) parameterList.getContext();
-        PsiElement method = methodReference.resolve();
-        if(!(method instanceof Method)) {
-            return null;
-        }
-
         ParameterBag currentIndex = getCurrentParameterIndex(psiElement);
         if(currentIndex == null) {
             return null;
@@ -102,7 +97,7 @@ public class PhpElementsUtil {
             return null;
         }
 
-        return new MethodReferenceBag(parameterList, methodReference, currentIndex);
+        return new MethodReferenceBag(parameterList, (MethodReference) parameterList.getContext(), currentIndex);
 
     }
 
