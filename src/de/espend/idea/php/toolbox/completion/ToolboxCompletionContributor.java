@@ -7,9 +7,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.twig.TwigFileType;
+import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.utils.RegistrarMatchUtil;
-import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -22,7 +22,6 @@ public class ToolboxCompletionContributor extends CompletionContributor {
             @Override
             protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet completionResultSet) {
 
-                PhpToolboxCompletionContributorParameter parameter = null;
                 PsiElement position = completionParameters.getPosition();
 
                 FileType fileType = position.getContainingFile().getFileType();
@@ -35,7 +34,7 @@ public class ToolboxCompletionContributor extends CompletionContributor {
                     return;
                 }
 
-
+                PhpToolboxCompletionContributorParameter parameter = null;
                 for (PhpToolboxProviderInterface provider : providers) {
 
                     if(parameter == null) {

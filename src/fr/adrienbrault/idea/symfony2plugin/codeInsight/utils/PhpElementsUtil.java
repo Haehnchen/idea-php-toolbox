@@ -2,12 +2,15 @@ package fr.adrienbrault.idea.symfony2plugin.codeInsight.utils;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.patterns.PlatformPatterns;
+import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiRecursiveElementWalkingVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpIndex;
+import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import com.jetbrains.php.lang.patterns.PhpPatterns;
 import com.jetbrains.php.lang.psi.elements.*;
@@ -20,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PhpElementsUtil {
 
@@ -371,5 +376,46 @@ public class PhpElementsUtil {
         }
 
         return null;
+    }
+
+    /**
+     * Find a string return value of a method context "function() { return 'foo'}"
+     * First match wins
+     */
+    @Nullable
+    static public String getMethodReturnAsString(@NotNull Method method) {
+
+        final Set<String> values = new HashSet<String>();
+        method.acceptChildren(new PsiRecursiveElementWalkingVisitor() {
+            @Override
+            public void visitElement(PsiElement element) {
+
+                if(PhpElementsUtil.getMethodReturnPattern().accepts(element)) {
+                    String value = PhpElementsUtil.getStringValue(element);
+                    if(value != null && StringUtils.isNotBlank(value)) {
+                        values.add(value);
+                    }
+                }
+
+                super.visitElement(element);
+            }
+        });
+
+        if(values.size() == 0) {
+            return null;
+        }
+
+        // we support only first item
+        return values.iterator().next();
+    }
+
+    /**
+     * return 'value' inside class method
+     */
+    static public PsiElementPattern.Capture<StringLiteralExpression> getMethodReturnPattern() {
+        return PlatformPatterns
+                .psiElement(StringLiteralExpression.class)
+                .withParent(PlatformPatterns.psiElement(PhpReturn.class).inside(Method.class))
+                .withLanguage(PhpLanguage.INSTANCE);
     }
 }

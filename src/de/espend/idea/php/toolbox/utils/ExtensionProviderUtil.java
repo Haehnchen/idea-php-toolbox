@@ -4,12 +4,16 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.search.FilenameIndex;
+import com.intellij.psi.search.GlobalSearchScope;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
 import de.espend.idea.php.toolbox.provider.ClassInterfaceProvider;
 import de.espend.idea.php.toolbox.provider.ClassProvider;
+import de.espend.idea.php.toolbox.provider.ReturnSignatureProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -28,6 +32,7 @@ public class ExtensionProviderUtil {
         Collection<PhpToolboxProviderInterface> providers = new ArrayList<PhpToolboxProviderInterface>();
         providers.add(new ClassProvider());
         providers.add(new ClassInterfaceProvider());
+        providers.add(new ReturnSignatureProvider());
 
         for (Map.Entry<String, Collection<JsonRawLookupElement>> entry : ExtensionProviderUtil.getProviders(project, phpToolboxApplicationService).entrySet()) {
             providers.add(new JsonRawContainerProvider(entry.getKey(), entry.getValue()));
@@ -90,7 +95,7 @@ public class ExtensionProviderUtil {
     }
 
     @NotNull
-    public static Set<File> getProjectJsonFiles(Project project) {
+    public static Set<File> getProjectJsonFiles(@NotNull Project project) {
         VirtualFile phpToolbox = VfsUtil.findRelativeFile(project.getBaseDir(), ".idea", "phpToolbox");
 
         Set<File> files = new HashSet<File>();
@@ -105,6 +110,10 @@ public class ExtensionProviderUtil {
         VirtualFile rootFile = VfsUtil.findRelativeFile(project.getBaseDir(), ".phpToolbox.json");
         if(rootFile != null) {
             files.add(VfsUtil.virtualToIoFile(rootFile));
+        }
+
+        for (PsiFile psiFile : FilenameIndex.getFilesByName(project, ".phpstorm-toolbox.metadata.json", GlobalSearchScope.allScope(project))) {
+            files.add(VfsUtil.virtualToIoFile(psiFile.getVirtualFile()));
         }
 
         return files;
