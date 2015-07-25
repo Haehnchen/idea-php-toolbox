@@ -13,8 +13,11 @@ import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
 import de.espend.idea.php.toolbox.provider.ClassInterfaceProvider;
 import de.espend.idea.php.toolbox.provider.ClassProvider;
-import de.espend.idea.php.toolbox.provider.ReturnSignatureProvider;
+import de.espend.idea.php.toolbox.provider.SourceProvider;
+import de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor;
+import de.espend.idea.php.toolbox.provider.source.SourceContributorInterface;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -24,6 +27,10 @@ public class ExtensionProviderUtil {
     final private static Map<Project, JsonFileCache> PROJECT_CACHE = new HashMap<Project, JsonFileCache>();
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
 
+    public static final SourceContributorInterface[] SOURCE_CONTRIBUTOR_INTERFACES = new SourceContributorInterface[]{
+            new StringReturnSourceContributor()
+    };
+
     @NotNull
     public static PhpToolboxProviderInterface[] getProviders(Project project) {
 
@@ -32,10 +39,43 @@ public class ExtensionProviderUtil {
         Collection<PhpToolboxProviderInterface> providers = new ArrayList<PhpToolboxProviderInterface>();
         providers.add(new ClassProvider());
         providers.add(new ClassInterfaceProvider());
-        providers.add(new ReturnSignatureProvider());
+        //providers.add(new ReturnSignatureProvider());
 
         for (Map.Entry<String, Collection<JsonRawLookupElement>> entry : ExtensionProviderUtil.getProviders(project, phpToolboxApplicationService).entrySet()) {
             providers.add(new JsonRawContainerProvider(entry.getKey(), entry.getValue()));
+        }
+
+        Map<String, Collection<JsonProvider>> sourceProviders = null;
+
+        for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
+
+            Collection<JsonProvider> fileProviders = jsonConfig.getProviders();
+            if(fileProviders == null) {
+                continue;
+            }
+
+            for (JsonProvider provider : fileProviders) {
+                JsonProviderSource source = provider.getSource();
+                if(source != null) {
+
+                    if(sourceProviders == null) {
+                        sourceProviders = new HashMap<String, Collection<JsonProvider>>();
+                    }
+
+                    String name = provider.getName();
+                    if(!sourceProviders.containsKey(name)) {
+                        sourceProviders.put(name, new ArrayList<JsonProvider>(Arrays.asList(provider)));
+                    } else {
+                        sourceProviders.get(name).add(provider);
+                    }
+                }
+            }
+        }
+
+        if(sourceProviders != null && sourceProviders.size() > 0) {
+            for (Map.Entry<String, Collection<JsonProvider>> entry : sourceProviders.entrySet()) {
+                providers.add(new SourceProvider(entry.getKey(), entry.getValue()));
+            }
         }
 
         return providers.toArray(new PhpToolboxProviderInterface[providers.size()]);
@@ -66,12 +106,12 @@ public class ExtensionProviderUtil {
     @NotNull
     public static Map<String, Collection<JsonRawLookupElement>> getProviders(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
 
-        Map<String, Collection<JsonRawLookupElement>> jsonRegistrars = new HashMap<String, Collection<JsonRawLookupElement>>();
+        Map<String, Collection<JsonRawLookupElement>> providers = new HashMap<String, Collection<JsonRawLookupElement>>();
         for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
-            jsonRegistrars.putAll(JsonParseUtil.getProviderJsonRawLookupElements(jsonConfig.getProviders()));
+            providers.putAll(JsonParseUtil.getProviderJsonRawLookupElements(jsonConfig.getProviders()));
         }
 
-        return jsonRegistrars;
+        return providers;
     }
 
     @NotNull
@@ -119,4 +159,19 @@ public class ExtensionProviderUtil {
         return files;
     }
 
+    @NotNull
+    private static SourceContributorInterface[] getSourceContributors() {
+        return SOURCE_CONTRIBUTOR_INTERFACES;
+    }
+
+    @Nullable
+    public static SourceContributorInterface getSourceContributor(@NotNull String name) {
+        for (SourceContributorInterface sourceContributor : getSourceContributors()) {
+            if(name.equals(sourceContributor.getName())) {
+                return sourceContributor;
+            }
+        }
+
+        return null;
+    }
 }

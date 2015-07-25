@@ -20,7 +20,7 @@ import java.util.Collections;
 public class RegistrarMatchUtil {
 
     @NotNull
-    public static Collection<PhpToolboxProviderInterface> getProviders(PsiElement psiElement) {
+    public static Collection<PhpToolboxProviderInterface> getProviders(@NotNull PsiElement psiElement) {
 
         Collection<JsonRegistrar> registrars = ExtensionProviderUtil.getRegistrar(psiElement.getProject(), ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class));
         if(registrars.size() == 0) {
@@ -84,8 +84,6 @@ public class RegistrarMatchUtil {
         if(!(parent instanceof StringLiteralExpression)) {
             return false;
         }
-
-        Collection<PhpToolboxProviderInterface> providerInterfaces = new ArrayList<PhpToolboxProviderInterface>();
 
         for (String signature : signatures) {
             if(signature.contains(":")) {
