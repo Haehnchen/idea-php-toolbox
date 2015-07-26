@@ -4,13 +4,17 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import de.espend.idea.php.toolbox.dict.json.JsonConfigFile;
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -88,6 +92,78 @@ public class JsonParseUtil {
         public boolean accept(File pathname) {
             return pathname.getName().endsWith(".json");
         }
+    }
+
+    public static void decorateLookupElement(@NotNull LookupElementPresentation lookupElement, @NotNull JsonRawLookupElement jsonLookup) {
+
+        if(jsonLookup.getTailText() != null) {
+            lookupElement.setTailText(jsonLookup.getTailText(), true);
+        }
+
+        if(jsonLookup.getTypeText() != null) {
+            lookupElement.setTypeText(jsonLookup.getTypeText());
+            lookupElement.setTypeGrayed(true);
+        }
+
+        String iconString = jsonLookup.getIcon();
+        if(iconString != null) {
+            Icon icon = getLookupIconOnString(iconString);
+            if(icon != null) {
+                lookupElement.setIcon(icon);
+            }
+        }
+
+    }
+
+    public static LookupElementBuilder getDecoratedLookupElementBuilder(@NotNull LookupElementBuilder lookupElement, @Nullable JsonRawLookupElement jsonLookup) {
+
+        if(jsonLookup == null) {
+            return lookupElement;
+        }
+
+        if(jsonLookup.getTailText() != null) {
+            lookupElement = lookupElement.withTailText(jsonLookup.getTailText(), true);
+        }
+
+        if(jsonLookup.getTypeText() != null) {
+            lookupElement = lookupElement.withTypeText(jsonLookup.getTypeText(), true);
+        }
+
+        String iconString = jsonLookup.getIcon();
+        if(iconString != null) {
+            Icon icon = getLookupIconOnString(iconString);
+            if(icon != null) {
+                lookupElement = lookupElement.withIcon(icon);
+            }
+        }
+
+        return lookupElement;
+    }
+
+    @Nullable
+    public static Icon getLookupIconOnString(@NotNull String icon) {
+
+        int endIndex = icon.lastIndexOf(".");
+        if(endIndex < 0 || icon.length() - endIndex < 1) {
+            return null;
+        }
+
+        String className = icon.substring(0, endIndex);
+
+        try {
+            Class<?> iconClass = Class.forName(className);
+            Field field = iconClass.getDeclaredField(icon.substring(endIndex + 1));
+            return ((Icon) field.get(null));
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

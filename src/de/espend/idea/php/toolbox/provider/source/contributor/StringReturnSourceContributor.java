@@ -7,9 +7,11 @@ import com.intellij.psi.PsiElement;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
+import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
+import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +38,7 @@ public class StringReturnSourceContributor implements SourceContributorInterface
             }
 
             if(visitor == null) {
-                visitor = new MyReturnLookupVisitor(lookupElements);
+                visitor = new MyReturnLookupVisitor(parameter.getJsonProvider(), lookupElements);
             }
 
             visitReturnElements(parameter.getProject(), split[0], split[1], visitor);
@@ -69,7 +71,6 @@ public class StringReturnSourceContributor implements SourceContributorInterface
             }
 
             if(visitor == null) {
-
                 visitor = new MyReturnTargetVisitor(contents, psiElements);
             }
 
@@ -124,15 +125,20 @@ public class StringReturnSourceContributor implements SourceContributorInterface
     }
 
     private static class MyReturnLookupVisitor implements ReturnVisitor {
+        @NotNull
+        private final JsonProvider provider;
         private final Collection<LookupElement> lookupElements;
 
-        public MyReturnLookupVisitor(@NotNull Collection<LookupElement> lookupElements) {
+        public MyReturnLookupVisitor(@NotNull JsonProvider provider, @NotNull Collection<LookupElement> lookupElements) {
+            this.provider = provider;
             this.lookupElements = lookupElements;
         }
 
         @Override
         public void visit(@NotNull Method method, @NotNull String contents) {
-            lookupElements.add(LookupElementBuilder.create(contents));
+            lookupElements.add(JsonParseUtil.getDecoratedLookupElementBuilder(
+                LookupElementBuilder.create(contents), provider.getDefaults())
+            );
         }
     }
 }
