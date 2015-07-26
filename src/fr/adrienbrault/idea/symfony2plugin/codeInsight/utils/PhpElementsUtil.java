@@ -418,4 +418,31 @@ public class PhpElementsUtil {
                 .withParent(PlatformPatterns.psiElement(PhpReturn.class).inside(Method.class))
                 .withLanguage(PhpLanguage.INSTANCE);
     }
+
+    public static boolean isEqualClassName(@NotNull PhpClass phpClass, @NotNull PhpClass compareClassName) {
+        return isEqualClassName(phpClass, compareClassName.getPresentableFQN());
+    }
+
+    public static boolean isEqualClassName(@Nullable PhpClass phpClass, @Nullable String compareClassName) {
+
+        if(phpClass == null || compareClassName == null) {
+            return false;
+        }
+
+        String phpClassName = phpClass.getPresentableFQN();
+        if(phpClassName == null) {
+            return false;
+        }
+
+        if(phpClassName.startsWith("\\")) {
+            phpClassName = phpClassName.substring(1);
+        }
+
+        if(compareClassName.startsWith("\\")) {
+            compareClassName = compareClassName.substring(1);
+        }
+
+        return phpClassName.equals(compareClassName);
+    }
+
 }

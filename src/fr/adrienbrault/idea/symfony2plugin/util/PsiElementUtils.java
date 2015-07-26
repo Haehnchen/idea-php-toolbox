@@ -1,7 +1,10 @@
 package fr.adrienbrault.idea.symfony2plugin.util;
 
 import com.intellij.psi.PsiElement;
+import com.jetbrains.php.lang.psi.elements.ParameterList;
+import com.jetbrains.php.lang.psi.elements.ParameterListOwner;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
+import org.jetbrains.annotations.Nullable;
 
 public class PsiElementUtils {
 
@@ -25,4 +28,30 @@ public class PsiElementUtils {
         return value.replace("IntellijIdeaRulezzz", "").replace("IntellijIdeaRulezzz ", "").trim();
     }
 
+    @Nullable
+    public static ParameterBag getCurrentParameterIndex(PsiElement psiElement) {
+
+        if (!(psiElement.getContext() instanceof ParameterList)) {
+            return null;
+        }
+
+        ParameterList parameterList = (ParameterList) psiElement.getContext();
+        if (!(parameterList.getContext() instanceof ParameterListOwner)) {
+            return null;
+        }
+
+        return getCurrentParameterIndex(parameterList.getParameters(), psiElement);
+    }
+
+    @Nullable
+    public static ParameterBag getCurrentParameterIndex(PsiElement[] parameters, PsiElement parameter) {
+        int i;
+        for(i = 0; i < parameters.length; i = i + 1) {
+            if(parameters[i].equals(parameter)) {
+                return new ParameterBag(i, parameters[i]);
+            }
+        }
+
+        return null;
+    }
 }

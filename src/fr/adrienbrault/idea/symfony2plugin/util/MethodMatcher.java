@@ -112,6 +112,30 @@ public class MethodMatcher {
 
     }
 
+    public static class StringParameterAnyMatcher extends AbstractMethodParameterMatcher {
+
+        public StringParameterAnyMatcher(PsiElement psiElement) {
+            super(psiElement, -1);
+        }
+
+        @Nullable
+        public MethodMatchParameter match() {
+
+            MethodReferenceBag bag = PhpElementsUtil.getMethodParameterReferenceBag(psiElement);
+            if(bag == null) {
+                return null;
+            }
+
+            CallToSignature matchedMethodSignature = this.isCallTo(bag.getMethodReference());
+            if(matchedMethodSignature == null) {
+                return null;
+            }
+
+            return new MethodMatchParameter(matchedMethodSignature, bag.getParameterBag(), bag.getParameterList().getParameters(), bag.getMethodReference());
+        }
+
+    }
+
     public static class StringParameterRecursiveMatcher extends AbstractMethodParameterMatcher {
 
         public StringParameterRecursiveMatcher(PsiElement psiElement, int parameterIndex) {
@@ -137,30 +161,33 @@ public class MethodMatcher {
 
             // walk down next method
             MethodReference methodReference = bag.getMethodReference();
-            Method method = Symfony2InterfacesUtil.getMultiResolvedMethod(methodReference);
-            if(method == null) {
+            Method[] methods = Symfony2InterfacesUtil.getMultiResolvedMethod(methodReference);
+            if(methods == null) {
                 return null;
             }
 
-            PsiElement[] parameterReferences = PhpElementsUtil.getMethodParameterReferences(method, bag.getParameterBag().getIndex());
-            if(parameterReferences == null || parameterReferences.length == 0) {
-                return null;
-            }
+            for (Method method : methods) {
 
-            for(PsiElement var: parameterReferences) {
+                PsiElement[] parameterReferences = PhpElementsUtil.getMethodParameterReferences(method, bag.getParameterBag().getIndex());
+                if(parameterReferences == null || parameterReferences.length == 0) {
+                    continue;
+                }
 
-                MethodMatchParameter methodMatchParameterRef = new StringParameterMatcher(var, parameterIndex)
-                    .withSignature(this.signatures)
-                    .match();
+                for(PsiElement var: parameterReferences) {
 
-                if(methodMatchParameterRef != null) {
-                    return methodMatchParameterRef;
+                    MethodMatcher.MethodMatchParameter methodMatchParameterRef = new MethodMatcher.StringParameterMatcher(var, parameterIndex)
+                            .withSignature(this.signatures)
+                            .match();
+
+                    if(methodMatchParameterRef != null) {
+                        return methodMatchParameterRef;
+                    }
+
                 }
 
             }
 
             return null;
-
         }
 
     }
@@ -210,20 +237,47 @@ public class MethodMatcher {
         }
     }
 
-    @Nullable
-    public static MethodMatchParameter getMatchedArrayKeyPathSignatureWithDepth(PsiElement psiElement, CallToSignature callToSignature, String... keys) {
-        return getMatchedArrayKeyPathSignatureWithDepth(psiElement, new CallToSignature[] { callToSignature}, keys);
-    }
+    public static class ArrayParameterMatcher extends AbstractMethodParameterMatcher {
 
-    @Nullable
-    public static MethodMatchParameter getMatchedArrayKeyPathSignatureWithDepth(PsiElement psiElement, CallToSignature[] callToSignature, String... keys) {
-
-        ArrayCreationExpression matchingArrayPath = PhpElementsUtil.getArrayPath(psiElement, keys);
-        if(matchingArrayPath == null) {
-            return null;
+        public ArrayParameterMatcher(PsiElement psiElement, int parameterIndex) {
+            super(psiElement, parameterIndex);
         }
 
-        return getMatchedSignatureWithDepth(matchingArrayPath, callToSignature);
+        @Nullable
+        public MethodMatchParameter match() {
+
+            ArrayCreationExpression arrayCreationExpression = PhpElementsUtil.getCompletableArrayCreationElement(this.psiElement);
+            if (arrayCreationExpression == null) {
+                return null;
+            }
+
+            PsiElement parameterList = arrayCreationExpression.getContext();
+            if (!(parameterList instanceof ParameterList)) {
+                return null;
+            }
+
+            PsiElement methodParameters[] = ((ParameterList) parameterList).getParameters();
+            if (methodParameters.length < this.parameterIndex) {
+                return null;
+            }
+
+            if (!(parameterList.getContext() instanceof MethodReference)) {
+                return null;
+            }
+            MethodReference methodReference = (MethodReference) parameterList.getContext();
+
+            ParameterBag currentIndex = PsiElementUtils.getCurrentParameterIndex(arrayCreationExpression);
+            if (currentIndex == null || currentIndex.getIndex() != this.parameterIndex) {
+                return null;
+            }
+
+            CallToSignature matchedMethodSignature = this.isCallTo(methodReference);
+            if(matchedMethodSignature == null) {
+                return null;
+            }
+
+            return new MethodMatchParameter(matchedMethodSignature, currentIndex, methodParameters, methodReference);
+        }
 
     }
 
