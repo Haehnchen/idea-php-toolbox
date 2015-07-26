@@ -3,19 +3,17 @@ package de.espend.idea.php.toolbox.utils;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
-import com.jetbrains.php.lang.PhpFileType;
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
-import com.jetbrains.twig.TwigFileType;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
+import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
+import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
-import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class RegistrarMatchUtil {
 
@@ -32,7 +30,7 @@ public class RegistrarMatchUtil {
 
         PhpToolboxProviderInterface[] providers = null;
 
-        Collection<PhpToolboxProviderInterface> providerInterfaces = new ArrayList<PhpToolboxProviderInterface>();
+        Collection<PhpToolboxProviderInterface> providerInterfaces = new HashSet<PhpToolboxProviderInterface>();
 
         for (JsonRegistrar registrar : registrars) {
 
@@ -52,7 +50,8 @@ public class RegistrarMatchUtil {
 
             Collection<PhpToolboxProviderInterface> matchedProviders = new ArrayList<PhpToolboxProviderInterface>();
             for (PhpToolboxProviderInterface provider : providers) {
-                if (provider.getName().equals(registrar.getProvider())) {
+                String name = provider.getName();
+                if (name.equals(registrar.getProvider())) {
                     matchedProviders.add(provider);
                 }
             }
@@ -61,57 +60,28 @@ public class RegistrarMatchUtil {
                 continue;
             }
 
-            if(fileType instanceof PhpFileType && getPhpLanguageProvider(psiElement, registrar, signatures)) {
-                providerInterfaces.addAll(matchedProviders);
-            }
+            LanguageMatcherParameter parameter = null;
 
-            if(fileType instanceof TwigFileType && getTwigLanguageProvider(psiElement, registrar, signatures)) {
-                providerInterfaces.addAll(matchedProviders);
+            for (LanguageRegistrarMatcherInterface matcher : ExtensionProviderUtil.REGISTRAR_MATCHER.getExtensions()) {
+
+                if(!matcher.supports(psiElement.getContainingFile().getFileType())) {
+                    continue;
+                }
+
+                if(parameter == null) {
+                    parameter = new LanguageMatcherParameter(psiElement, registrar);
+                }
+
+                if(matcher.matches(parameter)) {
+                    providerInterfaces.addAll(matchedProviders);
+                    break;
+                }
+
             }
 
         }
 
         return providerInterfaces;
-    }
-
-    private static boolean getTwigLanguageProvider(PsiElement psiElement, JsonRegistrar registrar, Collection<String> signatures) {
-        return TwigUtil.getPrintBlockFunctionPattern(signatures.toArray(new String[signatures.size()])).accepts(psiElement);
-    }
-
-    private static boolean getPhpLanguageProvider(PsiElement psiElement, JsonRegistrar registrar, Collection<String> signatures) {
-
-        PsiElement parent = psiElement.getParent();
-        if(!(parent instanceof StringLiteralExpression)) {
-            return false;
-        }
-
-        for (String signature : signatures) {
-            if(signature.contains(":")) {
-
-                String[] split = signature.replaceAll("(:)\\1", "$1").split(":");
-                if(split.length == 2) {
-
-                    if(signature.endsWith("__construct")) {
-                        if(new MethodMatcher.NewExpressionParameterMatcher(parent, registrar.getIndex()).withSignature(split[0], split[1]).match() != null) {
-                            return true;
-                        }
-                    } else {
-                        if (MethodMatcher.getMatchedSignatureWithDepth(parent, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(split[0], split[1])}, registrar.getIndex()) != null) {
-                            return true;
-                        }
-
-                    }
-                }
-            } else {
-
-                if(PhpElementsUtil.isFunctionReference(parent, registrar.getIndex(), signature)) {
-                    return true;
-                }
-
-            }
-        }
-
-        return false;
     }
 
 }

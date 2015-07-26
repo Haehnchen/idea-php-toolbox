@@ -53,6 +53,7 @@
   <extensionPoints>
     <extensionPoint name="extension.PhpToolboxProviderInterface" interface="de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface"/>
     <extensionPoint name="extension.SourceContributorInterface" interface="de.espend.idea.php.toolbox.extension.SourceContributorInterface"/>
+    <extensionPoint name="extension.LanguageRegistrarMatcher" interface="de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface"/>
   </extensionPoints>
 
     <extensions defaultExtensionNs="de.espend.idea.php.toolbox.extension">
@@ -61,6 +62,10 @@
 
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor"/>
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.ArrayReturnSourceContributor"/>
+
+        <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.MethodParameterRegistrarMatcher"/>
+        <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.PhpFunctionRegistrarMatcher"/>
+        <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.twig.TwigBlockRegistrarMatcher"/>
     </extensions>
 
   <application-components>

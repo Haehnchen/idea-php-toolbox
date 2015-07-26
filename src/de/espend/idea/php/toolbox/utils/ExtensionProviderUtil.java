@@ -9,6 +9,7 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
+import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
 import de.espend.idea.php.toolbox.provider.ClassInterfaceProvider;
@@ -26,6 +27,7 @@ public class ExtensionProviderUtil {
 
     private static final ExtensionPointName<PhpToolboxProviderInterface> TOOLBOX_PROVIDER_EP = new ExtensionPointName<PhpToolboxProviderInterface>("de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface");
     private static final ExtensionPointName<SourceContributorInterface> SOURCE_CONTRIBUTOR_EP = new ExtensionPointName<SourceContributorInterface>("de.espend.idea.php.toolbox.extension.SourceContributorInterface");
+    public static final ExtensionPointName<LanguageRegistrarMatcherInterface> REGISTRAR_MATCHER = new ExtensionPointName<LanguageRegistrarMatcherInterface>("de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcher");
 
     final private static Map<Project, JsonFileCache> PROJECT_CACHE = new HashMap<Project, JsonFileCache>();
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
