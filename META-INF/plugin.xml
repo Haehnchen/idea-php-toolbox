@@ -60,6 +60,7 @@
         <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.ClassInterfaceProvider"/>
 
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor"/>
+        <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.ArrayReturnSourceContributor"/>
     </extensions>
 
   <application-components>
