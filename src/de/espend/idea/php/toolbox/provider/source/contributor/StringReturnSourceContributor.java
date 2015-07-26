@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
-import de.espend.idea.php.toolbox.provider.source.SourceContributorInterface;
+import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
 import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;

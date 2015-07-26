@@ -21,7 +21,7 @@ public class PhpToolboxApplicationService implements ApplicationComponent {
 
     public File[] getApplicationJsonFiles() {
 
-        File file = new File(PathManager.getConfigPath() + "/phpToolbox");
+        File file = new File(PathManager.getConfigPath() + "/php-toolbox");
         if(!file.isDirectory()) {
             return new File[0];
         }

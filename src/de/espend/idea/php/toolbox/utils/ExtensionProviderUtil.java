@@ -1,9 +1,9 @@
 package de.espend.idea.php.toolbox.utils;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -15,7 +15,7 @@ import de.espend.idea.php.toolbox.provider.ClassInterfaceProvider;
 import de.espend.idea.php.toolbox.provider.ClassProvider;
 import de.espend.idea.php.toolbox.provider.SourceProvider;
 import de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor;
-import de.espend.idea.php.toolbox.provider.source.SourceContributorInterface;
+import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,22 +24,20 @@ import java.util.*;
 
 public class ExtensionProviderUtil {
 
+    private static final ExtensionPointName<PhpToolboxProviderInterface> TOOLBOX_PROVIDER_EP = new ExtensionPointName<PhpToolboxProviderInterface>("de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface");
+    private static final ExtensionPointName<SourceContributorInterface> SOURCE_CONTRIBUTOR_EP = new ExtensionPointName<SourceContributorInterface>("de.espend.idea.php.toolbox.extension.SourceContributorInterface");
+
     final private static Map<Project, JsonFileCache> PROJECT_CACHE = new HashMap<Project, JsonFileCache>();
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
-
-    public static final SourceContributorInterface[] SOURCE_CONTRIBUTOR_INTERFACES = new SourceContributorInterface[]{
-            new StringReturnSourceContributor()
-    };
 
     @NotNull
     public static PhpToolboxProviderInterface[] getProviders(Project project) {
 
         PhpToolboxApplicationService phpToolboxApplicationService = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
 
-        Collection<PhpToolboxProviderInterface> providers = new ArrayList<PhpToolboxProviderInterface>();
-        providers.add(new ClassProvider());
-        providers.add(new ClassInterfaceProvider());
-        //providers.add(new ReturnSignatureProvider());
+        Collection<PhpToolboxProviderInterface> providers = new ArrayList<PhpToolboxProviderInterface>(
+            Arrays.asList(TOOLBOX_PROVIDER_EP.getExtensions())
+        );
 
         for (Map.Entry<String, Collection<JsonRawLookupElement>> entry : ExtensionProviderUtil.getProviders(project, phpToolboxApplicationService).entrySet()) {
             providers.add(new JsonRawContainerProvider(entry.getKey(), entry.getValue()));
@@ -136,21 +134,8 @@ public class ExtensionProviderUtil {
 
     @NotNull
     public static Set<File> getProjectJsonFiles(@NotNull Project project) {
-        VirtualFile phpToolbox = VfsUtil.findRelativeFile(project.getBaseDir(), ".idea", "phpToolbox");
 
         Set<File> files = new HashSet<File>();
-
-        if(phpToolbox != null) {
-            File dir = VfsUtil.virtualToIoFile(phpToolbox);
-            if(dir.isDirectory()) {
-                files.addAll(Arrays.asList(dir.listFiles(new JsonParseUtil.JsonFileFilter())));
-            }
-        }
-
-        VirtualFile rootFile = VfsUtil.findRelativeFile(project.getBaseDir(), ".phpToolbox.json");
-        if(rootFile != null) {
-            files.add(VfsUtil.virtualToIoFile(rootFile));
-        }
 
         for (PsiFile psiFile : FilenameIndex.getFilesByName(project, ".phpstorm-toolbox.metadata.json", GlobalSearchScope.allScope(project))) {
             files.add(VfsUtil.virtualToIoFile(psiFile.getVirtualFile()));
@@ -161,7 +146,7 @@ public class ExtensionProviderUtil {
 
     @NotNull
     private static SourceContributorInterface[] getSourceContributors() {
-        return SOURCE_CONTRIBUTOR_INTERFACES;
+        return SOURCE_CONTRIBUTOR_EP.getExtensions();
     }
 
     @Nullable

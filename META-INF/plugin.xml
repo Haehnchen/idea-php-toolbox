@@ -50,6 +50,18 @@
 
   </extensions>
 
+  <extensionPoints>
+    <extensionPoint name="extension.PhpToolboxProviderInterface" interface="de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface"/>
+    <extensionPoint name="extension.SourceContributorInterface" interface="de.espend.idea.php.toolbox.extension.SourceContributorInterface"/>
+  </extensionPoints>
+
+    <extensions defaultExtensionNs="de.espend.idea.php.toolbox.extension">
+        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.ClassProvider"/>
+        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.ClassInterfaceProvider"/>
+
+        <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor"/>
+    </extensions>
+
   <application-components>
     <component>
       <implementation-class>de.espend.idea.php.toolbox.PhpToolboxApplicationService</implementation-class>
