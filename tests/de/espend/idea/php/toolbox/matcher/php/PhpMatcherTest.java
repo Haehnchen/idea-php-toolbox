@@ -29,4 +29,12 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
         // @TODO: we need some better signature splitting in json
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php date_create()->format(['foo' => '<caret>'])", "bar", "foo");
     }
+
+    public void testSignatureInReturn() {
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php function foo() { return '<caret>'; }", "bar", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php class Foo { function getFoo() { return '<caret>'; } }", "bar", "foo");
+
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php function foo1() { return '<caret>'; }", "bar", "foo");
+        assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php class Foo1 { function getFoo() { return '<caret>'; } }", "bar", "foo");
+    }
 }
