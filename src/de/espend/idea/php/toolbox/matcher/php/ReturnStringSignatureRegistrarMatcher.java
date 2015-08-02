@@ -3,8 +3,6 @@ package de.espend.idea.php.toolbox.matcher.php;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.php.lang.PhpFileType;
-import com.jetbrains.php.lang.parser.PhpElementTypes;
-import com.jetbrains.php.lang.psi.elements.ArrayCreationExpression;
 import com.jetbrains.php.lang.psi.elements.PhpReturn;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
@@ -15,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class ReturnArraySignatureRegistrarMatcher implements LanguageRegistrarMatcherInterface {
+public class ReturnStringSignatureRegistrarMatcher implements LanguageRegistrarMatcherInterface {
     @Override
     public boolean matches(@NotNull LanguageMatcherParameter parameter) {
 
@@ -24,17 +22,7 @@ public class ReturnArraySignatureRegistrarMatcher implements LanguageRegistrarMa
             return false;
         }
 
-        PsiElement arrayValue = parent.getParent();
-        if(arrayValue == null || arrayValue.getNode().getElementType() != PhpElementTypes.ARRAY_VALUE) {
-            return false;
-        }
-
-        PsiElement arrayCreation = arrayValue.getParent();
-        if(!(arrayCreation instanceof ArrayCreationExpression)) {
-            return false;
-        }
-
-        PsiElement phpReturn = arrayCreation.getParent();
+        PsiElement phpReturn = parent.getParent();
         if(!(phpReturn instanceof PhpReturn)) {
             return false;
         }
@@ -46,4 +34,5 @@ public class ReturnArraySignatureRegistrarMatcher implements LanguageRegistrarMa
     public boolean supports(@NotNull FileType fileType) {
         return fileType == PhpFileType.INSTANCE;
     }
+
 }

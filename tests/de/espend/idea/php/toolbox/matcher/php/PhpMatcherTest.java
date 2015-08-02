@@ -35,6 +35,17 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php class Foo { function getFoo() { return '<caret>'; } }", "bar", "foo");
 
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php function foo1() { return '<caret>'; }", "bar", "foo");
-        assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php class Foo1 { function getFoo() { return '<caret>'; } }", "bar", "foo");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php class Foo1 { function getFoo() { return '<caret>'; } }", "bar", "foo");
+    }
+
+    public void testSignatureInReturnArray() {
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php function foo() { return ['<caret>']; }", "bar", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php class Foo { function getFoo() { return ['<caret>']; } }", "bar", "foo");
+
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php function foo() { return ['', '<caret>']; }", "bar", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php class Foo { function getFoo() { return ['', '<caret>']; } }", "bar", "foo");
+
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php function foo1() { return ['<caret>']; }", "bar", "foo");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php class Foo1 { function getFoo() { return ['<caret>']; } }", "bar", "foo");
     }
 }

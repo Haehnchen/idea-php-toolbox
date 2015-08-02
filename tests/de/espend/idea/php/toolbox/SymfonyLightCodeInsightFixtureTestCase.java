@@ -23,11 +23,6 @@ import java.util.*;
  */
 public abstract class SymfonyLightCodeInsightFixtureTestCase extends LightCodeInsightFixtureTestCase {
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
     public void assertCompletionContains(LanguageFileType languageFileType, String configureByText, String... lookupStrings) {
 
         myFixture.configureByText(languageFileType, configureByText);
