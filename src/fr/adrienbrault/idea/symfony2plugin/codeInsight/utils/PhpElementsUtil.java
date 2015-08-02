@@ -108,6 +108,10 @@ public class PhpElementsUtil {
 
     public static boolean isFunctionReference(PsiElement psiElement, int wantIndex, String... funcName) {
 
+        if(funcName.length == 0) {
+            return false;
+        }
+
         PsiElement variableContext = psiElement.getContext();
         if(!(variableContext instanceof ParameterList)) {
             return false;

@@ -25,7 +25,7 @@ public class MethodParameterRegistrarMatcher implements LanguageRegistrarMatcher
             }
 
             String[] split = signature.replaceAll("(:)\\1", "$1").split(":");
-            if(split.length < 2) {
+            if(split.length != 2) {
                 continue;
             }
 

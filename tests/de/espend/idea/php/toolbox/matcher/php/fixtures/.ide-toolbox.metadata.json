@@ -1,7 +1,7 @@
 {
   "registrar":[
     {
-      "signatures":["date", "\\DateTime::format", "\\DateTime::__construct"],
+      "signatures":["date", "\\DateTime::format", "\\DateTime::__construct", "\\DateTime::format.foo"],
       "provider":"date_format",
       "language":"php"
     }

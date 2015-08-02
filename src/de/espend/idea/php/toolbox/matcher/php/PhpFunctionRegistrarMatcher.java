@@ -1,7 +1,9 @@
 package de.espend.idea.php.toolbox.matcher.php;
 
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.util.Condition;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
@@ -10,6 +12,9 @@ import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class PhpFunctionRegistrarMatcher implements LanguageRegistrarMatcherInterface {
 
@@ -26,11 +31,21 @@ public class PhpFunctionRegistrarMatcher implements LanguageRegistrarMatcherInte
             return false;
         }
 
-        return PhpElementsUtil.isFunctionReference(parent, parameter.getRegistrar().getIndex(), signatures.toArray(new String[signatures.size()]));
+        return PhpElementsUtil.isFunctionReference(parent, parameter.getRegistrar().getIndex(), filterFunctionSignatures(signatures));
     }
 
     public boolean supports(@NotNull FileType fileType) {
         return fileType == PhpFileType.INSTANCE;
+    }
+
+    public static String[] filterFunctionSignatures(Collection<String> strings) {
+        HashSet<String> filtered = new HashSet<String>(ContainerUtil.filter(strings, new Condition<String>() {
+            @Override
+            public boolean value(String s) {
+                return !s.contains(":");
+            }
+        }));
+        return filtered.toArray(new String[filtered.size()]);
     }
 
 }
