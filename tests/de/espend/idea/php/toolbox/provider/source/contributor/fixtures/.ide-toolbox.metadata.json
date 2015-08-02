@@ -1,0 +1,48 @@
+{
+  "registrar":[
+    {
+      "signatures":["date"],
+      "provider":"return_string",
+      "language":"php"
+    },
+    {
+      "signatures":["date_2"],
+      "provider":"return_array",
+      "language":"php"
+    }
+  ],
+  "providers":[
+    {
+      "name": "return_string",
+      "defaults": {
+        "icon":"com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text":"DefaultTail"
+      },
+      "items":[
+        {
+          "lookup_string":"foo_item"
+        }
+      ],
+      "source":{
+        "contributor":"return",
+        "parameter":"\\StringReturnInterface:getName"
+      }
+    },
+    {
+      "name": "return_array",
+      "defaults": {
+        "icon":"com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text":"DefaultTail"
+      },
+      "items":[
+        {
+          "lookup_string":"foo_array"
+        }
+      ],
+      "source":{
+        "contributor":"return_array",
+        "parameter":"\\ArrayReturnInterface:getNames"
+      }
+    }
+  ]
+}

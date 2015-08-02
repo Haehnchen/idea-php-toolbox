@@ -4,12 +4,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class ClassInterfaceProvider extends ClassProvider {
 
-    protected boolean withInterface = true;
-
     @NotNull
     @Override
     public String getName() {
         return "ClassInterface";
+    }
+
+    protected boolean withInterfaces() {
+        return true;
     }
 
 }

@@ -1,0 +1,22 @@
+{
+  "registrar":[
+    {
+      "signatures":["date", "\\DateTime::format", "\\DateTime::__construct"],
+      "provider":"date_format",
+      "language":"php"
+    }
+  ],
+  "providers":[
+    {
+      "name": "date_format",
+      "items":[
+        {
+          "lookup_string":"foo"
+        },
+        {
+          "lookup_string":"bar"
+        }
+      ]
+    }
+  ]
+}

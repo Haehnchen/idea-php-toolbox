@@ -23,6 +23,20 @@ import java.util.Map;
 public class JsonParseUtil {
 
     @Nullable
+    public static JsonConfigFile getDeserializeConfig(@NotNull InputStream stream) {
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jsonObject = jsonParser.parse(new InputStreamReader(stream)).getAsJsonObject();
+
+        JsonConfigFile jsonConfig = new Gson().fromJson(jsonObject, new TypeToken<JsonConfigFile>(){}.getType());
+        if(jsonConfig == null) {
+            return null;
+        }
+
+        return jsonConfig;
+    }
+
+    @Nullable
     public static JsonConfigFile getDeserializeConfig(@NotNull File file) {
 
         if(!file.exists()) {

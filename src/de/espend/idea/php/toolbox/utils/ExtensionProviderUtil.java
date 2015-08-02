@@ -7,20 +7,20 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
-import de.espend.idea.php.toolbox.provider.ClassInterfaceProvider;
-import de.espend.idea.php.toolbox.provider.ClassProvider;
 import de.espend.idea.php.toolbox.provider.SourceProvider;
-import de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class ExtensionProviderUtil {
@@ -119,13 +119,26 @@ public class ExtensionProviderUtil {
 
         Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
 
-        synchronized (PROJECT_CACHE) {
-            if(!PROJECT_CACHE.containsKey(project)) {
-                PROJECT_CACHE.put(project, new JsonFileCache());
-            }
+        for (final PsiFile psiFile : FilenameIndex.getFilesByName(project, ".ide-toolbox.metadata.json", GlobalSearchScope.allScope(project))) {
+            JsonConfigFile cachedValue = CachedValuesManager.getCachedValue(psiFile, new CachedValueProvider<JsonConfigFile>() {
+                @Nullable
+                @Override
+                public Result<JsonConfigFile> compute() {
+                    try {
+                        JsonConfigFile deserializeConfig = JsonParseUtil.getDeserializeConfig(psiFile.getVirtualFile().getInputStream());
+                        if (deserializeConfig != null) {
+                            return new Result<JsonConfigFile>(deserializeConfig, psiFile);
+                        }
+                    } catch (IOException ignored) {
+                    }
+                    return null;
+                }
+            });
 
-            jsonConfigFiles.addAll(PROJECT_CACHE.get(project).get(getProjectJsonFiles(project)));
-        }
+            if(cachedValue != null) {
+                jsonConfigFiles.add(cachedValue);
+            }
+         }
 
         synchronized (APPLICATION_CACHE) {
             jsonConfigFiles.addAll(APPLICATION_CACHE.get(new HashSet<File>(Arrays.asList(phpToolboxApplicationService.getApplicationJsonFiles()))));
@@ -134,17 +147,6 @@ public class ExtensionProviderUtil {
         return jsonConfigFiles;
     }
 
-    @NotNull
-    public static Set<File> getProjectJsonFiles(@NotNull Project project) {
-
-        Set<File> files = new HashSet<File>();
-
-        for (PsiFile psiFile : FilenameIndex.getFilesByName(project, ".phpstorm-toolbox.metadata.json", GlobalSearchScope.allScope(project))) {
-            files.add(VfsUtil.virtualToIoFile(psiFile.getVirtualFile()));
-        }
-
-        return files;
-    }
 
     @NotNull
     private static SourceContributorInterface[] getSourceContributors() {

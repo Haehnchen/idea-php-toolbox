@@ -15,8 +15,6 @@ import java.util.Collection;
 
 public class ClassProvider implements PhpToolboxProviderInterface {
 
-    protected boolean withInterface = false;
-
     @NotNull
     public Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter) {
 
@@ -32,7 +30,7 @@ public class ClassProvider implements PhpToolboxProviderInterface {
                 }
             }
 
-            if(this.withInterface) {
+            if(this.withInterfaces()) {
                 for(PhpClass phpClass: phpIndex.getInterfacesByName(className)) {
                     String presentableFQN = phpClass.getPresentableFQN();
                     if(presentableFQN != null) {
@@ -43,7 +41,6 @@ public class ClassProvider implements PhpToolboxProviderInterface {
         }
 
         return lookupElements;
-
     }
 
     @NotNull
@@ -53,11 +50,15 @@ public class ClassProvider implements PhpToolboxProviderInterface {
         Collection<PsiElement> targets = new ArrayList<PsiElement>();
         targets.addAll(PhpIndex.getInstance(parameter.getProject()).getClassesByFQN(parameter.getContents()));
 
-        if(this.withInterface) {
+        if(this.withInterfaces()) {
             targets.addAll(PhpIndex.getInstance(parameter.getProject()).getInterfacesByFQN(parameter.getContents()));
         }
 
         return targets;
+    }
+
+    protected boolean withInterfaces() {
+        return false;
     }
 
     @NotNull
