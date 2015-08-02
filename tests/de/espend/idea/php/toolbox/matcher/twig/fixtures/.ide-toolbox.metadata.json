@@ -1,0 +1,43 @@
+{
+  "registrar":[
+    {
+      "signatures":["foo"],
+      "provider":"date_format",
+      "language":"twig"
+    },
+    {
+      "signatures":["foo"],
+      "provider":"return_string",
+      "language":"twig"
+    }
+  ],
+  "providers":[
+    {
+      "name": "date_format",
+      "items":[
+        {
+          "lookup_string":"foo"
+        },
+        {
+          "lookup_string":"bar"
+        }
+      ]
+    },
+    {
+      "name": "return_string",
+      "defaults": {
+        "icon":"com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text":"DefaultTail"
+      },
+      "items":[
+        {
+          "lookup_string":"foo_item"
+        }
+      ],
+      "source":{
+        "contributor":"return",
+        "parameter":"\\StringReturnInterface:getName"
+      }
+    }
+  ]
+}
