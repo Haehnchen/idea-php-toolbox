@@ -18,16 +18,10 @@
         <fileset dir="${idea.build}/lib">
             <include name="*.jar"/>
         </fileset>
-        <fileset dir="${basedir}/lib">
-            <include name="*.jar"/>
-        </fileset>
         <fileset dir="${plugins}">
             <include name="*.jar"/>
         </fileset>
         <fileset dir="${plugins}/php/lib">
-            <include name="*.jar"/>
-        </fileset>
-        <fileset dir="${plugins}/twig/lib">
             <include name="*.jar"/>
         </fileset>
         <fileset dir="${idea.build}/plugins/properties/lib">
@@ -37,9 +31,6 @@
             <include name="*.jar"/>
         </fileset>
         <fileset dir="${idea.build}/plugins/CSS/lib">
-            <include name="*.jar"/>
-        </fileset>
-        <fileset dir="${idea.build}/plugins/yaml/lib">
             <include name="*.jar"/>
         </fileset>
     </path>
@@ -115,9 +106,6 @@
         <sequential>
             <copy toDir="@{dest}/classes">
                 <fileset dir="${src}"/>
-            </copy>
-            <copy toDir="@{dest}/lib">
-                <fileset dir="${basedir}/lib"/>
             </copy>
             <copy toDir="@{dest}/META-INF">
                 <fileset dir="${basedir}/META-INF"/>
