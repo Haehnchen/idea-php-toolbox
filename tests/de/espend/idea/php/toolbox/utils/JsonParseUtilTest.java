@@ -16,7 +16,7 @@ public class JsonParseUtilTest extends Assert {
     @Test
     public void testGetProviderJsonFromFile() {
 
-        File testFile = new File(this.getClass().getResource("fixtures/.ide-toolbox.metadata.json").getFile());
+        File testFile = new File(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").getFile());
 
         Map<String, Collection<JsonRawLookupElement>> elements = JsonParseUtil.getProviderJsonRawLookupElements(JsonParseUtil.getDeserializeConfig(testFile).getProviders());
         assertTrue(elements.keySet().contains("date_format"));
@@ -38,7 +38,7 @@ public class JsonParseUtilTest extends Assert {
     @Test
     public void testGetRegistrarJsonFromFile() {
 
-        File testFile = new File(this.getClass().getResource("fixtures/.ide-toolbox.metadata.json").getFile());
+        File testFile = new File(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").getFile());
 
         Collection<JsonRegistrar> elements = JsonParseUtil.getDeserializeConfig(testFile).getRegistrar();
         JsonRegistrar next = elements.iterator().next();
@@ -57,7 +57,7 @@ public class JsonParseUtilTest extends Assert {
     public void testConfigDeserialize() {
         JsonConfigFile elements = null;
         try {
-            elements = JsonParseUtil.getDeserializeConfig(this.getClass().getResource("fixtures/.ide-toolbox.metadata.json").openStream());
+            elements = JsonParseUtil.getDeserializeConfig(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

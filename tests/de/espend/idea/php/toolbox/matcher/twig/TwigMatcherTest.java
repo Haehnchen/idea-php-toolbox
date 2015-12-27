@@ -17,8 +17,8 @@ public class TwigMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        myFixture.configureFromExistingVirtualFile(myFixture.copyFileToProject("classes.php"));
-        myFixture.configureFromExistingVirtualFile(myFixture.copyFileToProject(".ide-toolbox.metadata.json"));
+        myFixture.copyFileToProject("classes.php");
+        myFixture.copyFileToProject("ide-toolbox.metadata.json", ".ide-toolbox.metadata.json");
     }
 
     public String getTestDataPath() {
