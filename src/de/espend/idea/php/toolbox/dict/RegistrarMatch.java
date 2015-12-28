@@ -4,6 +4,9 @@ import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class RegistrarMatch {
 
     private final PhpToolboxProviderInterface provider;

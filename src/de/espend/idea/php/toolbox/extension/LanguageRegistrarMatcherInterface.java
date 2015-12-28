@@ -4,7 +4,12 @@ import com.intellij.openapi.fileTypes.FileType;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public interface LanguageRegistrarMatcherInterface {
-    public boolean matches(@NotNull LanguageMatcherParameter parameter);
-    public boolean supports(@NotNull FileType fileType);
+
+    boolean matches(@NotNull LanguageMatcherParameter parameter);
+
+    boolean supports(@NotNull FileType fileType);
 }

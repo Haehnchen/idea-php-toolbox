@@ -6,6 +6,9 @@ import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import java.io.File;
 import java.util.*;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonFileCache {
 
     final Map<File, Long> filesMTime = new HashMap<File, Long>();

@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonParseUtilTest extends Assert {
 
     @Test

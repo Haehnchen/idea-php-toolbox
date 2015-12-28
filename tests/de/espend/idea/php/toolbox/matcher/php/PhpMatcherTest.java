@@ -5,6 +5,9 @@ import de.espend.idea.php.toolbox.SymfonyLightCodeInsightFixtureTestCase;
 
 import java.io.File;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void setUp() throws Exception {

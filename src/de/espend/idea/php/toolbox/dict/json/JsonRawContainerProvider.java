@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonRawContainerProvider implements PhpToolboxProviderInterface {
 
     private final String name;

@@ -3,6 +3,9 @@ package de.espend.idea.php.toolbox.dict.json;
 import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonRawLookupElement {
 
     @SerializedName("lookup_string")

@@ -130,8 +130,8 @@ public class ArrayReturnSourceContributor implements SourceContributorInterface 
         }
     }
 
-    private static interface ReturnVisitor {
-        public void visit(@NotNull Method method, @NotNull StringLiteralExpression psiElement, @NotNull String contents);
+    private interface ReturnVisitor {
+        void visit(@NotNull Method method, @NotNull StringLiteralExpression psiElement, @NotNull String contents);
     }
 
     @NotNull

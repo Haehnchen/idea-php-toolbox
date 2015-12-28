@@ -6,6 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonRegistrar {
 
     private Collection<String> signatures = new HashSet<String>();

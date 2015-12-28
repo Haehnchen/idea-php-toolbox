@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class PhpToolboxApplicationService implements ApplicationComponent {
 
     @Override

@@ -3,6 +3,9 @@ package de.espend.idea.php.toolbox.dict.json;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonConfigFile {
 
     private Collection<JsonType> types = new ArrayList<JsonType>();

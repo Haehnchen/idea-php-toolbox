@@ -15,6 +15,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class RegistrarMatchUtil {
 
     @NotNull

@@ -1,5 +1,8 @@
 package de.espend.idea.php.toolbox.dict.json;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonProviderSource {
 
     private String contributor;

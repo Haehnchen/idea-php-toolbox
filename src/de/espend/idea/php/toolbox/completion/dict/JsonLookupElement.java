@@ -6,9 +6,9 @@ import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
-import java.lang.reflect.Field;
-
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class JsonLookupElement extends LookupElement {
 
     private final JsonRawLookupElement jsonLookupElement;

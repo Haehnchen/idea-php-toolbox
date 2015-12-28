@@ -8,14 +8,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public interface PhpToolboxProviderInterface {
 
     @NotNull
-    public Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter);
+    Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter);
 
     @NotNull
-    public Collection<PsiElement> getPsiTargets(@NotNull PhpToolboxDeclarationHandlerParameter parameter);
+    Collection<PsiElement> getPsiTargets(@NotNull PhpToolboxDeclarationHandlerParameter parameter);
 
     @NotNull
-    public String getName();
+    String getName();
 }

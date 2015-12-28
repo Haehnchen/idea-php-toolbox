@@ -1,6 +1,5 @@
 package de.espend.idea.php.toolbox.utils;
 
-
 import com.intellij.patterns.ElementPattern;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
@@ -9,6 +8,9 @@ import com.jetbrains.twig.TwigLanguage;
 import com.jetbrains.twig.TwigTokenTypes;
 import com.jetbrains.twig.elements.TwigElementTypes;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class TwigUtil {
 
     /**

@@ -6,6 +6,9 @@ import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonProviderSource;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class SourceContributorParameter {
 
     @NotNull

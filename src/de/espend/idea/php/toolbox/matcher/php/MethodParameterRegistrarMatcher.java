@@ -9,6 +9,9 @@ import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class MethodParameterRegistrarMatcher implements LanguageRegistrarMatcherInterface {
     @Override
     public boolean matches(@NotNull LanguageMatcherParameter parameter) {

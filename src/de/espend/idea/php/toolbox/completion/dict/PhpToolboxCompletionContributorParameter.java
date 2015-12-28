@@ -6,6 +6,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class PhpToolboxCompletionContributorParameter {
 
     @NotNull

@@ -21,7 +21,7 @@ import java.util.Set;
 public class TypeHintSuggestionProvider implements NameSuggestionProvider
 {
 
-    public static final String[] TRIM_STRINGS = new String[] {
+    private static final String[] TRIM_STRINGS = new String[] {
         "interface", "abstract", "extension", "test", "resolver",
         "factory", "loader", "provider", "manager", "service",
         "logger", "plugin",

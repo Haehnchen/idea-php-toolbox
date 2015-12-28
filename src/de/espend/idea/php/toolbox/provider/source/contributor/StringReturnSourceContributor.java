@@ -96,8 +96,8 @@ public class StringReturnSourceContributor implements SourceContributorInterface
         }
     }
 
-    private static interface ReturnVisitor {
-        public void visit(@NotNull Method method, @NotNull String contents);
+    private interface ReturnVisitor {
+        void visit(@NotNull Method method, @NotNull String contents);
     }
 
     @NotNull

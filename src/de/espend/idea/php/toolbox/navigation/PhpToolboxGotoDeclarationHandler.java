@@ -18,6 +18,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class PhpToolboxGotoDeclarationHandler implements GotoDeclarationHandler {
 
     @Nullable

@@ -4,30 +4,27 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
-import com.intellij.util.containers.ArrayListSet;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.MethodReference;
-import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider2;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
-import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.dict.json.JsonType;
 import de.espend.idea.php.toolbox.type.utils.PhpTypeProviderUtil;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
-import de.espend.idea.php.toolbox.utils.JsonParseUtil;
-import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
 import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
 
     final static char TRIM_KEY = '\u0195';
-
 
     @Override
     public char getKey() {
@@ -52,7 +49,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
         for (JsonType type : types) {
 
             // default is php, on other language we are workless
-            if(type.getLanguage() != null && !type.getLanguage().equalsIgnoreCase("php")) {
+            if(type.getLanguage() == null || !type.getLanguage().equalsIgnoreCase("php")) {
                 continue;
             }
 

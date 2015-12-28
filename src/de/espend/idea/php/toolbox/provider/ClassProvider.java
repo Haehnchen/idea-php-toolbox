@@ -13,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class ClassProvider implements PhpToolboxProviderInterface {
 
     @NotNull
@@ -22,20 +25,17 @@ public class ClassProvider implements PhpToolboxProviderInterface {
 
         PhpIndex phpIndex = PhpIndex.getInstance(parameter.getProject());
         for (String className : phpIndex.getAllClassNames(parameter.getCompletionResultSet().getPrefixMatcher())) {
-
             for(PhpClass phpClass: phpIndex.getClassesByName(className)) {
-                String presentableFQN = phpClass.getPresentableFQN();
-                if(presentableFQN != null) {
-                    lookupElements.add(LookupElementBuilder.create(presentableFQN).withIcon(phpClass.getIcon()));
-                }
+                lookupElements.add(
+                    LookupElementBuilder.create(phpClass.getPresentableFQN()).withIcon(phpClass.getIcon())
+                );
             }
 
             if(this.withInterfaces()) {
                 for(PhpClass phpClass: phpIndex.getInterfacesByName(className)) {
-                    String presentableFQN = phpClass.getPresentableFQN();
-                    if(presentableFQN != null) {
-                        lookupElements.add(LookupElementBuilder.create(presentableFQN).withIcon(phpClass.getIcon()));
-                    }
+                    lookupElements.add(
+                        LookupElementBuilder.create(phpClass.getPresentableFQN()).withIcon(phpClass.getIcon())
+                    );
                 }
             }
         }

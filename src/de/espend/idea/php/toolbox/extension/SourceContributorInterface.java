@@ -8,15 +8,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public interface SourceContributorInterface {
 
     @NotNull
-    public Collection<LookupElement> getLookupElements(@NotNull SourceContributorParameter parameter);
+    Collection<LookupElement> getLookupElements(@NotNull SourceContributorParameter parameter);
 
     @NotNull
-    public Collection<PsiElement> getPsiTargets(@NotNull SourceContributorDeclarationHandlerParameter parameter);
+    Collection<PsiElement> getPsiTargets(@NotNull SourceContributorDeclarationHandlerParameter parameter);
 
     @NotNull
-    public String getName();
+    String getName();
 
 }
