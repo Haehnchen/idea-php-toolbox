@@ -1,10 +1,7 @@
 package de.espend.idea.php.toolbox.utils;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import de.espend.idea.php.toolbox.dict.json.JsonConfigFile;
@@ -27,24 +24,18 @@ import java.util.Map;
 public class JsonParseUtil {
 
     @Nullable
-    public static JsonConfigFile getDeserializeConfig(@NotNull InputStream stream) {
+    public static JsonConfigFile getDeserializeConfig(@NotNull String contents) {
 
         JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject = jsonParser.parse(new InputStreamReader(stream)).getAsJsonObject();
-
-        JsonConfigFile jsonConfig;
+        JsonObject jsonObject;
         try {
-            jsonConfig = new Gson().fromJson(jsonObject, new TypeToken<JsonConfigFile>(){}.getType());
+            jsonObject = jsonParser.parse(contents).getAsJsonObject();
         } catch (JsonSyntaxException e) {
             System.out.println("invalid file");
             return null;
         }
 
-        if(jsonConfig == null) {
-            return null;
-        }
-
-        return jsonConfig;
+        return getJsonConfigFile(jsonObject);
     }
 
     @Nullable
@@ -62,26 +53,30 @@ public class JsonParseUtil {
         }
 
         JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject = jsonParser.parse(br).getAsJsonObject();
+        JsonObject jsonObject;
 
-        JsonConfigFile jsonConfig;
         try {
-            jsonConfig = new Gson().fromJson(
+            jsonObject = jsonParser.parse(br).getAsJsonObject();
+        } catch (JsonIOException e) {
+            return null;
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
+
+        return getJsonConfigFile(jsonObject);
+    }
+
+    @Nullable
+    public static JsonConfigFile getJsonConfigFile(@NotNull JsonObject jsonObject) {
+        try {
+            return new Gson().fromJson(
                 jsonObject,
                 new TypeToken<JsonConfigFile>(){}.getType()
             );
         } catch (JsonSyntaxException e) {
-            System.out.println(String.format("invalid file %s", file.getAbsolutePath()));
+            System.out.println("invalid file");
             return null;
         }
-
-        if(jsonConfig == null) {
-            // @TODO: debug output for invalid json file
-            System.out.println(String.format("invalid file %s", file.getAbsolutePath()));
-            return null;
-        }
-
-        return jsonConfig;
     }
 
     public static Map<String, Collection<JsonRawLookupElement>> getProviderJsonRawLookupElements(Collection<JsonProvider> jsonProviders) {

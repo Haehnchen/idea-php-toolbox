@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.utils;
 
 import com.intellij.openapi.util.Condition;
+import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.dict.json.*;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -72,7 +74,7 @@ public class JsonParseUtilTest extends Assert {
     public void testConfigDeserialize() {
         JsonConfigFile elements = null;
         try {
-            elements = JsonParseUtil.getDeserializeConfig(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").openStream());
+            elements = JsonParseUtil.getDeserializeConfig(StreamUtil.readText(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").openStream(), Charset.defaultCharset()));
         } catch (IOException e) {
             e.printStackTrace();
         }

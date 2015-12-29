@@ -3,23 +3,24 @@ package de.espend.idea.php.toolbox.utils;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.CachedValue;
 import com.intellij.psi.util.CachedValueProvider;
 import com.intellij.psi.util.CachedValuesManager;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
+import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
 import de.espend.idea.php.toolbox.provider.SourceProvider;
-import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -39,8 +40,9 @@ public class ExtensionProviderUtil {
         "de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcher"
     );
 
-    final private static Map<Project, JsonFileCache> PROJECT_CACHE = new HashMap<Project, JsonFileCache>();
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
+
+    private static final Key<CachedValue<Collection<JsonConfigFile>>> PROJECT_JSON_CACHE = new Key<CachedValue<Collection<JsonConfigFile>>>("PHP_TOOLBOX_PROJECT_JSON_CACHE");
 
     @NotNull
     public static PhpToolboxProviderInterface[] getProviders(Project project) {
@@ -125,31 +127,30 @@ public class ExtensionProviderUtil {
     }
 
     @NotNull
-    private static Collection<JsonConfigFile> getJsonConfigs(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
+    synchronized private static Collection<JsonConfigFile> getJsonConfigs(@NotNull Project project, @NotNull PhpToolboxApplicationService phpToolboxApplicationService) {
 
         Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
 
-        for (final PsiFile psiFile : FilenameIndex.getFilesByName(project, ".ide-toolbox.metadata.json", GlobalSearchScope.allScope(project))) {
-            JsonConfigFile cachedValue = CachedValuesManager.getCachedValue(psiFile, new CachedValueProvider<JsonConfigFile>() {
-                @Nullable
-                @Override
-                public Result<JsonConfigFile> compute() {
-                    try {
-                        JsonConfigFile deserializeConfig = JsonParseUtil.getDeserializeConfig(psiFile.getVirtualFile().getInputStream());
-                        if (deserializeConfig != null) {
-                            return new Result<JsonConfigFile>(deserializeConfig, psiFile);
-                        }
-                    } catch (IOException ignored) {
-                    }
+        CachedValue<Collection<JsonConfigFile>> cache = project.getUserData(PROJECT_JSON_CACHE);
 
-                    return new Result<JsonConfigFile>(new JsonConfigFile(), psiFile);
+        if(cache == null) {
+            final PsiFile[] files = FilenameIndex.getFilesByName(project, ".ide-toolbox.metadata.json", GlobalSearchScope.allScope(project));
+            if(files.length > 0) {
+                cache = CachedValuesManager.getManager(project).createCachedValue(
+                    new MyJsonProjectCachedValueProvider(files),
+                    false
+                );
+
+                // @TODO: why tests are not clear cache after project destroy?
+                if(!ApplicationManager.getApplication().isUnitTestMode()) {
+                    project.putUserData(PROJECT_JSON_CACHE, cache);
                 }
-            });
-
-            if(cachedValue != null) {
-                jsonConfigFiles.add(cachedValue);
             }
-         }
+        }
+
+        if(cache != null) {
+            jsonConfigFiles.addAll(cache.getValue());
+        }
 
         synchronized (APPLICATION_CACHE) {
             jsonConfigFiles.addAll(APPLICATION_CACHE.get(new HashSet<File>(Arrays.asList(phpToolboxApplicationService.getApplicationJsonFiles()))));
@@ -173,5 +174,29 @@ public class ExtensionProviderUtil {
         }
 
         return null;
+    }
+
+    private static class MyJsonProjectCachedValueProvider implements CachedValueProvider<Collection<JsonConfigFile>> {
+        private final PsiFile[] files;
+
+        public MyJsonProjectCachedValueProvider(PsiFile[] files) {
+            this.files = files;
+        }
+
+        @Nullable
+        @Override
+        public Result<Collection<JsonConfigFile>> compute() {
+
+            Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
+
+            for (final PsiFile psiFile : files) {
+                JsonConfigFile deserializeConfig = JsonParseUtil.getDeserializeConfig(psiFile.getText());
+                if (deserializeConfig != null) {
+                    jsonConfigFiles.add(deserializeConfig);
+                }
+            }
+
+            return Result.create(jsonConfigFiles, files);
+        }
     }
 }
