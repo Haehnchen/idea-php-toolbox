@@ -1,0 +1,32 @@
+{
+  "types":[
+    {
+      "signatures":[
+        {
+          "class": "Foo\\Bar",
+          "method": "foo"
+        },
+        {
+          "class": "Foo\\Bar",
+          "method": "app"
+        },
+        {
+          "function": "car"
+        }
+      ],
+      "provider":"date",
+      "language":"php"
+    }
+  ],
+  "providers":[
+    {
+      "name": "date",
+      "items":[
+        {
+          "lookup_string":"datetime",
+          "type": "DateTime"
+        }
+      ]
+    }
+  ]
+}

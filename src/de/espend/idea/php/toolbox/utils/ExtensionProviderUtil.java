@@ -105,10 +105,15 @@ public class ExtensionProviderUtil {
     }
 
     @NotNull
-    public static Collection<JsonType> getTypes(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
+    public static Collection<JsonType> getTypes(@NotNull Project project) {
 
         Collection<JsonType> jsonRegistrars = new ArrayList<JsonType>();
-        for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
+        PhpToolboxApplicationService component = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
+        if(component == null) {
+            return jsonRegistrars;
+        }
+
+        for(JsonConfigFile jsonConfig: getJsonConfigs(project, component)) {
             jsonRegistrars.addAll(jsonConfig.getTypes());
         }
 

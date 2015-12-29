@@ -10,9 +10,11 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import com.jetbrains.php.lang.psi.elements.Function;
 import com.jetbrains.php.lang.psi.elements.Method;
+import com.jetbrains.php.lang.psi.elements.PhpReference;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
@@ -227,6 +229,23 @@ public abstract class SymfonyLightCodeInsightFixtureTestCase extends LightCodeIn
         fail(String.format("failed to to find lookup element '%s'", lookupString));
 
         return null;
+    }
+
+    public void assertPhpReferenceResolveTo(LanguageFileType languageFileType, String configureByText, ElementPattern<?> pattern) {
+        myFixture.configureByText(languageFileType, configureByText);
+        PsiElement psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
+
+        psiElement = PsiTreeUtil.getParentOfType(psiElement, PhpReference.class);
+        if (psiElement == null) {
+            fail("Element is not PhpReference.");
+        }
+
+        PsiElement resolve = ((PhpReference) psiElement).resolve();
+        if(!pattern.accepts(resolve)) {
+            fail(String.format("failed pattern matches element of '%s'", resolve == null ? "null" : resolve.toString()));
+        }
+
+        assertTrue(pattern.accepts(resolve));
     }
 
     public void assertCompletionResultEquals(String filename, String complete, String result) {
