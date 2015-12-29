@@ -2,6 +2,7 @@ package de.espend.idea.php.toolbox.dict.matcher;
 
 import com.intellij.psi.PsiElement;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
+import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -33,7 +34,7 @@ public class LanguageMatcherParameter {
     }
 
     @NotNull
-    public Collection<String> getSignatures() {
+    public Collection<JsonSignature> getSignatures() {
         return getRegistrar().getSignatures();
     }
 }

@@ -6,31 +6,22 @@ import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import de.espend.idea.php.toolbox.SymfonyLightCodeInsightFixtureTestCase;
 
+import java.io.File;
+
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 public class ClassProviderTest extends SymfonyLightCodeInsightFixtureTestCase {
 
+
     public void setUp() throws Exception {
         super.setUp();
-
-        myFixture.configureByText(".ide-toolbox.metadata.json", "" +
-                "{\n" +
-                "  \"registrar\":[\n" +
-                "    {\n" +
-                "      \"signatures\":[\"date\"],\n" +
-                "      \"provider\":\"Class\",\n" +
-                "      \"language\":\"php\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"signatures\":[\"date_2\"],\n" +
-                "      \"provider\":\"ClassInterface\",\n" +
-                "      \"language\":\"php\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}");
+        myFixture.copyFileToProject("class-ide-toolbox.metadata.json", ".ide-toolbox.metadata.json");
     }
 
+    public String getTestDataPath() {
+        return new File(this.getClass().getResource("fixtures").getFile()).getAbsolutePath();
+    }
 
     /**
      * @see de.espend.idea.php.toolbox.provider.ClassProvider

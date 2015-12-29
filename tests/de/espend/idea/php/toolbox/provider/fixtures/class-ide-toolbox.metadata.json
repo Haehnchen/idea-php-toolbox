@@ -1,0 +1,22 @@
+{
+  "registrar":[
+    {
+      "signatures":[
+        {
+          "function": "date"
+        }
+      ],
+      "provider":"Class",
+      "language":"php"
+    },
+    {
+      "signatures":[
+        {
+          "function": "date_2"
+        }
+      ],
+      "provider":"ClassInterface",
+      "language":"php"
+    }
+  ]
+}

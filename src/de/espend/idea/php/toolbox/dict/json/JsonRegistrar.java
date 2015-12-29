@@ -3,27 +3,26 @@ package de.espend.idea.php.toolbox.dict.json;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 public class JsonRegistrar {
 
-    private Collection<String> signatures = new HashSet<String>();
-    private String signature;
+    @NotNull
+    private Collection<JsonSignature> signatures = new ArrayList<JsonSignature>();
+
+    @Nullable
     private String provider;
+
+    @Nullable
     private String language;
-    private int index = 0;
+
     private boolean references = false ;
 
     public JsonRegistrar() {
-    }
-
-    @Nullable
-    public String getSignature() {
-        return signature;
     }
 
     @Nullable
@@ -36,22 +35,13 @@ public class JsonRegistrar {
         return language;
     }
 
-    public int getIndex() {
-        return index;
-    }
-
     @NotNull
-    public Collection<String> getSignatures() {
-        HashSet<String> strings = new HashSet<String>(this.signatures);
-        if(this.signature != null) {
-            strings.add(this.signature);
-        }
-        return strings;
+    public Collection<JsonSignature> getSignatures() {
+        return this.signatures;
     }
 
     public boolean isReferences() {
         return references;
     }
-
 }
 

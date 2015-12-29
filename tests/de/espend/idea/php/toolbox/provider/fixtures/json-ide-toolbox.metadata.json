@@ -1,0 +1,32 @@
+{
+  "registrar":[
+    {
+      "signatures":[
+        {
+          "function": "date"
+        }
+      ],
+      "provider":"date_format",
+      "language":"php"
+    }
+  ],
+  "providers":[
+    {
+      "name": "date_format",
+      "defaults": {
+        "icon":"com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text":"(TailTest)",
+        "type_text":"(TypeText)"
+      },
+      "items":[
+        {
+          "lookup_string":"foo",
+          "type_text":"Day of month (01..31)"
+        },
+        {
+          "lookup_string":"bar"
+        }
+      ]
+    }
+  ]
+}

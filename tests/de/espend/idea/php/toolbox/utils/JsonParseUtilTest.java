@@ -1,9 +1,9 @@
 package de.espend.idea.php.toolbox.utils;
 
-import de.espend.idea.php.toolbox.dict.json.JsonConfigFile;
-import de.espend.idea.php.toolbox.dict.json.JsonProvider;
-import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
-import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
+import com.intellij.openapi.util.Condition;
+import com.intellij.util.Function;
+import com.intellij.util.containers.ContainerUtil;
+import de.espend.idea.php.toolbox.dict.json.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -46,14 +46,26 @@ public class JsonParseUtilTest extends Assert {
         Collection<JsonRegistrar> elements = JsonParseUtil.getDeserializeConfig(testFile).getRegistrar();
         JsonRegistrar next = elements.iterator().next();
 
-        assertTrue(next.getSignatures().contains("\\DateTime::format"));
-        assertTrue(next.getSignatures().contains("date"));
+        assertTrue(ContainerUtil.filter(next.getSignatures(), new Condition<JsonSignature>() {
+            @Override
+            public boolean value(JsonSignature jsonSignature) {
+                return "foo".equals(jsonSignature.getFunction());
+            }
+        }).size() > 0);
 
-        // single signature append
-        assertTrue(next.getSignatures().contains("foo"));
+        assertTrue(ContainerUtil.filter(next.getSignatures(), new Condition<JsonSignature>() {
+            @Override
+            public boolean value(JsonSignature jsonSignature) {
+                return "date".equals(jsonSignature.getFunction());
+            }
+        }).size() > 0);
 
-        assertEquals("foo", next.getSignature());
-
+        assertTrue(ContainerUtil.filter(next.getSignatures(), new Condition<JsonSignature>() {
+            @Override
+            public boolean value(JsonSignature jsonSignature) {
+                return "DateTime".equals(jsonSignature.getClassName());
+            }
+        }).size() > 0);
     }
 
     @Test

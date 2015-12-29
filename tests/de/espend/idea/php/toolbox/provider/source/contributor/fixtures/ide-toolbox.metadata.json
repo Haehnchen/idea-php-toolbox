@@ -1,12 +1,20 @@
 {
   "registrar":[
     {
-      "signatures":["date"],
+      "signatures":[
+        {
+          "function": "date"
+        }
+      ],
       "provider":"return_string",
       "language":"php"
     },
     {
-      "signatures":["date_2"],
+      "signatures":[
+        {
+          "function": "date_2"
+        }
+      ],
       "provider":"return_array",
       "language":"php"
     }

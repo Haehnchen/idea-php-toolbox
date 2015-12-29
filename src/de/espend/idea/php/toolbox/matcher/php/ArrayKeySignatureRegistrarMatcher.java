@@ -1,15 +1,19 @@
 package de.espend.idea.php.toolbox.matcher.php;
 
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.util.Condition;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import com.jetbrains.php.lang.patterns.PhpPatterns;
 import com.jetbrains.php.lang.psi.elements.*;
+import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
+import de.espend.idea.php.toolbox.matcher.php.util.PhpMatcherUtil;
 import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,22 +43,34 @@ public class ArrayKeySignatureRegistrarMatcher implements LanguageRegistrarMatch
 
         PsiElement parent = parameterList.getParent();
 
-        Collection<String> signatures = parameter.getSignatures();
+        Collection<JsonSignature> signatures = parameter.getSignatures();
 
         if(parent instanceof MethodReference) {
-            for (String signature : signatures) {
-                String[] split = signature.replaceAll("(:)\\1", "$1").split(":");
-                if(split.length != 2) {
+            // $this->foo(["<caret>"]);
+            for (JsonSignature signature : signatures) {
+
+                // we need valid array
+                if(!signature.isArrayKey() ||
+                    StringUtils.isBlank(signature.getMethod())||
+                    StringUtils.isBlank(signature.getClassName())
+                  )
+                {
                     continue;
                 }
 
-                if (MethodMatcher.getMatchedSignatureWithDepth(arrayCreationExpression, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(split[0], split[1])}, parameter.getRegistrar().getIndex()) != null) {
+                if (MethodMatcher.getMatchedSignatureWithDepth(arrayCreationExpression, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(signature.getClassName(), signature.getMethod())}, signature.getIndex()) != null) {
                     return true;
                 }
 
             }
         } else if(parent instanceof FunctionReference) {
-            return PhpElementsUtil.isFunctionReference(arrayCreationExpression, parameter.getRegistrar().getIndex(), PhpFunctionRegistrarMatcher.filterFunctionSignatures(signatures));
+            // foo(["<caret>"]);
+            return PhpMatcherUtil.matchesArraySignature(arrayCreationExpression, ContainerUtil.filter(signatures, new Condition<JsonSignature>() {
+                @Override
+                public boolean value(JsonSignature signature) {
+                    return signature.isArrayKey() && StringUtils.isNotBlank(signature.getFunction());
+                }
+            }));
         }
 
         return false;

@@ -1,76 +1,99 @@
 {
-   "registrar":[
-      {
-         "signature":"foo",
-         "signatures":["date", "\\DateTime::format"],
-         "provider":"date_format",
-         "language":"php"
+  "registrar":[
+    {
+      "signatures":[
+        {
+          "function": "foo"
+        },
+        {
+          "function": "date"
+        },
+        {
+          "class": "DateTime",
+          "method": "format"
+        }
+      ],
+      "provider":"date_format",
+      "language":"php"
+    },
+    {
+      "signatures":[
+        {
+          "class": "DateTime",
+          "method": "__construct"
+        }
+      ],
+      "provider":"date_format",
+      "language":"php"
+    },
+    {
+      "signatures":[
+        {
+          "function": "date"
+        }
+      ],
+      "provider":"date_format",
+      "language":"twig"
+    },
+    {
+      "signatures":[
+        {
+          "function": "date"
+        }
+      ],
+      "provider":"ClassInterface",
+      "language":"twig"
+    }
+  ],
+  "providers":[
+    {
+      "name": "date_format",
+      "defaults": {
+        "icon":"com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text":"(TailTest)",
+        "target":"test"
       },
-      {
-         "signature":"\\DateTime::__construct",
-         "provider":"date_format",
-         "language":"php"
+      "items":[
+        {
+          "lookup_string":"d",
+          "type_text":"Day of month (01..31)"
+        },
+        {
+          "lookup_string":"n",
+          "type_text":"nnnnnnn"
+        }
+      ]
+    },
+    {
+      "name": "source_1",
+      "defaults": {
+        "icon":"com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text":"(TailTest)"
       },
-      {
-         "signatures":["date"],
-         "provider":"date_format",
-         "language":"twig"
-      },
-      {
-         "signatures":["date"],
-         "provider":"ClassInterface",
-         "language":"twig"
+      "source":{
+        "contributor":"return",
+        "parameter":"\\Twig_Environment::getExtension"
       }
-   ],
-   "providers":[
-      {
-         "name": "date_format",
-         "defaults": {
-            "icon":"com.jetbrains.php.PhpIcons.METHOD",
-            "tail_text":"(TailTest)",
-            "target":"test"
-         },
-         "items":[
-            {
-               "lookup_string":"d",
-               "type_text":"Day of month (01..31)"
-            },
-            {
-               "lookup_string":"n",
-               "type_text":"nnnnnnn"
-            }
-         ]
+    },
+    {
+      "name": "source_2",
+      "defaults": {
+        "icon":"com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text":"(TailTest)"
       },
-     {
-       "name": "source_1",
-       "defaults": {
-         "icon":"com.jetbrains.php.PhpIcons.METHOD",
-         "tail_text":"(TailTest)"
-       },
-       "source":{
-         "contributor":"return",
-         "parameter":"\\Twig_Environment::getExtension"
-       }
-     },
-     {
-       "name": "source_2",
-       "defaults": {
-         "icon":"com.jetbrains.php.PhpIcons.METHOD",
-         "tail_text":"(TailTest)"
-       },
-       "source":{
-         "contributor":"url",
-         "parameter":"http://www.google.de"
-       },
-       "items":[
-         {
-           "lookup_string":"d",
-           "type_text":"Day of month (01..31)"
-         },
-         {
-           "lookup_string":"n"
-         }
-       ]
-     }
-   ]
+      "source":{
+        "contributor":"url",
+        "parameter":"http://www.google.de"
+      },
+      "items":[
+        {
+          "lookup_string":"d",
+          "type_text":"Day of month (01..31)"
+        },
+        {
+          "lookup_string":"n"
+        }
+      ]
+    }
+  ]
 }

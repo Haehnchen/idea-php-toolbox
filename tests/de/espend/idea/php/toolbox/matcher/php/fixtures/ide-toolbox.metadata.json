@@ -1,7 +1,33 @@
 {
   "registrar":[
     {
-      "signatures":["date", "\\DateTime::format", "\\DateTime::__construct", "\\DateTime::format.foo", "foo", "\\Foo::getFoo"],
+      "signatures":[
+        {
+          "function": "date",
+          "is_array_key": true
+        },
+        {
+          "function": "foo"
+        },
+        {
+          "class": "DateTime",
+          "method": "format",
+          "is_array_key": true
+        },
+        {
+          "class": "DateTime",
+          "method": "__construct"
+        },
+        {
+          "class": "DateTime",
+          "method": "format",
+          "array": "foo"
+        },
+        {
+          "class": "Foo",
+          "method": "getFoo"
+        }
+      ],
       "provider":"date_format",
       "language":"php"
     }

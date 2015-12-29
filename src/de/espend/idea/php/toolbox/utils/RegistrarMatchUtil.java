@@ -5,6 +5,7 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
+import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
@@ -41,7 +42,7 @@ public class RegistrarMatchUtil {
                 continue;
             }
 
-            Collection<String> signatures = registrar.getSignatures();
+            Collection<JsonSignature> signatures = registrar.getSignatures();
             if(!fileTypeName.equalsIgnoreCase(registrar.getLanguage()) || registrar.getProvider() == null || signatures.size() == 0) {
                 continue;
             }

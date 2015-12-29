@@ -6,9 +6,11 @@ import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import com.jetbrains.php.lang.patterns.PhpPatterns;
 import com.jetbrains.php.lang.psi.elements.*;
+import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,30 +28,28 @@ public class ArrayKeyValueSignatureRegistrarMatcher implements LanguageRegistrar
             return false;
         }
 
-        Collection<String> signatures = parameter.getSignatures();
+        Collection<JsonSignature> signatures = parameter.getSignatures();
 
-        for (String signature : signatures) {
-            String[] split = signature.replaceAll("(:)\\1", "$1").split(":");
-            if(split.length != 2) {
+        for (JsonSignature signature : signatures) {
+            if(StringUtils.isBlank(signature.getArray()) ||
+                StringUtils.isBlank(signature.getClassName()) ||
+                StringUtils.isBlank(signature.getMethod())
+                )
+            {
                 continue;
             }
 
-            String[] split1 = split[1].split("\\.");
-            if(split1.length != 2) {
-                continue;
-            }
-
-            ArrayCreationExpression arrayCreationExpression = findArrayCreationExpression((StringLiteralExpression) psiElement, split1[1]);
+            // exit we are not inside array scope; not need for loop again
+            ArrayCreationExpression arrayCreationExpression = findArrayCreationExpression((StringLiteralExpression) psiElement, signature.getArray());
             if(arrayCreationExpression == null) {
                 return false;
             }
 
-            if (MethodMatcher.getMatchedSignatureWithDepth(arrayCreationExpression, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(split[0], split1[0])}, parameter.getRegistrar().getIndex()) != null) {
+            if (MethodMatcher.getMatchedSignatureWithDepth(arrayCreationExpression, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(signature.getClassName(), signature.getMethod())}, signature.getIndex()) != null) {
                 return true;
             }
 
         }
-
 
         return false;
     }

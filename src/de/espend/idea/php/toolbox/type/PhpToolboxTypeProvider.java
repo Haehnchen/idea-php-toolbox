@@ -11,10 +11,12 @@ import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider2;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
+import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.json.JsonType;
 import de.espend.idea.php.toolbox.type.utils.PhpTypeProviderUtil;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -53,13 +55,12 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
                 continue;
             }
 
-            for (String signature: type.getSignatures()) {
-                if(signature.contains(":")) {
-                    String[] split = signature.replaceAll("(:)\\1", "$1").split(":");
-                    if(split.length == 2) {
-                        methods.add(split[1]);
-                    }
+            for (JsonSignature signature: type.getSignatures()) {
+                if(StringUtils.isBlank(signature.getClassName()) || StringUtils.isBlank(signature.getMethod())) {
+                    continue;
                 }
+
+                methods.add(signature.getMethod());
             }
         }
 
@@ -131,13 +132,12 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
 
         // @TODO: add method instance check
         for (JsonType type : types) {
-            for (String signature: type.getSignatures()) {
-                if(signature.contains(":")) {
-                    String[] split = signature.replaceAll("(:)\\1", "$1").split(":");
-                    if(split.length == 2) {
-                        providers.add(type.getProvider());
-                    }
+            for (JsonSignature signature: type.getSignatures()) {
+                if(StringUtils.isBlank(signature.getClassName()) || StringUtils.isBlank(signature.getMethod())) {
+                    continue;
                 }
+
+                providers.add(type.getProvider());
             }
         }
 
