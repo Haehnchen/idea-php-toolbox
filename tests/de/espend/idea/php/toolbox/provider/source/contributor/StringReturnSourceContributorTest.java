@@ -12,7 +12,7 @@ import java.io.File;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class ReturnSourceContributorTest extends SymfonyLightCodeInsightFixtureTestCase {
+public class StringReturnSourceContributorTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
@@ -31,18 +31,6 @@ public class ReturnSourceContributorTest extends SymfonyLightCodeInsightFixtureT
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php date('<caret>')", "foo_item", "foo_return");
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php date('foo_return<caret>')", PlatformPatterns.psiElement(Method.class));
         assertCompletionLookupTailEquals(PhpFileType.INSTANCE, "<?php date('<caret>')", "foo_return", "DefaultTail");
-
-        LookupElementPresentation element = getCompletionLookupElement(PhpFileType.INSTANCE, "<?php date('<caret>')", "foo_return");
-        assertEquals(element.getIcon(), PhpIcons.METHOD);
-    }
-
-    /**
-     * @see de.espend.idea.php.toolbox.provider.source.contributor.ArrayReturnSourceContributor
-     */
-    public void testArrayStringReturn() {
-        assertCompletionContains(PhpFileType.INSTANCE,  "<?php date_2('<caret>')", "foo_array", "foo_array_1");
-        assertNavigationMatch(PhpFileType.INSTANCE, "<?php date_2('foo_array_1<caret>')", PlatformPatterns.psiElement(Method.class));
-        assertCompletionLookupTailEquals(PhpFileType.INSTANCE, "<?php date_2('<caret>')", "foo_array_1", "DefaultTail");
 
         LookupElementPresentation element = getCompletionLookupElement(PhpFileType.INSTANCE, "<?php date('<caret>')", "foo_return");
         assertEquals(element.getIcon(), PhpIcons.METHOD);
