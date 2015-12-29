@@ -15,19 +15,19 @@ import java.util.Collection;
 public class PhpTypeProviderUtil {
 
     @Nullable
-    public static String getReferenceSignature(MethodReference methodReference, char trimKey) {
+    public static String getReferenceSignature(FunctionReference methodReference, char trimKey) {
         return getReferenceSignature(methodReference, trimKey, 1);
     }
 
     @Nullable
-    public static String getReferenceSignature(MethodReference methodReference, char trimKey, int equalParameterCount) {
+    public static String getReferenceSignature(FunctionReference functionReference, char trimKey, int equalParameterCount) {
 
-        String refSignature = methodReference.getSignature();
+        String refSignature = functionReference.getSignature();
         if(StringUtil.isEmpty(refSignature)) {
             return null;
         }
 
-        PsiElement[] parameters = methodReference.getParameters();
+        PsiElement[] parameters = functionReference.getParameters();
         if (parameters.length != equalParameterCount) {
             return null;
         }

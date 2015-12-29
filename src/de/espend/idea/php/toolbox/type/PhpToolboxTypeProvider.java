@@ -14,7 +14,6 @@ import de.espend.idea.php.toolbox.dict.json.JsonType;
 import de.espend.idea.php.toolbox.type.utils.PhpTypeProviderUtil;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +40,10 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
             return null;
         }
 
+        if(!(e instanceof FunctionReference)) {
+            return null;
+        }
+
         Collection<JsonType> types = ExtensionProviderUtil.getTypes(e.getProject());
         if(types.size() == 0) {
             return null;
@@ -58,37 +61,32 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
 
             for (JsonSignature signature: type.getSignatures()) {
 
-                if(StringUtils.isNotBlank(signature.getFunction())) {
+                if(signature.getFunction() != null && StringUtils.isNotBlank(signature.getFunction())) {
                     functions.add(signature.getFunction());
                 }
 
-                if(StringUtils.isNotBlank(signature.getClassName()) && StringUtils.isNotBlank(signature.getMethod())) {
+                if(signature.getClassName() != null && signature.getMethod() != null && StringUtils.isNotBlank(signature.getClassName()) && StringUtils.isNotBlank(signature.getMethod())) {
                     methods.add(signature.getMethod());
-                }
-
-
-            }
-        }
-
-        // foo('bar')
-        if(e instanceof FunctionReference && functions.contains(((FunctionReference) e).getName())) {
-            PsiElement[] parameters = ((FunctionReference) e).getParameters();
-            if(parameters.length > 0 && parameters[0] instanceof StringLiteralExpression) {
-                String contents = ((StringLiteralExpression) parameters[0]).getContents();
-                if(StringUtils.isNotBlank(contents)) {
-                    return ((FunctionReference) e).getSignature() + TRIM_KEY + contents;
                 }
             }
         }
 
         // $this->foo('bar')
         // Foo::app('bar')
-        if(!(e instanceof MethodReference) || !PhpElementsUtil.isMethodWithFirstStringOrFieldReference(e, methods.toArray(new String[methods.size()]))) {
+        if(e instanceof MethodReference) {
+            if(methods.contains(((FunctionReference) e).getName())) {
+                return PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
+            }
+
             return null;
         }
 
-        return PhpTypeProviderUtil.getReferenceSignature((MethodReference) e, TRIM_KEY);
+        // foo('bar')
+        if(functions.contains(((FunctionReference) e).getName())) {
+            return PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
+        }
 
+        return null;
     }
 
     @Override

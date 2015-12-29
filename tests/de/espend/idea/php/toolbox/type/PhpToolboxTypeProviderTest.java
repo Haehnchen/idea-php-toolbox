@@ -44,12 +44,10 @@ public class PhpToolboxTypeProviderTest extends SymfonyLightCodeInsightFixtureTe
             PlatformPatterns.psiElement(Method.class).withName("format")
         );
 
-        /* @TODO: reference resolve
         assertPhpReferenceResolveTo(PhpFileType.INSTANCE, "<?php\n" +
             "car(\\Foo\\Bar::DATETIME)->for<caret>mat()",
             PlatformPatterns.psiElement(Method.class).withName("format")
         );
-        */
     }
 
     public void testPhpTypeForStaticMethods() {
