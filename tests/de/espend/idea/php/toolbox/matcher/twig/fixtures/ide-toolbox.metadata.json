@@ -17,6 +17,15 @@
       ],
       "provider":"return_string",
       "language":"twig"
+    },
+    {
+      "signatures":[
+        {
+          "function": "foo_blank"
+        }
+      ],
+      "provider":"return_string_blank",
+      "language":"twig"
     }
   ],
   "providers":[
@@ -34,17 +43,24 @@
     {
       "name": "return_string",
       "defaults": {
-        "icon":"com.jetbrains.php.PhpIcons.METHOD",
-        "tail_text":"DefaultTail"
+        "icon": "com.jetbrains.php.PhpIcons.METHOD",
+        "tail_text": "DefaultTail"
       },
       "items":[
         {
-          "lookup_string":"foo_item"
+          "lookup_string": "foo_item"
         }
       ],
       "source":{
+        "contributor": "return",
+        "parameter": "StringReturnInterface:getName"
+      }
+    },
+    {
+      "name": "return_string_blank",
+      "source":{
         "contributor":"return",
-        "parameter":"\\StringReturnInterface:getName"
+        "parameter": "StringReturnInterface:getName"
       }
     }
   ]

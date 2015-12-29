@@ -1,8 +1,14 @@
 package de.espend.idea.php.toolbox.provider.source.contributor.utils;
 
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.util.Pair;
+import com.jetbrains.php.lang.psi.elements.Method;
+import com.jetbrains.php.lang.psi.elements.PhpClass;
+import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
+import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,4 +38,18 @@ public class ReturnSourceUtil {
         return methods;
     }
 
+    public static LookupElementBuilder buildLookupElement(@NotNull Method method, @NotNull String contents, @Nullable JsonRawLookupElement jsonRawLookupElement) {
+        LookupElementBuilder lookupElement = LookupElementBuilder.create(contents);
+        PhpClass phpClass = method.getContainingClass();
+
+        if(phpClass != null) {
+            lookupElement = lookupElement.withTypeText(phpClass.getPresentableFQN(), true);
+            lookupElement = lookupElement.withIcon(phpClass.getIcon());
+        }
+
+        return JsonParseUtil.getDecoratedLookupElementBuilder(
+            lookupElement,
+            jsonRawLookupElement
+        );
+    }
 }

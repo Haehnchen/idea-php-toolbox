@@ -22,9 +22,11 @@ public class TwigUtil {
         //noinspection unchecked
         return PlatformPatterns
             .psiElement(TwigTokenTypes.STRING_TEXT)
-            .withParent(
-                PlatformPatterns.psiElement(TwigElementTypes.PRINT_BLOCK)
-            )
+            .withParent(PlatformPatterns.or(
+                PlatformPatterns.psiElement(TwigElementTypes.PRINT_BLOCK),
+                PlatformPatterns.psiElement(TwigElementTypes.SET_TAG),
+                PlatformPatterns.psiElement(TwigElementTypes.IF_TAG)
+            ))
             .afterLeafSkipping(
                 PlatformPatterns.or(
                     PlatformPatterns.psiElement(TwigTokenTypes.LBRACE),

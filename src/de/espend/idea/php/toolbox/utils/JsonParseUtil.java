@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import de.espend.idea.php.toolbox.dict.json.JsonConfigFile;
@@ -31,7 +32,14 @@ public class JsonParseUtil {
         JsonParser jsonParser = new JsonParser();
         JsonObject jsonObject = jsonParser.parse(new InputStreamReader(stream)).getAsJsonObject();
 
-        JsonConfigFile jsonConfig = new Gson().fromJson(jsonObject, new TypeToken<JsonConfigFile>(){}.getType());
+        JsonConfigFile jsonConfig;
+        try {
+            jsonConfig = new Gson().fromJson(jsonObject, new TypeToken<JsonConfigFile>(){}.getType());
+        } catch (JsonSyntaxException e) {
+            System.out.println("invalid file");
+            return null;
+        }
+
         if(jsonConfig == null) {
             return null;
         }
@@ -56,10 +64,16 @@ public class JsonParseUtil {
         JsonParser jsonParser = new JsonParser();
         JsonObject jsonObject = jsonParser.parse(br).getAsJsonObject();
 
-        JsonConfigFile jsonConfig = new Gson().fromJson(
-            jsonObject,
-            new TypeToken<JsonConfigFile>(){}.getType()
-        );
+        JsonConfigFile jsonConfig;
+        try {
+            jsonConfig = new Gson().fromJson(
+                jsonObject,
+                new TypeToken<JsonConfigFile>(){}.getType()
+            );
+        } catch (JsonSyntaxException e) {
+            System.out.println(String.format("invalid file %s", file.getAbsolutePath()));
+            return null;
+        }
 
         if(jsonConfig == null) {
             // @TODO: debug output for invalid json file
@@ -132,8 +146,8 @@ public class JsonParseUtil {
 
     }
 
+    @NotNull
     public static LookupElementBuilder getDecoratedLookupElementBuilder(@NotNull LookupElementBuilder lookupElement, @Nullable JsonRawLookupElement jsonLookup) {
-
         if(jsonLookup == null) {
             return lookupElement;
         }

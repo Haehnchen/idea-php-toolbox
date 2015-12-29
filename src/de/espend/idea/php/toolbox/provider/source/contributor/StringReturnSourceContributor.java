@@ -134,9 +134,8 @@ public class StringReturnSourceContributor implements SourceContributorInterface
 
         @Override
         public void visit(@NotNull Method method, @NotNull String contents) {
-            lookupElements.add(JsonParseUtil.getDecoratedLookupElementBuilder(
-                LookupElementBuilder.create(contents), provider.getDefaults())
-            );
+            LookupElementBuilder decoratedLookupElementBuilder = ReturnSourceUtil.buildLookupElement(method, contents, provider.getDefaults());
+            lookupElements.add(decoratedLookupElementBuilder);
         }
     }
 }

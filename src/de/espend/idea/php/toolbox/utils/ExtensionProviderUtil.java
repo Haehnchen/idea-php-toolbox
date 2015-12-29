@@ -141,7 +141,8 @@ public class ExtensionProviderUtil {
                         }
                     } catch (IOException ignored) {
                     }
-                    return null;
+
+                    return new Result<JsonConfigFile>(new JsonConfigFile(), psiFile);
                 }
             });
 

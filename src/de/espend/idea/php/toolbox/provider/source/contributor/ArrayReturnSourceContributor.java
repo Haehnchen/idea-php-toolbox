@@ -168,9 +168,8 @@ public class ArrayReturnSourceContributor implements SourceContributorInterface 
 
         @Override
         public void visit(@NotNull Method method, @NotNull StringLiteralExpression psiElement, @NotNull String contents) {
-            lookupElements.add(JsonParseUtil.getDecoratedLookupElementBuilder(
-                LookupElementBuilder.create(contents), provider.getDefaults())
-            );
+            LookupElementBuilder decoratedLookupElementBuilder = ReturnSourceUtil.buildLookupElement(method, contents, provider.getDefaults());
+            lookupElements.add(decoratedLookupElementBuilder);
         }
     }
 }
