@@ -3,6 +3,7 @@ package de.espend.idea.php.toolbox.provider.source.contributor;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.Method;
@@ -11,6 +12,7 @@ import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
+import de.espend.idea.php.toolbox.provider.source.contributor.utils.ReturnSourceUtil;
 import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class StringReturnSourceContributor implements SourceContributorInterface {
 
     @NotNull
@@ -28,20 +33,17 @@ public class StringReturnSourceContributor implements SourceContributorInterface
 
         ReturnVisitor visitor = null;
 
-        String[] sourceParameter = parameter.getSource().getParameter().split(",");
-        for (String s : sourceParameter) {
+        String sourceParameter = parameter.getSource().getParameter();
+        if(sourceParameter == null) {
+            return Collections.emptyList();
+        }
 
-            // \\FOO:Bar
-            String[] split = s.trim().replaceAll("(:)\\1", "$1").split(":");
-            if(split.length < 2) {
-                continue;
-            }
-
+        for (Pair<String, String> s : ReturnSourceUtil.extractParameter(sourceParameter)) {
             if(visitor == null) {
                 visitor = new MyReturnLookupVisitor(parameter.getJsonProvider(), lookupElements);
             }
 
-            visitReturnElements(parameter.getProject(), split[0], split[1], visitor);
+            visitReturnElements(parameter.getProject(), s.getFirst(), s.getSecond(), visitor);
         }
 
         return lookupElements;
@@ -56,25 +58,21 @@ public class StringReturnSourceContributor implements SourceContributorInterface
             return Collections.emptyList();
         }
 
+        String sourceParameter = parameter.getSource().getParameter();
+        if(sourceParameter == null) {
+            return Collections.emptyList();
+        }
 
         final Collection<PsiElement> psiElements = new ArrayList<PsiElement>();
 
         ReturnVisitor visitor = null;
 
-        String[] sourceParameter = parameter.getSource().getParameter().split(",");
-        for (String s : sourceParameter) {
-
-            // \\FOO:Bar
-            String[] split = s.trim().replaceAll("(:)\\1", "$1").split(":");
-            if(split.length < 2) {
-                continue;
-            }
-
+        for (Pair<String, String> s : ReturnSourceUtil.extractParameter(sourceParameter)) {
             if(visitor == null) {
                 visitor = new MyReturnTargetVisitor(contents, psiElements);
             }
 
-            visitReturnElements(parameter.getProject(), split[0], split[1], visitor);
+            visitReturnElements(parameter.getProject(), s.getFirst(), s.getSecond(), visitor);
         }
 
         return psiElements;
