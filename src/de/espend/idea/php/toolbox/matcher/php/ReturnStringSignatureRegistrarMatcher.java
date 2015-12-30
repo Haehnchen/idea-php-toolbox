@@ -27,7 +27,7 @@ public class ReturnStringSignatureRegistrarMatcher implements LanguageRegistrarM
             return false;
         }
 
-        return PhpMatcherUtil.isMachingReturnArray(parameter, phpReturn);
+        return PhpMatcherUtil.isMachingReturnArray(parameter.getSignatures(), phpReturn);
     }
 
     @Override

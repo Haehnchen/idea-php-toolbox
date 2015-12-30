@@ -1,7 +1,6 @@
 package de.espend.idea.php.toolbox.matcher.php;
 
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.util.Condition;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.PhpFileType;
@@ -11,6 +10,7 @@ import com.jetbrains.php.lang.psi.elements.*;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
+import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.matcher.php.util.PhpMatcherUtil;
 import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
 import org.apache.commons.lang.StringUtils;
@@ -50,7 +50,7 @@ public class ArrayKeySignatureRegistrarMatcher implements LanguageRegistrarMatch
             for (JsonSignature signature : signatures) {
 
                 // we need valid array
-                if(!signature.isArrayKey() ||
+                if(!"array_key".equals(signature.getType()) ||
                     StringUtils.isBlank(signature.getMethod())||
                     StringUtils.isBlank(signature.getClassName())
                   )
@@ -65,12 +65,7 @@ public class ArrayKeySignatureRegistrarMatcher implements LanguageRegistrarMatch
             }
         } else if(parent instanceof FunctionReference) {
             // foo(["<caret>"]);
-            return PhpMatcherUtil.matchesArraySignature(arrayCreationExpression, ContainerUtil.filter(signatures, new Condition<JsonSignature>() {
-                @Override
-                public boolean value(JsonSignature signature) {
-                    return signature.isArrayKey() && StringUtils.isNotBlank(signature.getFunction());
-                }
-            }));
+            return PhpMatcherUtil.matchesArraySignature(arrayCreationExpression, ContainerUtil.filter(signatures, ContainerConditions.ARRAY_KEY_AND_FUNCTION_FILTER));
         }
 
         return false;

@@ -7,7 +7,7 @@ import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.psi.elements.Function;
 import com.jetbrains.php.lang.psi.elements.Method;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
-import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
+import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
 import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import org.apache.commons.lang.StringUtils;
@@ -15,27 +15,40 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 public class PhpMatcherUtil {
 
-    public static boolean isMachingReturnArray(@NotNull LanguageMatcherParameter parameter, @NotNull PsiElement phpReturn) {
+    public static boolean isMachingReturnArray(@NotNull Collection<JsonSignature> signatures, @NotNull PsiElement phpReturn) {
 
         Function function = PsiTreeUtil.getParentOfType(phpReturn, Function.class);
         if(function == null) {
             return false;
         }
 
+        List<JsonSignature> filter = ContainerUtil.filter(signatures, ContainerConditions.RETURN_TYPE_FILTER);
+
+        if(filter.size() == 0) {
+            return false;
+        }
+
         // inside class method
         if(function instanceof Method) {
-            Symfony2InterfacesUtil symfony2InterfacesUtil = new Symfony2InterfacesUtil();
+            Symfony2InterfacesUtil symfony2InterfacesUtil = null;
 
-            for (JsonSignature signature : parameter.getSignatures()) {
+            for (JsonSignature signature : filter) {
                 if(StringUtils.isBlank(signature.getMethod()) || StringUtils.isBlank(signature.getClassName())) {
                     continue;
                 }
+
+                if(symfony2InterfacesUtil == null) {
+                    symfony2InterfacesUtil = new Symfony2InterfacesUtil();
+
+                }
+
                 if(symfony2InterfacesUtil.isCallTo((Method) function, signature.getClassName(), signature.getMethod())) {
                     return true;
                 }
@@ -46,7 +59,7 @@ public class PhpMatcherUtil {
 
         // @TODO: class instance check for "function"
         // fallback in function
-        for (JsonSignature signature : filterFunctionSignatures(parameter.getSignatures())) {
+        for (JsonSignature signature : filterFunctionSignatures(filter)) {
             if(function.getName().equals(signature.getFunction())) {
                 return true;
             }
@@ -76,11 +89,6 @@ public class PhpMatcherUtil {
      */
     @NotNull
     public static Collection<JsonSignature> filterFunctionSignatures(@NotNull Collection<JsonSignature> signatures) {
-        return new HashSet<JsonSignature>(ContainerUtil.filter(signatures, new Condition<JsonSignature>() {
-            @Override
-            public boolean value(JsonSignature s) {
-                return StringUtils.isNotBlank(s.getFunction());
-            }
-        }));
+        return new HashSet<JsonSignature>(ContainerUtil.filter(signatures, ContainerConditions.FUNCTION_FILTER));
     }
 }

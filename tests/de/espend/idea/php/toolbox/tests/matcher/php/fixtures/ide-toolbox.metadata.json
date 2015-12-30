@@ -4,15 +4,24 @@
       "signatures":[
         {
           "function": "date",
-          "is_array_key": true
+          "type": "array_key"
         },
         {
-          "function": "foo"
+          "function": "date",
+          "type": "default"
+        },
+        {
+          "function": "unknown_type",
+          "type": "unknown"
+        },
+        {
+          "function": "foo",
+          "type": "return"
         },
         {
           "class": "DateTime",
           "method": "format",
-          "is_array_key": true
+          "type": "array_key"
         },
         {
           "class": "DateTime",
@@ -25,7 +34,8 @@
         },
         {
           "class": "Foo",
-          "method": "getFoo"
+          "method": "getFoo",
+          "type": "return"
         }
       ],
       "provider":"date_format",

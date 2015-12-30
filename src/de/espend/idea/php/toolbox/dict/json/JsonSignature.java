@@ -8,10 +8,12 @@ import org.jetbrains.annotations.Nullable;
  */
 public class JsonSignature {
 
+    public static String DEFAULT_TYPE = "default";
+
     private int index = 0;
 
-    @SerializedName("is_array_key")
-    private boolean isArrayKey = false;
+    @Nullable
+    private String type = DEFAULT_TYPE;
 
     @Nullable
     private String array;
@@ -49,7 +51,8 @@ public class JsonSignature {
         return array;
     }
 
-    public boolean isArrayKey() {
-        return isArrayKey;
+    @Nullable
+    public String getType() {
+        return type;
     }
 }

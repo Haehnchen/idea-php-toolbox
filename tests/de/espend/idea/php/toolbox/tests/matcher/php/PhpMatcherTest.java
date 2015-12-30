@@ -41,6 +41,8 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php function foo1() { return '<caret>'; }", "bar", "foo");
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php class Foo1 { function getFoo() { return '<caret>'; } }", "bar", "foo");
+
+        assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php function foobar() { return '<caret>'; }", "bar");
     }
 
     public void testSignatureInReturnArray() {
@@ -52,5 +54,9 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php function foo1() { return ['<caret>']; }", "bar", "foo");
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php class Foo1 { function getFoo() { return ['<caret>']; } }", "bar", "foo");
+    }
+
+    public void testThatUnknownTypDoesNotProvideCompletion() {
+        assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php unknown_type('<caret>')", "bar");
     }
 }

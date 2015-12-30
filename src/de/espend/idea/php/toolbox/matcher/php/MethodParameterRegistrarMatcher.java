@@ -2,14 +2,18 @@ package de.espend.idea.php.toolbox.matcher.php;
 
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
+import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -23,7 +27,12 @@ public class MethodParameterRegistrarMatcher implements LanguageRegistrarMatcher
             return false;
         }
 
-        for (JsonSignature signature : parameter.getSignatures()) {
+        Collection<JsonSignature> signatures = ContainerUtil.filter(
+            parameter.getSignatures(),
+            ContainerConditions.DEFAULT_TYPE_FILTER
+        );
+
+        for (JsonSignature signature : signatures) {
 
             if(StringUtils.isBlank(signature.getMethod()) || StringUtils.isBlank(signature.getClassName())) {
                 continue;
