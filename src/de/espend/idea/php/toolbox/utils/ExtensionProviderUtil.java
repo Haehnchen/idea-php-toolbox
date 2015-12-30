@@ -166,7 +166,7 @@ public class ExtensionProviderUtil {
 
 
     @NotNull
-    private static SourceContributorInterface[] getSourceContributors() {
+    public static SourceContributorInterface[] getSourceContributors() {
         return SOURCE_CONTRIBUTOR_EP.getExtensions();
     }
 

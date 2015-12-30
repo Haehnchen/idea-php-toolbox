@@ -45,6 +45,7 @@
     <php.typeProvider2 implementation="de.espend.idea.php.toolbox.type.PhpToolboxTypeProvider"/>
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler"/>
     <completion.contributor language="any" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxCompletionContributor"/>
+    <completion.contributor language="JSON" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxJsonCompletionContributor"/>
 
     <nameSuggestionProvider implementation="de.espend.idea.php.toolbox.refactoring.TypeHintSuggestionProvider" id="PHP"/>
 
