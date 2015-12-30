@@ -110,6 +110,17 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
             }
         });
 
+        // "type":"date"
+        extend(CompletionType.BASIC, getPattern("type"), new CompletionProvider<CompletionParameters>() {
+            @Override
+            protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
+                for (String s : new String[] {"default", "return", "array_key"}) {
+                    resultSet.addElement(
+                        LookupElementBuilder.create(s).withIcon(PhpToolboxIcons.TOOLBOX)
+                    );
+                }
+            }
+        });
     }
 
     private void addKnownIconClasses(@NotNull CompletionResultSet resultSet) {

@@ -73,4 +73,11 @@ public class ToolboxJsonCompletionContributorTest extends SymfonyLightCodeInsigh
             "return", "return_array"
         );
     }
+
+    public void testSignatureType() {
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"type\":\"<caret>\"}",
+            "default", "array_key", "return"
+        );
+    }
 }
