@@ -1,7 +1,8 @@
-package de.espend.idea.php.toolbox.refactoring;
+package de.espend.idea.php.toolbox.tests.refactoring;
 
 import com.jetbrains.php.lang.PhpFileType;
-import de.espend.idea.php.toolbox.SymfonyLightCodeInsightFixtureTestCase;
+import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
+import de.espend.idea.php.toolbox.refactoring.TypeHintSuggestionProvider;
 
 import java.util.Arrays;
 import java.util.Collection;

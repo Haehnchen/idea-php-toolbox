@@ -1,10 +1,10 @@
-package de.espend.idea.php.toolbox.provider;
+package de.espend.idea.php.toolbox.tests.provider;
 
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.patterns.PlatformPatterns;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
-import de.espend.idea.php.toolbox.SymfonyLightCodeInsightFixtureTestCase;
+import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
 import java.io.File;
 

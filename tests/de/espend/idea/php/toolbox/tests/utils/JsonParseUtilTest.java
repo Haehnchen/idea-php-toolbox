@@ -1,10 +1,11 @@
-package de.espend.idea.php.toolbox.utils;
+package de.espend.idea.php.toolbox.tests.utils;
 
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.dict.json.*;
+import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

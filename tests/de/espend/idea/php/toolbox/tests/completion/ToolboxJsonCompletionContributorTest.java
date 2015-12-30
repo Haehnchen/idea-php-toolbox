@@ -1,6 +1,7 @@
-package de.espend.idea.php.toolbox.completion;
+package de.espend.idea.php.toolbox.tests.completion;
 
-import de.espend.idea.php.toolbox.SymfonyLightCodeInsightFixtureTestCase;
+
+import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>

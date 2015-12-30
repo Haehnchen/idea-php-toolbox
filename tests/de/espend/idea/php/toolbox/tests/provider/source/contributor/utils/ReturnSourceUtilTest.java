@@ -1,6 +1,7 @@
-package de.espend.idea.php.toolbox.provider.source.contributor.utils;
+package de.espend.idea.php.toolbox.tests.provider.source.contributor.utils;
 
 import com.intellij.openapi.util.Pair;
+import de.espend.idea.php.toolbox.provider.source.contributor.utils.ReturnSourceUtil;
 import org.junit.Assert;
 import org.junit.Test;
 

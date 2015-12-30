@@ -1,11 +1,11 @@
-package de.espend.idea.php.toolbox.matcher.twig;
+package de.espend.idea.php.toolbox.tests.matcher.twig;
 
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.patterns.PlatformPatterns;
 import com.jetbrains.php.PhpIcons;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.twig.TwigFileType;
-import de.espend.idea.php.toolbox.SymfonyLightCodeInsightFixtureTestCase;
+import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
 import java.io.File;
 

@@ -1,7 +1,7 @@
-package de.espend.idea.php.toolbox.matcher.php;
+package de.espend.idea.php.toolbox.tests.matcher.php;
 
 import com.jetbrains.php.lang.PhpFileType;
-import de.espend.idea.php.toolbox.SymfonyLightCodeInsightFixtureTestCase;
+import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
 import java.io.File;
 

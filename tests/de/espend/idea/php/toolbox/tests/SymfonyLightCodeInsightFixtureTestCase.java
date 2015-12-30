@@ -1,4 +1,4 @@
-package de.espend.idea.php.toolbox;
+package de.espend.idea.php.toolbox.tests;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
