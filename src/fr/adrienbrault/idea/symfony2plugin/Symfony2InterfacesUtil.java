@@ -326,6 +326,16 @@ public class Symfony2InterfacesUtil {
         Set<Method> methods = new HashSet<Method>();
 
         for (PhpClass phpClass : PhpIndex.getInstance(project).getAnyByFQN(ClassInterfaceName)) {
+
+            // handle constructor as string
+            if(methodName.equalsIgnoreCase("__construct")) {
+                Method constructor = phpClass.getConstructor();
+                if(constructor != null) {
+                    methods.add(constructor);
+                }
+                continue;
+            }
+
             Method method = phpClass.findMethodByName(methodName);
             if(method != null) {
                 methods.add(method);
