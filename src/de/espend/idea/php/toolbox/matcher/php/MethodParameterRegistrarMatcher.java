@@ -38,14 +38,15 @@ public class MethodParameterRegistrarMatcher implements LanguageRegistrarMatcher
                 continue;
             }
 
-            if(signature.getMethod().equals("__construct")) {
-                if(new MethodMatcher.NewExpressionParameterMatcher(parent, signature.getIndex()).withSignature(signature.getClassName(), signature.getMethod()).match() != null) {
-                    return true;
-                }
-            } else {
-                if (MethodMatcher.getMatchedSignatureWithDepth(parent, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(signature.getClassName(), signature.getMethod())}, signature.getIndex()) != null) {
-                    return true;
-                }
+            if(signature.getMethod().equals("__construct") &&
+               new MethodMatcher.NewExpressionParameterMatcher(parent, signature.getIndex()).withSignature(signature.getClassName(), signature.getMethod()).match() != null
+               )
+            {
+                return true;
+            }
+
+            if (MethodMatcher.getMatchedSignatureWithDepth(parent, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(signature.getClassName(), signature.getMethod())}, signature.getIndex()) != null) {
+                return true;
             }
         }
 
