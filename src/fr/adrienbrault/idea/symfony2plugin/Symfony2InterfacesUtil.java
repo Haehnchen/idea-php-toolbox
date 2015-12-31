@@ -99,7 +99,7 @@ public class Symfony2InterfacesUtil {
             }
 
             PhpClass containingClass = expectedMethod.getContainingClass();
-            if (containingClass != null && expectedMethod.getName().equals(e.getName()) && isInstanceOf(methodClass, containingClass)) {
+            if (containingClass != null && expectedMethod.getName().equalsIgnoreCase(e.getName()) && isInstanceOf(methodClass, containingClass)) {
                 return true;
             }
         }
@@ -146,7 +146,7 @@ public class Symfony2InterfacesUtil {
                 }
 
                 PhpClass containingClass = expectedMethod.getContainingClass();
-                if (null != containingClass && expectedMethod.getName().equals(method.getName()) && isInstanceOf(methodClass, containingClass)) {
+                if (null != containingClass && expectedMethod.getName().equalsIgnoreCase(method.getName()) && isInstanceOf(methodClass, containingClass)) {
                     return true;
                 }
             }
@@ -189,8 +189,13 @@ public class Symfony2InterfacesUtil {
     }
 
     protected boolean isMatchingMethodName(MethodReference methodRef, Method[] expectedMethods) {
+        String methodRefName = methodRef.getName();
         for (Method expectedMethod : Arrays.asList(expectedMethods)) {
-            if(expectedMethod != null && expectedMethod.getName().equals(methodRef.getName())) {
+            if(expectedMethod == null) {
+                continue;
+            }
+
+            if(expectedMethod.getName().equalsIgnoreCase(methodRefName)) {
                 return true;
             }
         }
@@ -211,6 +216,7 @@ public class Symfony2InterfacesUtil {
         return stringValue;
     }
 
+    @Deprecated
     @Nullable
     protected Method getInterfaceMethod(Project project, String interfaceFQN, String methodName) {
 
@@ -223,6 +229,7 @@ public class Symfony2InterfacesUtil {
         return findClassMethodByName(interfaces.iterator().next(), methodName);
     }
 
+    @Deprecated
     @Nullable
     protected Method getClassMethod(Project project, String classFQN, String methodName) {
         return PhpElementsUtil.getClassMethod(project, classFQN, methodName);
@@ -306,10 +313,26 @@ public class Symfony2InterfacesUtil {
             ClassInterfaceName = "\\" + ClassInterfaceName;
         }
 
-        return isCallTo(e, new Method[] {
-                getInterfaceMethod(e.getProject(), ClassInterfaceName, methodName),
-                getClassMethod(e.getProject(), ClassInterfaceName, methodName),
-        });
+        Method[] methods = getExpectedMethods(e.getProject(), ClassInterfaceName, methodName);
+        if(methods.length == 0) {
+            return false;
+        }
+
+        return isCallTo(e, methods);
+    }
+
+    @NotNull
+    private Method[] getExpectedMethods(@NotNull Project project, @NotNull String ClassInterfaceName, @NotNull String methodName) {
+        Set<Method> methods = new HashSet<Method>();
+
+        for (PhpClass phpClass : PhpIndex.getInstance(project).getAnyByFQN(ClassInterfaceName)) {
+            Method method = phpClass.findMethodByName(methodName);
+            if(method != null) {
+                methods.add(method);
+            }
+        }
+        
+        return methods.toArray(new Method[methods.size()]);
     }
 
     public boolean isCallTo(Method e, String ClassInterfaceName, String methodName) {
@@ -319,10 +342,12 @@ public class Symfony2InterfacesUtil {
             ClassInterfaceName = "\\" + ClassInterfaceName;
         }
 
-        return isCallTo(e, new Method[] {
-            getInterfaceMethod(e.getProject(), ClassInterfaceName, methodName),
-            getClassMethod(e.getProject(), ClassInterfaceName, methodName),
-        });
+        Method[] methods = getExpectedMethods(e.getProject(), ClassInterfaceName, methodName);
+        if(methods.length == 0) {
+            return false;
+        }
+
+        return isCallTo(e, methods);
     }
 
     private List<Method> getCallToSignatureInterfaceMethods(PsiElement e, Collection<MethodMatcher.CallToSignature> signatures) {
