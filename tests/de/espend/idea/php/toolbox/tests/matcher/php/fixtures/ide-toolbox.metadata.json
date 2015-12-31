@@ -29,6 +29,16 @@
         },
         {
           "class": "DateTime",
+          "method": "__construct",
+          "type": "array_key"
+        },
+        {
+          "class": "DateTime",
+          "method": "__construct",
+          "array": "bar"
+        },
+        {
+          "class": "DateTime",
           "method": "format",
           "array": "foo"
         },

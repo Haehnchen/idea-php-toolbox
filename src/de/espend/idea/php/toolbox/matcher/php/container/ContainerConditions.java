@@ -16,6 +16,8 @@ public class ContainerConditions {
     final public static Condition<JsonSignature> ARRAY_KEY_AND_FUNCTION_FILTER = new ArrayKeyAndFunctionCondition();
     final public static Condition<JsonSignature> FUNCTION_FILTER = new FunctionCondition();
 
+    final public static Condition<JsonSignature> CONSTRUCTOR_FILTER = new ConstructorJsonSignatureCondition();
+
     private static class ArrayKeyAndFunctionCondition implements Condition<JsonSignature> {
         @Override
         public boolean value(JsonSignature signature) {
@@ -40,6 +42,13 @@ public class ContainerConditions {
         @Override
         public boolean value(JsonSignature signature) {
             return type.equals(signature.getType());
+        }
+    }
+
+    private static class ConstructorJsonSignatureCondition implements Condition<JsonSignature> {
+        @Override
+        public boolean value(JsonSignature signature) {
+            return "__construct".equalsIgnoreCase(signature.getMethod());
         }
     }
 }

@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.matcher.php;
 
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.util.Condition;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.PhpFileType;
@@ -32,24 +33,42 @@ public class ArrayKeyValueSignatureRegistrarMatcher implements LanguageRegistrar
 
         Collection<JsonSignature> signatures = ContainerUtil.filter(
             parameter.getSignatures(),
-            ContainerConditions.DEFAULT_TYPE_FILTER
+            new MyValidJsonSignatureCondition()
         );
 
         for (JsonSignature signature : signatures) {
-            if(StringUtils.isBlank(signature.getArray()) ||
-                StringUtils.isBlank(signature.getClassName()) ||
-                StringUtils.isBlank(signature.getMethod())
-                )
-            {
+
+            // filtered before; check again for nullable
+            if(signature.getArray() == null) {
                 continue;
             }
 
-            // exit we are not inside array scope; not need for loop again
+            // @TODO: find ArrayCreationExpression once and check for key
             ArrayCreationExpression arrayCreationExpression = findArrayCreationExpression((StringLiteralExpression) psiElement, signature.getArray());
             if(arrayCreationExpression == null) {
-                return false;
+                continue;
             }
 
+            PsiElement parameterList = arrayCreationExpression.getParent();
+            if(!(parameterList instanceof ParameterList)) {
+                continue;
+            }
+
+            // new Foo(['foo' => '<caret>'])
+            PsiElement parent = parameterList.getParent();
+            if(parent instanceof NewExpression) {
+                if(new MethodMatcher.NewExpressionParameterMatcher(arrayCreationExpression, signature.getIndex())
+                    .withSignature(signature.getClassName(), signature.getMethod())
+                    .match() != null
+                    )
+                {
+                    return true;
+                }
+
+                continue;
+            }
+
+            // $v->foo(['foo' => '<caret>'])
             if (MethodMatcher.getMatchedSignatureWithDepth(arrayCreationExpression, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(signature.getClassName(), signature.getMethod())}, signature.getIndex()) != null) {
                 return true;
             }
@@ -92,5 +111,16 @@ public class ArrayKeyValueSignatureRegistrarMatcher implements LanguageRegistrar
     @Override
     public boolean supports(@NotNull FileType fileType) {
         return fileType == PhpFileType.INSTANCE;
+    }
+
+    private static class MyValidJsonSignatureCondition implements Condition<JsonSignature> {
+        @Override
+        public boolean value(JsonSignature signature) {
+            return
+                ContainerConditions.DEFAULT_TYPE_FILTER.value(signature) &&
+                signature.getArray() != null && StringUtils.isNotBlank(signature.getArray()) &&
+                signature.getClassName() != null && StringUtils.isNotBlank(signature.getClassName()) &&
+                signature.getMethod() != null && StringUtils.isNotBlank(signature.getMethod());
+        }
     }
 }

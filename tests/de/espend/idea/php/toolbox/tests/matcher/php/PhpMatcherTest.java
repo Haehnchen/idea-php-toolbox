@@ -26,6 +26,11 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php date_create()->format(['<caret>'])", "bar", "foo");
     }
 
+    public void testArrayCompletionInsideNewExpression() {
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php new \\DateTime(['<caret>'])", "bar", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php new \\DateTime(['bar' => '<caret>'])", "bar", "foo");
+    }
+
     public void testSignatureInArrays() {
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php date(['<caret>'])", "bar", "foo");
         assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php foo(['<caret>'])", "bar");

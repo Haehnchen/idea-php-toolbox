@@ -66,6 +66,17 @@ public class ArrayKeySignatureRegistrarMatcher implements LanguageRegistrarMatch
         } else if(parent instanceof FunctionReference) {
             // foo(["<caret>"]);
             return PhpMatcherUtil.matchesArraySignature(arrayCreationExpression, ContainerUtil.filter(signatures, ContainerConditions.ARRAY_KEY_AND_FUNCTION_FILTER));
+        } else if(parent instanceof NewExpression) {
+            // new Foo(["<caret>"]);
+            for (JsonSignature signature : ContainerUtil.filter(signatures, ContainerConditions.CONSTRUCTOR_FILTER)) {
+                if(new MethodMatcher.NewExpressionParameterMatcher(arrayCreationExpression, signature.getIndex())
+                    .withSignature(signature.getClassName(), signature.getMethod())
+                    .match() != null
+                    )
+                {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -105,10 +116,7 @@ public class ArrayKeySignatureRegistrarMatcher implements LanguageRegistrarMatch
                 if(arrayCreationExpression instanceof ArrayCreationExpression) {
                     PsiElement parameterList = arrayCreationExpression.getParent();
                     if(parameterList instanceof ParameterList) {
-                        PsiElement parent = parameterList.getParent();
-                        if(parent instanceof FunctionReference) {
-                            return (ArrayCreationExpression) arrayCreationExpression;
-                        }
+                        return (ArrayCreationExpression) arrayCreationExpression;
                     }
                 }
 
