@@ -134,6 +134,12 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
 
         for (String provider : providers) {
 
+            // @TODO: add per provider interface to resolve type references
+            if(provider.equals("Class") || provider.equals("ClassInterface")) {
+                elements.addAll(phpIndex.getAnyByFQN(parameter));
+                continue;
+            }
+
             if(!providerMap.containsKey(provider)) {
                 continue;
             }
