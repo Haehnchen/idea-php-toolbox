@@ -3,12 +3,13 @@ package de.espend.idea.php.toolbox.completion;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.json.psi.JsonProperty;
-import com.intellij.json.psi.JsonStringLiteral;
+import com.intellij.json.psi.*;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.patterns.PsiElementPattern;
+import com.intellij.patterns.PsiFilePattern;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.util.ProcessingContext;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.completion.PhpLookupElement;
@@ -16,10 +17,11 @@ import com.jetbrains.php.completion.insert.PhpReferenceInsertHandler;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.PhpToolboxIcons;
+import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
+import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -34,7 +36,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
     public ToolboxJsonCompletionContributor() {
 
         // "provider":"twig_ext"
-        extend(CompletionType.BASIC, getPattern("provider"), new CompletionProvider<CompletionParameters>() {
+        extend(CompletionType.BASIC, getNextToPropertyPattern("provider"), new CompletionProvider<CompletionParameters>() {
             @Override
             protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet completionResultSet) {
 
@@ -56,19 +58,14 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         });
 
         // "language":"twig"
-        extend(CompletionType.BASIC, getPattern("language"), new CompletionProvider<CompletionParameters>() {
-            @Override
-            protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet completionResultSet) {
-                for (String language : new String[] {"php", "twig"}) {
-                    completionResultSet.addElement(
-                        LookupElementBuilder.create(language).withIcon(PhpToolboxIcons.TOOLBOX)
-                    );
-                }
-            }
-        });
+        extend(
+            CompletionType.BASIC,
+            getNextToPropertyPattern("language"),
+            new MyStringCompletionProvider("php", "twig")
+        );
 
         // "function":"date"
-        extend(CompletionType.BASIC, getPattern("function"), new CompletionProvider<CompletionParameters>() {
+        extend(CompletionType.BASIC, getNextToPropertyPattern("function"), new CompletionProvider<CompletionParameters>() {
             @Override
             protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet completionResultSet) {
                 for (String s : PhpIndex.getInstance(completionParameters.getPosition().getProject()).getAllFunctionNames(PrefixMatcher.ALWAYS_TRUE)) {
@@ -78,7 +75,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         });
 
         // "class":"date"
-        extend(CompletionType.BASIC, getPattern("class"), new CompletionProvider<CompletionParameters>() {
+        extend(CompletionType.BASIC, getNextToPropertyPattern("class"), new CompletionProvider<CompletionParameters>() {
             @Override
             protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
                 PhpIndex phpIndex = PhpIndex.getInstance(completionParameters.getPosition().getProject());
@@ -96,10 +93,10 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         });
 
         // "icon":"com.jetbrains.php.PhpIcons"
-        extend(CompletionType.BASIC, getPattern("icon"), new MyIconCompletionProvider());
+        extend(CompletionType.BASIC, getNextToPropertyPattern("icon"), new MyIconCompletionProvider());
 
         // "contributor":"date"
-        extend(CompletionType.BASIC, getPattern("contributor"), new CompletionProvider<CompletionParameters>() {
+        extend(CompletionType.BASIC, getNextToPropertyPattern("contributor"), new CompletionProvider<CompletionParameters>() {
             @Override
             protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
                 for (SourceContributorInterface sourceContributor : ExtensionProviderUtil.getSourceContributors()) {
@@ -111,16 +108,51 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         });
 
         // "type":"date"
-        extend(CompletionType.BASIC, getPattern("type"), new CompletionProvider<CompletionParameters>() {
-            @Override
-            protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
-                for (String s : new String[] {"default", "return", "array_key"}) {
-                    resultSet.addElement(
-                        LookupElementBuilder.create(s).withIcon(PhpToolboxIcons.TOOLBOX)
-                    );
-                }
-            }
-        });
+        extend(
+            CompletionType.BASIC,
+            getNextToPropertyPattern("type"),
+            new MyStringCompletionProvider("default", "return", "array_key", "type")
+        );
+
+        // "signatures":[{"date": "foo"}]
+        extend(
+            CompletionType.BASIC,
+            getAfterPropertyAndInsideArrayObjectPattern("signatures"),
+            new MyStringCompletionProvider("index", "type", "array", "function", "class", "method")
+        );
+
+        // "defaults|items":[{"date": "foo"}]
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns.or(getAfterPropertyAndInsideArrayObjectPattern("defaults"), getAfterPropertyAndInsideArrayObjectPattern("items")),
+            new MyStringCompletionProvider("lookup_string", "presentable_text", "type_text", "type", "icon", "target")
+        );
+
+        // "providers":[{"date": "foo"}]
+        extend(
+            CompletionType.BASIC,
+            getAfterPropertyAndInsideArrayObjectPattern("providers"),
+            new MyStringCompletionProvider("name", "items", "defaults", "source")
+        );
+
+        // "providers":[{"date": "foo"}]
+        extend(CompletionType.BASIC,
+            getAfterPropertyAndInsideArrayObjectPattern("registrar"),
+            new MyStringCompletionProvider("signatures", "provider", "language")
+        );
+
+        // root: {"providers": ..., "registrar": ...}
+        extend(
+            CompletionType.BASIC,
+            getPropertyAfterRootPattern(),
+            new MyStringCompletionProvider("providers", "registrar")
+        );
+
+        // "source":[{"date": "foo"}]
+        extend(CompletionType.BASIC,
+            getAfterPropertyAndInsideArrayObjectPattern("source"),
+            new MyStringCompletionProvider("contributor", "parameter")
+        );
     }
 
     private void addKnownIconClasses(@NotNull CompletionResultSet resultSet) {
@@ -144,11 +176,52 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         }
     }
 
-    public PsiElementPattern.Capture<PsiElement> getPattern(@NotNull String key) {
-        return PlatformPatterns.psiElement().inFile(PlatformPatterns.psiFile().withName(PlatformPatterns.string().endsWith("toolbox.metadata.json"))).withParent(
+    /**
+     * "key": "<caret>"
+     */
+    public PsiElementPattern.Capture<PsiElement> getNextToPropertyPattern(@NotNull String key) {
+        return PlatformPatterns.psiElement().inFile(getMetadataFilePattern()).withParent(
             PlatformPatterns.psiElement(JsonStringLiteral.class).withParent(
                 PlatformPatterns.psiElement(JsonProperty.class).withFirstChild(
                     PlatformPatterns.psiElement(JsonStringLiteral.class).withText("\"" + key + "\"")
+                )
+            )
+        );
+    }
+
+    private PsiFilePattern.Capture<PsiFile> getMetadataFilePattern() {
+        return PlatformPatterns.psiFile().withName(PlatformPatterns.string().endsWith("toolbox.metadata.json"));
+    }
+
+    /**
+     * foo:[{"key": "<caret>"}]
+     */
+    public PsiElementPattern.Capture<PsiElement> getAfterPropertyAndInsideArrayObjectPattern(@NotNull String key) {
+        return PlatformPatterns.psiElement().inFile(getMetadataFilePattern()).withParent(
+            PlatformPatterns.psiElement(JsonStringLiteral.class).withParent(
+                PlatformPatterns.psiElement(JsonProperty.class).withParent(
+                    PlatformPatterns.psiElement(JsonObject.class).withParent(
+                        PlatformPatterns.psiElement(JsonArray.class).withParent(
+                            PlatformPatterns.psiElement(JsonProperty.class).withFirstChild(
+                                PlatformPatterns.psiElement(JsonStringLiteral.class).withText("\"" + key + "\"")
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * foo:[{"key": "<caret>"}]
+     */
+    public PsiElementPattern.Capture<PsiElement> getPropertyAfterRootPattern() {
+        return PlatformPatterns.psiElement().inFile(getMetadataFilePattern()).withParent(
+            PlatformPatterns.psiElement(JsonStringLiteral.class).withParent(
+                PlatformPatterns.psiElement(JsonProperty.class).withParent(
+                    PlatformPatterns.psiElement(JsonObject.class).withParent(
+                        PlatformPatterns.psiElement(JsonFile.class)
+                    )
                 )
             )
         );
@@ -262,6 +335,24 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
                 }
 
                 resultSet.addElement(lookupElement);
+            }
+        }
+    }
+
+    private static class MyStringCompletionProvider extends CompletionProvider<CompletionParameters> {
+
+        private String[] strings;
+
+        public MyStringCompletionProvider(@NotNull String... strings) {
+            this.strings = strings;
+        }
+
+        @Override
+        protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
+            for (String s : strings) {
+                resultSet.addElement(
+                    LookupElementBuilder.create(s).withIcon(PhpToolboxIcons.TOOLBOX)
+                );
             }
         }
     }

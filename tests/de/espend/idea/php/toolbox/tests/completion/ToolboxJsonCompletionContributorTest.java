@@ -80,4 +80,86 @@ public class ToolboxJsonCompletionContributorTest extends SymfonyLightCodeInsigh
             "default", "array_key", "return"
         );
     }
+
+    public void testSignaturesKeys() {
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"signatures\":[{\"<caret>\"}]}",
+            "array", "function", "class"
+        );
+
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"signatures\":[{\"<caret>\":\"datetime\"}]}",
+            "array", "function", "class"
+        );
+    }
+
+    public void testLookupElementKeys() {
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"items\":[{\"<caret>\":\"datetime\"}]}",
+            "lookup_string"
+        );
+
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"items\":[{\"<caret>\"}]}",
+            "lookup_string"
+        );
+
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"defaults\":[{\"<caret>\":\"datetime\"}]}",
+            "lookup_string"
+        );
+
+        assertCompletionNotContains("foo-toolbox.metadata.json",
+            "{\"default\":[{\"<caret>\":\"datetime\"}]}",
+            "lookup_string"
+        );
+    }
+
+    public void testProviderKeys() {
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"providers\":[{\"<caret>\":\"datetime\"}]}",
+            "items", "source"
+        );
+
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"providers\":[{\"<caret>\"}]}",
+            "items", "source"
+        );
+    }
+
+    public void testRegistrarKeys() {
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"registrar\":[{\"<caret>\":\"datetime\"}]}",
+            "signatures", "provider", "language"
+        );
+
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"registrar\":[{\"<caret>\"}]}",
+            "signatures", "provider", "language"
+        );
+    }
+
+    public void testRootKeys() {
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"<caret>\"}",
+            "providers", "registrar"
+        );
+
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"<caret>\":[{\"<caret>\"}]}",
+            "providers", "registrar"
+        );
+    }
+
+    public void testProviderSourceKeys() {
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"source\":[{\"<caret>\":\"datetime\"}]}",
+            "contributor", "parameter"
+        );
+
+        assertCompletionContains("foo-toolbox.metadata.json",
+            "{\"source\":[{\"<caret>\"}]}",
+            "contributor", "parameter"
+        );
+    }
 }
