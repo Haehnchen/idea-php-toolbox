@@ -174,8 +174,6 @@ public class ExtensionProviderUtil {
 
     @NotNull
     private static Collection<JsonRegistrar> getTypesInner(@NotNull Project project) {
-        System.out.println("getTypes");
-
         Collection<JsonRegistrar> jsonRegistrars = new ArrayList<JsonRegistrar>();
         PhpToolboxApplicationService component = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
         if(component == null) {
@@ -202,8 +200,6 @@ public class ExtensionProviderUtil {
 
     @NotNull
     public static Map<String, Collection<JsonRawLookupElement>> getProviders(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
-        System.out.println("getProviders");
-
         Map<String, Collection<JsonRawLookupElement>> providers = new HashMap<String, Collection<JsonRawLookupElement>>();
         for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
             providers.putAll(JsonParseUtil.getProviderJsonRawLookupElements(jsonConfig.getProviders()));
@@ -232,8 +228,6 @@ public class ExtensionProviderUtil {
 
     @NotNull
     synchronized private static Collection<JsonConfigFile> getJsonConfigsInner(@NotNull Project project, @NotNull PhpToolboxApplicationService phpToolboxApplicationService) {
-        System.out.println("getJsonConfigs");
-
         Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
 
         for (final PsiFile psiFile : FilenameIndex.getFilesByName(project, ".ide-toolbox.metadata.json", GlobalSearchScope.allScope(project))) {
