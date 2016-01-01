@@ -10,12 +10,14 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.CachedValue;
 import com.intellij.psi.util.CachedValueProvider;
 import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
+import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.provider.SourceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -105,16 +107,27 @@ public class ExtensionProviderUtil {
     }
 
     @NotNull
-    public static Collection<JsonType> getTypes(@NotNull Project project) {
+    public static Collection<JsonRegistrar> getTypes(@NotNull Project project) {
 
-        Collection<JsonType> jsonRegistrars = new ArrayList<JsonType>();
+        Collection<JsonRegistrar> jsonRegistrars = new ArrayList<JsonRegistrar>();
         PhpToolboxApplicationService component = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
         if(component == null) {
             return jsonRegistrars;
         }
 
         for(JsonConfigFile jsonConfig: getJsonConfigs(project, component)) {
-            jsonRegistrars.addAll(jsonConfig.getTypes());
+            Collection<JsonRegistrar> registrar = jsonConfig.getRegistrar();
+            for (JsonRegistrar jsonRegistrar : registrar) {
+                if(
+                    !"php".equals(jsonRegistrar.getLanguage()) ||
+                    ContainerUtil.find(jsonRegistrar.getSignatures(), ContainerConditions.RETURN_TYPE_TYPE) == null
+                  )
+                {
+                    continue;
+                }
+
+                jsonRegistrars.addAll(registrar);
+            }
         }
 
         return jsonRegistrars;

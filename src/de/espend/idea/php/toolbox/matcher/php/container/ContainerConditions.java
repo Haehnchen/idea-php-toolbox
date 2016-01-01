@@ -12,6 +12,7 @@ public class ContainerConditions {
 
     final public static Condition<JsonSignature> DEFAULT_TYPE_FILTER = new TypeSignatureCondition(JsonSignature.DEFAULT_TYPE);
     final public static Condition<JsonSignature> RETURN_TYPE_FILTER = new TypeSignatureCondition("return");
+    final public static Condition<JsonSignature> RETURN_TYPE_TYPE = new TypeSignatureCondition("type");
 
     final public static Condition<JsonSignature> ARRAY_KEY_AND_FUNCTION_FILTER = new ArrayKeyAndFunctionCondition();
     final public static Condition<JsonSignature> FUNCTION_FILTER = new FunctionCondition();

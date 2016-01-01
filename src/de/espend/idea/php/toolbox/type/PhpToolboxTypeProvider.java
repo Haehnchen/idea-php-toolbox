@@ -4,13 +4,15 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.*;
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider2;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
+import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
-import de.espend.idea.php.toolbox.dict.json.JsonType;
+import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.type.utils.PhpTypeProviderUtil;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
@@ -44,7 +46,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
             return null;
         }
 
-        Collection<JsonType> types = ExtensionProviderUtil.getTypes(e.getProject());
+        Collection<JsonRegistrar> types = ExtensionProviderUtil.getTypes(e.getProject());
         if(types.size() == 0) {
             return null;
         }
@@ -52,15 +54,8 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
         // @TODO: pipe provider names
         Set<String> methods = new HashSet<String>();
         Set<String> functions = new HashSet<String>();
-        for (JsonType type : types) {
-
-            // default is php, on other language we are workless
-            if(type.getLanguage() == null || !type.getLanguage().equalsIgnoreCase("php")) {
-                continue;
-            }
-
-            for (JsonSignature signature: type.getSignatures()) {
-
+        for (JsonRegistrar type : types) {
+            for (JsonSignature signature: ContainerUtil.filter(type.getSignatures(), ContainerConditions.RETURN_TYPE_TYPE)) {
                 if(signature.getFunction() != null && StringUtils.isNotBlank(signature.getFunction())) {
                     functions.add(signature.getFunction());
                 }
@@ -168,7 +163,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
     }
 
     private Set<String> getProviderNames(@NotNull Project project, @NotNull Function method) {
-        Collection<JsonType> types = ExtensionProviderUtil.getTypes(project);
+        Collection<JsonRegistrar> types = ExtensionProviderUtil.getTypes(project);
 
         Set<String> providers = new HashSet<String>();
 
@@ -177,7 +172,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
         String funcName = method.getName();
 
         // stuff called often; so try reduce calls as possible :)
-        for (JsonType type : types) {
+        for (JsonRegistrar type : types) {
             for (JsonSignature sig: type.getSignatures()) {
                 // method or function must be equal
                 if(method instanceof Method) {

@@ -20,7 +20,6 @@ public class JsonRawLookupElement {
     @SerializedName("tail_text")
     private String tailText;
 
-    @SerializedName("type")
     private String type;
 
     private String icon;

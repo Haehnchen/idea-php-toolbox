@@ -1,17 +1,20 @@
 {
-  "types":[
+  "registrar":[
     {
       "signatures":[
         {
           "class": "Foo\\Bar",
-          "method": "foo"
+          "method": "foo",
+          "type": "type"
         },
         {
           "class": "Foo\\Bar",
-          "method": "app"
+          "method": "app",
+          "type": "type"
         },
         {
-          "function": "car"
+          "function": "car",
+          "type": "type"
         }
       ],
       "provider":"date",
