@@ -43,6 +43,11 @@ public class ExtensionProviderUtil {
 
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
 
+    private static final Key<CachedValue<Collection<JsonRegistrar>>> TYPE_CACHE = new Key<CachedValue<Collection<JsonRegistrar>>>("PHP_TOOLBOX_TYPE_CACHE");
+    private static final Key<CachedValue<Collection<PhpToolboxProviderInterface>>> PROVIDER_CACHE = new Key<CachedValue<Collection<PhpToolboxProviderInterface>>>("PHP_TOOLBOX_PROVIDER_CACHE");
+    private static final Key<CachedValue<Collection<JsonConfigFile>>> CONFIGS_CACHE = new Key<CachedValue<Collection<JsonConfigFile>>>("PHP_TOOLBOX_CONFIGS");
+    private static final Key<CachedValue<Collection<JsonRegistrar>>> REGISTRAR_CACHE = new Key<CachedValue<Collection<JsonRegistrar>>>("PHP_TOOLBOX_REGISTRAR");
+
     @Nullable
     public static PhpToolboxProviderInterface getProvider(@NotNull Project project, final @NotNull String key) {
         return ContainerUtil.find(getProviders(project), new Condition<PhpToolboxProviderInterface>() {
@@ -54,8 +59,26 @@ public class ExtensionProviderUtil {
     }
 
     @NotNull
-    public static PhpToolboxProviderInterface[] getProviders(@NotNull Project project) {
+    synchronized public static Collection<PhpToolboxProviderInterface> getProviders(final @NotNull Project project) {
+        CachedValue<Collection<PhpToolboxProviderInterface>> cache = project.getUserData(PROVIDER_CACHE);
 
+        if(cache == null) {
+            cache = CachedValuesManager.getManager(project).createCachedValue(new CachedValueProvider<Collection<PhpToolboxProviderInterface>>() {
+                @Nullable
+                @Override
+                public Result<Collection<PhpToolboxProviderInterface>> compute() {
+                    return Result.create(getProvidersInner(project), PsiModificationTracker.MODIFICATION_COUNT);
+                }
+            }, false);
+
+            project.putUserData(PROVIDER_CACHE, cache);
+        }
+
+        return cache.getValue();
+    }
+
+    @NotNull
+    private static Collection<PhpToolboxProviderInterface> getProvidersInner(@NotNull Project project) {
         PhpToolboxApplicationService phpToolboxApplicationService = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
 
         Collection<PhpToolboxProviderInterface> providers = new ArrayList<PhpToolboxProviderInterface>(
@@ -99,12 +122,29 @@ public class ExtensionProviderUtil {
             }
         }
 
-        return providers.toArray(new PhpToolboxProviderInterface[providers.size()]);
+        return providers;
+    }
+    @NotNull
+    synchronized public static Collection<JsonRegistrar> getRegistrar(final @NotNull Project project, final @NotNull PhpToolboxApplicationService phpToolboxApplicationService) {
+        CachedValue<Collection<JsonRegistrar>> cache = project.getUserData(REGISTRAR_CACHE);
+
+        if(cache == null) {
+            cache = CachedValuesManager.getManager(project).createCachedValue(new CachedValueProvider<Collection<JsonRegistrar>>() {
+                @Nullable
+                @Override
+                public Result<Collection<JsonRegistrar>> compute() {
+                    return Result.create(getRegistrarInner(project, phpToolboxApplicationService), PsiModificationTracker.MODIFICATION_COUNT);
+                }
+            }, false);
+
+            project.putUserData(REGISTRAR_CACHE, cache);
+        }
+
+        return cache.getValue();
     }
 
     @NotNull
-    public static Collection<JsonRegistrar> getRegistrar(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
-
+    private static Collection<JsonRegistrar> getRegistrarInner(@NotNull Project project, @NotNull PhpToolboxApplicationService phpToolboxApplicationService) {
         Collection<JsonRegistrar> jsonRegistrars = new ArrayList<JsonRegistrar>();
         for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
             jsonRegistrars.addAll(jsonConfig.getRegistrar());
@@ -114,7 +154,27 @@ public class ExtensionProviderUtil {
     }
 
     @NotNull
-    public static Collection<JsonRegistrar> getTypes(@NotNull Project project) {
+    synchronized public static Collection<JsonRegistrar> getTypes(final @NotNull Project project) {
+        CachedValue<Collection<JsonRegistrar>> cache = project.getUserData(TYPE_CACHE);
+
+        if(cache == null) {
+            cache = CachedValuesManager.getManager(project).createCachedValue(new CachedValueProvider<Collection<JsonRegistrar>>() {
+                @Nullable
+                @Override
+                public Result<Collection<JsonRegistrar>> compute() {
+                    return Result.create(getTypesInner(project), PsiModificationTracker.MODIFICATION_COUNT);
+                }
+            }, false);
+
+            project.putUserData(TYPE_CACHE, cache);
+        }
+
+        return cache.getValue();
+    }
+
+    @NotNull
+    private static Collection<JsonRegistrar> getTypesInner(@NotNull Project project) {
+        System.out.println("getTypes");
 
         Collection<JsonRegistrar> jsonRegistrars = new ArrayList<JsonRegistrar>();
         PhpToolboxApplicationService component = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
@@ -142,6 +202,7 @@ public class ExtensionProviderUtil {
 
     @NotNull
     public static Map<String, Collection<JsonRawLookupElement>> getProviders(Project project, PhpToolboxApplicationService phpToolboxApplicationService) {
+        System.out.println("getProviders");
 
         Map<String, Collection<JsonRawLookupElement>> providers = new HashMap<String, Collection<JsonRawLookupElement>>();
         for(JsonConfigFile jsonConfig: getJsonConfigs(project, phpToolboxApplicationService)) {
@@ -151,8 +212,27 @@ public class ExtensionProviderUtil {
         return providers;
     }
 
+    synchronized private static Collection<JsonConfigFile> getJsonConfigs(final @NotNull Project project, final @NotNull PhpToolboxApplicationService phpToolboxApplicationService) {
+        CachedValue<Collection<JsonConfigFile>> cache = project.getUserData(CONFIGS_CACHE);
+
+        if(cache == null) {
+            cache = CachedValuesManager.getManager(project).createCachedValue(new CachedValueProvider<Collection<JsonConfigFile>>() {
+                @Nullable
+                @Override
+                public Result<Collection<JsonConfigFile>> compute() {
+                    return Result.create(getJsonConfigsInner(project, phpToolboxApplicationService), PsiModificationTracker.MODIFICATION_COUNT);
+                }
+            }, false);
+
+            project.putUserData(CONFIGS_CACHE, cache);
+        }
+
+        return cache.getValue();
+    }
+
     @NotNull
-    synchronized private static Collection<JsonConfigFile> getJsonConfigs(@NotNull Project project, @NotNull PhpToolboxApplicationService phpToolboxApplicationService) {
+    synchronized private static Collection<JsonConfigFile> getJsonConfigsInner(@NotNull Project project, @NotNull PhpToolboxApplicationService phpToolboxApplicationService) {
+        System.out.println("getJsonConfigs");
 
         Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
 
@@ -196,29 +276,5 @@ public class ExtensionProviderUtil {
         }
 
         return null;
-    }
-
-    private static class MyJsonProjectCachedValueProvider implements CachedValueProvider<Collection<JsonConfigFile>> {
-        private final PsiFile[] files;
-
-        public MyJsonProjectCachedValueProvider(PsiFile[] files) {
-            this.files = files;
-        }
-
-        @Nullable
-        @Override
-        public Result<Collection<JsonConfigFile>> compute() {
-
-            Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
-
-            for (final PsiFile psiFile : files) {
-                JsonConfigFile deserializeConfig = JsonParseUtil.getDeserializeConfig(psiFile.getText());
-                if (deserializeConfig != null) {
-                    jsonConfigFiles.add(deserializeConfig);
-                }
-            }
-
-            return Result.create(jsonConfigFiles, files);
-        }
     }
 }

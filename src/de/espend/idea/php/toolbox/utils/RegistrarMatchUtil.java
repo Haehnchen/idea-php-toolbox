@@ -32,7 +32,7 @@ public class RegistrarMatchUtil {
         FileType fileType = psiElement.getContainingFile().getFileType();
         String fileTypeName = fileType.getName();
 
-        PhpToolboxProviderInterface[] providers = null;
+        Collection<PhpToolboxProviderInterface> providers = null;
 
         Collection<PhpToolboxProviderInterface> providerInterfaces = new HashSet<PhpToolboxProviderInterface>();
 
