@@ -35,6 +35,9 @@ public class SourceProvider implements PhpToolboxProviderInterface {
         Collection<LookupElement> lookupElements = new ArrayList<LookupElement>();
         SourceContributorParameter params = null;
         for (JsonProvider sourceProvider : sourceProviders) {
+            if(sourceProvider.getSource() == null || sourceProvider.getSource().getContributor() == null) {
+                continue;
+            }
 
             SourceContributorInterface sourceContributor = ExtensionProviderUtil.getSourceContributor(sourceProvider.getSource().getContributor());
             if(sourceContributor == null) {
@@ -58,6 +61,9 @@ public class SourceProvider implements PhpToolboxProviderInterface {
         Collection<PsiElement> targets = new ArrayList<PsiElement>();
         SourceContributorDeclarationHandlerParameter params = null;
         for (JsonProvider sourceProvider : sourceProviders) {
+            if(sourceProvider.getSource() == null || sourceProvider.getSource().getContributor() == null) {
+                continue;
+            }
 
             SourceContributorInterface sourceContributor = ExtensionProviderUtil.getSourceContributor(sourceProvider.getSource().getContributor());
             if(sourceContributor == null) {

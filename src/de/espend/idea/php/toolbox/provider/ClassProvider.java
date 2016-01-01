@@ -5,18 +5,23 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
+import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
+import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderArguments;
+import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderInterface;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class ClassProvider implements PhpToolboxProviderInterface {
+public class ClassProvider implements PhpToolboxProviderInterface, PhpToolboxTypeProviderInterface {
 
     @NotNull
     public Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter) {
@@ -67,5 +72,12 @@ public class ClassProvider implements PhpToolboxProviderInterface {
         return "Class";
     }
 
+    @Nullable
+    @Override
+    public Collection<PhpNamedElement> resolveParameter(@NotNull PhpToolboxTypeProviderArguments args) {
+        return new HashSet<PhpNamedElement>(
+            PhpIndex.getInstance(args.getProject()).getAnyByFQN(args.getParameter())
+        );
+    }
 }
 

@@ -19,6 +19,16 @@
       ],
       "provider":"date",
       "language":"php"
+    },
+    {
+      "signatures":[
+        {
+          "function": "clazz",
+          "type": "type"
+        }
+      ],
+      "provider":"Class",
+      "language":"php"
     }
   ],
   "providers":[

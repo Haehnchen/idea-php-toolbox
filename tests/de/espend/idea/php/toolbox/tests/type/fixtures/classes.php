@@ -13,4 +13,5 @@ namespace Foo
 
 namespace {
     function car() {}
+    function clazz() {}
 }

@@ -12,6 +12,7 @@ import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
+import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.type.utils.PhpTypeProviderUtil;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
@@ -125,38 +126,23 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
         Collection<PhpNamedElement> elements = new HashSet<PhpNamedElement>();
         elements.addAll(phpNamedElements);
 
-        Set<String> types = new HashSet<String>();
+        for (String providerName : providers) {
 
-        for (String provider : providers) {
-
-            // @TODO: add per provider interface to resolve type references
-            if(provider.equals("Class") || provider.equals("ClassInterface")) {
-                elements.addAll(phpIndex.getAnyByFQN(parameter));
+            PhpToolboxProviderInterface provider = ExtensionProviderUtil.getProvider(project, providerName);
+            if(!(provider instanceof PhpToolboxTypeProviderInterface)) {
                 continue;
             }
 
-            if(!providerMap.containsKey(provider)) {
-                continue;
+            PhpToolboxTypeProviderArguments args = new PhpToolboxTypeProviderArguments(
+                project,
+                parameter,
+                providerMap.containsKey(providerName) ? providerMap.get(providerName) : Collections.<JsonRawLookupElement>emptyList()
+            );
+
+            Collection<PhpNamedElement> items = ((PhpToolboxTypeProviderInterface) provider).resolveParameter(args);
+            if(items != null && items.size() > 0) {
+                elements.addAll(items);
             }
-
-            for (JsonRawLookupElement jsonRawLookupElement : providerMap.get(provider)) {
-                String type = jsonRawLookupElement.getType();
-                if(type == null || StringUtils.isBlank(type)) {
-                    continue;
-                }
-
-                // internal fully fqn needed by converter since phpstorm9;
-                // we normalize it on our side for a unique collection
-                if(!type.startsWith("\\")) {
-                    type = "\\" + type;
-                }
-
-                if(!types.contains(type) && parameter.equals(jsonRawLookupElement.getLookupString())) {
-                    elements.addAll(phpIndex.getAnyByFQN(type));
-                    types.add(type);
-                }
-            }
-
         }
 
         return elements;

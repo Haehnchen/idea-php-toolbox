@@ -3,6 +3,7 @@ package de.espend.idea.php.toolbox.utils;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
@@ -46,8 +47,18 @@ public class ExtensionProviderUtil {
 
     private static final Key<CachedValue<Collection<JsonConfigFile>>> PROJECT_JSON_CACHE = new Key<CachedValue<Collection<JsonConfigFile>>>("PHP_TOOLBOX_PROJECT_JSON_CACHE");
 
+    @Nullable
+    public static PhpToolboxProviderInterface getProvider(@NotNull Project project, final @NotNull String key) {
+        return ContainerUtil.find(getProviders(project), new Condition<PhpToolboxProviderInterface>() {
+            @Override
+            public boolean value(PhpToolboxProviderInterface provider) {
+                return key.equals(provider.getName());
+            }
+        });
+    }
+
     @NotNull
-    public static PhpToolboxProviderInterface[] getProviders(Project project) {
+    public static PhpToolboxProviderInterface[] getProviders(@NotNull Project project) {
 
         PhpToolboxApplicationService phpToolboxApplicationService = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
 
