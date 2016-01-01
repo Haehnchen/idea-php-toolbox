@@ -8,9 +8,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.CachedValue;
-import com.intellij.psi.util.CachedValueProvider;
-import com.intellij.psi.util.CachedValuesManager;
+import com.intellij.psi.util.*;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
@@ -44,8 +42,6 @@ public class ExtensionProviderUtil {
     );
 
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
-
-    private static final Key<CachedValue<Collection<JsonConfigFile>>> PROJECT_JSON_CACHE = new Key<CachedValue<Collection<JsonConfigFile>>>("PHP_TOOLBOX_PROJECT_JSON_CACHE");
 
     @Nullable
     public static PhpToolboxProviderInterface getProvider(@NotNull Project project, final @NotNull String key) {
@@ -160,25 +156,22 @@ public class ExtensionProviderUtil {
 
         Collection<JsonConfigFile> jsonConfigFiles = new ArrayList<JsonConfigFile>();
 
-        CachedValue<Collection<JsonConfigFile>> cache = project.getUserData(PROJECT_JSON_CACHE);
-
-        if(cache == null) {
-            final PsiFile[] files = FilenameIndex.getFilesByName(project, ".ide-toolbox.metadata.json", GlobalSearchScope.allScope(project));
-            if(files.length > 0) {
-                cache = CachedValuesManager.getManager(project).createCachedValue(
-                    new MyJsonProjectCachedValueProvider(files),
-                    false
-                );
-
-                // @TODO: why tests are not clear cache after project destroy?
-                if(!ApplicationManager.getApplication().isUnitTestMode()) {
-                    project.putUserData(PROJECT_JSON_CACHE, cache);
+        for (final PsiFile psiFile : FilenameIndex.getFilesByName(project, ".ide-toolbox.metadata.json", GlobalSearchScope.allScope(project))) {
+            JsonConfigFile cachedValue = CachedValuesManager.getCachedValue(psiFile, new CachedValueProvider<JsonConfigFile>() {
+                @Nullable
+                @Override
+                public Result<JsonConfigFile> compute() {
+                    return new Result<JsonConfigFile>(
+                        JsonParseUtil.getDeserializeConfig(psiFile.getText()),
+                        psiFile,
+                        psiFile.getVirtualFile()
+                    );
                 }
-            }
-        }
+            });
 
-        if(cache != null) {
-            jsonConfigFiles.addAll(cache.getValue());
+            if(cachedValue != null) {
+                jsonConfigFiles.add(cachedValue);
+            }
         }
 
         synchronized (APPLICATION_CACHE) {
