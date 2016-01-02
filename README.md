@@ -12,15 +12,296 @@ ID: de.espend.idea.php.toolbox
 
 Doc: http://phpstorm.espend.de/php-toolbox
 
-## Json Configurator
+## Core improvements
 
-## Context
+### Type hint variable
+```php
+// Strips several non common variable names of type hint completion; like "interface"
+function foo(FooInterface $<caret>)
+function foo(FooAbstract $<caret>)
+function foo(FooExtension $<caret>)
+```
 
-### Application
+## Json Configuration
 
-### Project
+All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*.json`
 
-## Remote Storage
+```javascript
+{
+  "registrar":[
+    {
+      "signature":[
+        "Behat\\Behat\\Context\\Environment\\ContextEnvironment:hasContextClass",
+        "Behat\\Behat\\Context\\Environment\\InitializedContextEnvironment:getContext"
+      ],
+      "provider":"behat_context_classes",
+      "language":"php"
+    }
+  ],
+  "providers": [
+    {
+      "name": "behat_context_classes",
+      "source": {
+        "contributor": "sub_classes",
+        "parameter": "Behat\\Behat\\Context\\Context"
+      }
+    }
+  ]
+}
+```
 
-## Other
- * PHP: Improvements in type hint variable completion
+
+### Registrar
+
+```javascript
+{
+  "provider":"date_format",
+  "language":"php",
+  "signatures":[
+    {
+      "class": "DateTime",
+      "method": "format"
+    },
+    {
+      "class": "PHPUnit_Framework_TestCase",
+      "method": "getMock",
+      "type": "type"
+    },
+    {
+      "class": "Symfony\\Component\\HttpFoundation\\Response",
+      "method": "__construct",
+      "type": "array_key",
+      "index": 2
+    },
+    {
+      "class": "Symfony\\Component\\HttpFoundation\\Response",
+      "method": "__construct",
+      "index": 2,
+      "array": "Content-Type"
+    }    
+  ]
+}
+```
+
+#### Function
+
+```php
+foo('<caret>')
+```
+
+```javascript
+{
+  "function": "foo"
+}
+```
+
+```php
+foo('', '<caret>')
+```
+
+```javascript
+{
+  "function": "foo",
+  "index": 1
+}
+```
+
+#### Class method
+
+```php
+/** @var $f \\FooClass */
+$f->foo('<caret>')
+```
+
+```javascript
+{
+  "class": "FooClass",
+  "method": "foo"
+}
+```
+
+```php
+/** @var $f \\FooClass */
+$f->foo('', '<caret>')
+```
+
+```javascript
+{
+  "class": "FooClass",
+  "method": "foo",
+  "index": 1
+}
+```
+
+#### Types
+
+```php
+/** @var $f \\FooClass */
+$f->foo('DateTime')->format<caret>
+```
+
+```javascript
+{
+  "class": "FooClass",
+  "method": "foo",
+  "type": "type"
+},
+```
+
+#### Array
+
+```php
+foo(['<caret>'])
+```
+
+```javascript
+{
+  "function": "foo",
+  "type": "array_key"
+}
+```
+
+```php
+foo(['foo' => '<caret>'])
+```
+
+```javascript
+{
+  "function": "foo",
+  "array": "foo"
+}
+```
+
+#### Signature shortcut
+
+```javascript
+{
+  "provider":"class_interface",
+  "language":"php",
+  "signature":[
+    "ReflectionProperty:__construct",
+    "class_exists",
+    "ReflectionProperty:__construct:1"
+  ]  
+}
+```
+
+### Providers
+
+```javascript
+{
+  "name": "date_format",
+  "items":[
+    {
+      "lookup_string": "d",
+      "type_text": "Day of month (01..31)",
+      "icon": "com.jetbrains.php.PhpIcons.METHOD"
+      "presentable_text": "foo",
+      "type_text": "foo",
+      "tail_text": "foo"
+    }
+  ]
+}
+```
+
+#### Lookup shortcut
+
+```javascript
+{
+  "name": "date_format",
+  "lookup_strings": ["car", "apple"]
+}
+```
+
+#### Lookup defaults
+
+```javascript
+{
+  "name": "date_format",
+  "defaults": {
+    "icon":"com.jetbrains.php.PhpIcons.METHOD",
+  },
+  "items": [
+    {
+      "lookup_string":"d",
+    }
+  ]  
+}
+```
+
+#### Sources
+ 
+##### return
+
+```javascript
+{
+  "name": "foo",
+  "source": {
+    "contributor": "return",
+    "parameter": "Twig_Environment::getExtension"
+  }
+}
+```
+
+```php
+class Bar implements Twig_Environment
+{
+    public function getExtension()
+    {
+        return 'foo'
+    }
+}
+class Bar extends Twig_Environment
+{
+    public function getExtension()
+    {
+        return 'foo'
+    }
+}
+```
+
+##### return_array
+
+```javascript
+{
+  "name": "return_array",
+  "source": {
+    "contributor": "return_array",
+    "parameter": "Foo:getNames"
+  }
+}
+```
+
+```php
+class Bar implements Foo
+{
+    public function getNames()
+    {
+        return ['foo', 'bar']
+    }
+}
+class Bar extends Foo
+{
+    public function getNames()
+    {
+        return ['foo', 'bar']
+    }
+}
+```
+
+##### sub_classes
+
+```javascript
+{
+  "name": "foo",
+  "source": {
+    "contributor": "sub_classes",
+    "parameter": "BehatContext"
+  }
+}
+```
+
+```php
+class Foo implements BehatContext {}
+class Foo extends BehatContext {}
+```
