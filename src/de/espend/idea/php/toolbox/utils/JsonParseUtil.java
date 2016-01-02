@@ -8,6 +8,7 @@ import de.espend.idea.php.toolbox.dict.json.JsonConfigFile;
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -201,6 +202,9 @@ public class JsonParseUtil {
         Collection<JsonSignature> jsonSignatures = new ArrayList<JsonSignature>();
 
         for (String signature : signatures) {
+            if(signature == null || StringUtils.isBlank(signature)) {
+                continue;
+            }
 
             // foo:car but not foo:11
             Matcher matcher = Pattern.compile("^([\\w\\\\-]+):+(\\d*[a-z_-][a-z_\\-\\d]*)$").matcher(signature);

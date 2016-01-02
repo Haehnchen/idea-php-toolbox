@@ -147,6 +147,12 @@ public class JsonParseUtilTest extends Assert {
         sign = JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("foo_bar:1")).iterator().next();
         assertEquals("foo_bar", sign.getFunction());
         assertEquals(1, sign.getIndex());
+
+        assertEquals(0, JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("")).size());
+
+        ArrayList<String> signatures = new ArrayList<String>();
+        signatures.add(null);
+        assertEquals(0, JsonParseUtil.createSignaturesFromStrings(signatures).size());
     }
 
     private static class MyFunctionJsonSignatureCondition implements Condition<JsonSignature> {
