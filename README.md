@@ -186,6 +186,26 @@ foo(['foo' => '<caret>'])
 }
 ```
 
+### Twig
+
+```twig
+{{ foo('<caret>' }}
+{% if foo('<caret>') %}
+{% set bar = foo('<caret>') %}
+```
+
+```javascript
+{
+  "provider":"date_format",
+  "language":"twig",
+  "signatures":[
+    {
+      "function": "foo"
+    }
+  ]
+}
+```    
+
 ### Providers
 
 ```javascript
