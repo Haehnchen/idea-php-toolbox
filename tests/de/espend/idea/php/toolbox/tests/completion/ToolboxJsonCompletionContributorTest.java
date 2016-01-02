@@ -158,12 +158,17 @@ public class ToolboxJsonCompletionContributorTest extends SymfonyLightCodeInsigh
 
     public void testProviderSourceKeys() {
         assertCompletionContains("foo-toolbox.metadata.json",
-            "{\"source\":[{\"<caret>\":\"datetime\"}]}",
+            "{\"source\":{\"<caret>\":\"datetime\"}}",
             "contributor", "parameter"
         );
 
         assertCompletionContains("foo-toolbox.metadata.json",
-            "{\"source\":[{\"<caret>\"}]}",
+            "{\"source\":{\"<caret>\"}}",
+            "contributor", "parameter"
+        );
+
+        assertCompletionNotContains("foo-toolbox.metadata.json",
+            "{\"source\":{\"foo\":\"<caret>\"}}",
             "contributor", "parameter"
         );
     }

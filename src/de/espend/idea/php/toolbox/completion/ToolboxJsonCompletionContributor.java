@@ -149,7 +149,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
 
         // "source":[{"date": "foo"}]
         extend(CompletionType.BASIC,
-            getAfterPropertyAndInsideArrayObjectPattern("source"),
+            getAfterPropertyAndInsideObjectPattern("source"),
             new MyStringCompletionProvider("contributor", "parameter")
         );
     }
@@ -205,6 +205,25 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
                                 PlatformPatterns.psiElement(JsonStringLiteral.class).withText("\"" + key + "\"")
                             )
                         )
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * foo:{"key": "<caret>"}
+     */
+    public PsiElementPattern.Capture<PsiElement> getAfterPropertyAndInsideObjectPattern(@NotNull String key) {
+        return PlatformPatterns.psiElement().inFile(getMetadataFilePattern()).withParent(
+            PlatformPatterns.psiElement(JsonStringLiteral.class).with(FirstItemInTreePatternCondition.getInstance()).withParent(
+                PlatformPatterns.psiElement(JsonProperty.class).withParent(
+                    PlatformPatterns.psiElement(JsonObject.class).withParent(
+
+                            PlatformPatterns.psiElement(JsonProperty.class).withFirstChild(
+                                PlatformPatterns.psiElement(JsonStringLiteral.class).withText("\"" + key + "\"")
+                            )
+
                     )
                 )
             )
