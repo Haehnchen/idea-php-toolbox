@@ -27,7 +27,7 @@
           "type": "type"
         }
       ],
-      "provider":"Class",
+      "provider":"class",
       "language":"php"
     }
   ],

@@ -10,7 +10,7 @@ public class ClassInterfaceProvider extends ClassProvider {
     @NotNull
     @Override
     public String getName() {
-        return "ClassInterface";
+        return "class_interface";
     }
 
     protected boolean withInterfaces() {

@@ -13,14 +13,14 @@ public class ToolboxJsonCompletionContributorTest extends SymfonyLightCodeInsigh
     public void testProvider() {
         assertCompletionContains("foo-toolbox.metadata.json",
             "{\"provider\":\"<caret>\"}",
-            "ClassInterface"
+            "class_interface"
         );
     }
 
     public void testProviderIsInWrongFile() {
         assertCompletionNotContains("foo-toolbox.metadata_bar.json",
             "{\"provider\":\"<caret>\"}",
-            "ClassInterface"
+            "class_interface"
         );
     }
 

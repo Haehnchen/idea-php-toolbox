@@ -69,7 +69,7 @@ public class ClassProvider implements PhpToolboxProviderInterface, PhpToolboxTyp
     @NotNull
     @Override
     public String getName() {
-        return "Class";
+        return "class";
     }
 
     @Nullable

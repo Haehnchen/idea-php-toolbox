@@ -42,7 +42,7 @@
           "function": "date"
         }
       ],
-      "provider":"ClassInterface",
+      "provider":"class_interface",
       "language":"twig"
     }
   ],
