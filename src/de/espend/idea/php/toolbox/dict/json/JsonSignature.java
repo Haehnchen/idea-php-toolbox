@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.dict.json;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -54,5 +55,22 @@ public class JsonSignature {
     @Nullable
     public String getType() {
         return type;
+    }
+
+    @NotNull
+    public static JsonSignature createFunction(@NotNull String function, int index) {
+        JsonSignature signature = new JsonSignature();
+        signature.function = function;
+        signature.index = index;
+        return signature;
+    }
+
+    @NotNull
+    public static JsonSignature createClassMethod(@NotNull String clazz, @NotNull String method, int index) {
+        JsonSignature signature = new JsonSignature();
+        signature.clazz = clazz;
+        signature.method = method;
+        signature.index = index;
+        return signature;
     }
 }

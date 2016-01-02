@@ -132,13 +132,13 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         extend(
             CompletionType.BASIC,
             getAfterPropertyAndInsideArrayObjectPattern("providers"),
-            new MyStringCompletionProvider("name", "items", "defaults", "source")
+            new MyStringCompletionProvider("name", "items", "defaults", "source", "lookup_strings")
         );
 
         // "providers":[{"date": "foo"}]
         extend(CompletionType.BASIC,
             getAfterPropertyAndInsideArrayObjectPattern("registrar"),
-            new MyStringCompletionProvider("signatures", "provider", "language")
+            new MyStringCompletionProvider("signatures", "provider", "language", "signature")
         );
 
         // root: {"providers": ..., "registrar": ...}

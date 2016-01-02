@@ -1,6 +1,7 @@
 {
   "registrar":[
     {
+      "signature":["apple", "apple:car"],
       "signatures":[
         {
           "function": "foo"
@@ -48,6 +49,7 @@
   "providers":[
     {
       "name": "date_format",
+      "lookup_strings": ["car", "apple"],
       "defaults": {
         "icon":"com.jetbrains.php.PhpIcons.METHOD",
         "tail_text":"(TailTest)",

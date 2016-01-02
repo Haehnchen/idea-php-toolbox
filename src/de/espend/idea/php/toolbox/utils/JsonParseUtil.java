@@ -7,6 +7,7 @@ import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import de.espend.idea.php.toolbox.dict.json.JsonConfigFile;
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
+import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -192,4 +195,48 @@ public class JsonParseUtil {
         return null;
     }
 
+    @NotNull
+    public static Collection<JsonSignature> createSignaturesFromStrings(@NotNull Collection<String> signatures) {
+
+        Collection<JsonSignature> jsonSignatures = new ArrayList<JsonSignature>();
+
+        for (String signature : signatures) {
+
+            // foo:car but not foo:11
+            Matcher matcher = Pattern.compile("^([\\w\\\\-]+):+(\\d*[a-z_-][a-z_\\-\\d]*)$").matcher(signature);
+            if (matcher.find()) {
+                jsonSignatures.add(JsonSignature.createClassMethod(matcher.group(1), matcher.group(2), 0));
+                continue;
+            }
+
+            // foo:car:1
+            matcher = Pattern.compile("^([\\w\\\\-]+):+(\\w+):+(\\d+)$").matcher(signature);
+            if (matcher.find()) {
+                try {
+                    jsonSignatures.add(JsonSignature.createClassMethod(matcher.group(1), matcher.group(2), Integer.parseInt(matcher.group(3))));
+                } catch (NumberFormatException ignored) {
+                }
+                continue;
+            }
+
+            // foo
+            matcher = Pattern.compile("^([\\w\\\\-]+)$").matcher(signature);
+            if (matcher.find()) {
+                jsonSignatures.add(JsonSignature.createFunction(matcher.group(1), 0));
+                continue;
+            }
+
+            // foo:1
+            matcher = Pattern.compile("^([\\w\\\\-]+):+(\\d+)$").matcher(signature);
+            if (matcher.find()) {
+                try {
+                    jsonSignatures.add(JsonSignature.createFunction(matcher.group(1), Integer.parseInt(matcher.group(2))));
+                } catch (NumberFormatException ignored) {
+                }
+                continue;
+            }
+        }
+
+        return jsonSignatures;
+    }
 }
