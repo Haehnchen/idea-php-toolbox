@@ -5,6 +5,7 @@ import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributo
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonProviderSource;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -37,13 +38,14 @@ public class SourceContributorParameter {
         return parameter.getProject();
     }
 
-    @NotNull
+    @Nullable
     public JsonProviderSource getSource() {
         return jsonProvider.getSource();
     }
-    @NotNull
+
+    @Nullable
     public String getSourceParameter() {
-        return getSource().getParameter();
+        return getSource() != null ? getSource().getParameter() : null;
     }
 
 }

@@ -63,6 +63,7 @@
 
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor"/>
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.ArrayReturnSourceContributor"/>
+        <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.SubClassesSourceContributor"/>
 
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.MethodParameterRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.PhpFunctionRegistrarMatcher"/>

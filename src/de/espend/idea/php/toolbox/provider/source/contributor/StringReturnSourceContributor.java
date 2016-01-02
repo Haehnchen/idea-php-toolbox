@@ -33,7 +33,7 @@ public class StringReturnSourceContributor implements SourceContributorInterface
 
         ReturnVisitor visitor = null;
 
-        String sourceParameter = parameter.getSource().getParameter();
+        String sourceParameter = parameter.getSourceParameter();
         if(sourceParameter == null) {
             return Collections.emptyList();
         }
@@ -58,7 +58,7 @@ public class StringReturnSourceContributor implements SourceContributorInterface
             return Collections.emptyList();
         }
 
-        String sourceParameter = parameter.getSource().getParameter();
+        String sourceParameter = parameter.getSourceParameter();
         if(sourceParameter == null) {
             return Collections.emptyList();
         }

@@ -5,6 +5,7 @@ import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.dict.json.JsonProviderSource;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -37,13 +38,13 @@ public class SourceContributorDeclarationHandlerParameter {
         return parameter.getProject();
     }
 
-    @NotNull
+    @Nullable
     public JsonProviderSource getSource() {
         return jsonProvider.getSource();
     }
-    @NotNull
-    public String getSourceParameter() {
-        return getSource().getParameter();
-    }
 
+    @Nullable
+    public String getSourceParameter() {
+        return getSource() != null ? getSource().getParameter() : null;
+    }
 }

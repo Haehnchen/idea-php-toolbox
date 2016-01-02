@@ -17,6 +17,11 @@
       ],
       "provider":"return_array",
       "language":"php"
+    },
+    {
+      "signature": ["readdir"],
+      "provider": "array_return_interface_sub_classes",
+      "language": "php"
     }
   ],
   "providers":[
@@ -50,6 +55,13 @@
       "source":{
         "contributor":"return_array",
         "parameter":"\\ArrayReturnInterface:getNames"
+      }
+    },
+    {
+      "name": "array_return_interface_sub_classes",
+      "source": {
+        "contributor": "sub_classes",
+        "parameter": "ArrayReturnInterface"
       }
     }
   ]
