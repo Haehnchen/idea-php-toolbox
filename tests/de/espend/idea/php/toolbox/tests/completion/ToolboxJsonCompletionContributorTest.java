@@ -91,6 +91,11 @@ public class ToolboxJsonCompletionContributorTest extends SymfonyLightCodeInsigh
             "{\"signatures\":[{\"<caret>\":\"datetime\"}]}",
             "array", "function", "class"
         );
+
+        assertCompletionNotContains("foo-toolbox.metadata.json",
+            "{\"signatures\":[{\"foo\":\"<caret>\"}]}",
+            "array", "function", "class"
+        );
     }
 
     public void testLookupElementKeys() {

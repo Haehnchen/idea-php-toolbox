@@ -5,6 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.json.psi.*;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.patterns.PatternCondition;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.patterns.PsiFilePattern;
@@ -17,8 +18,6 @@ import com.jetbrains.php.completion.insert.PhpReferenceInsertHandler;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.PhpToolboxIcons;
-import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
-import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
@@ -198,7 +197,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
      */
     public PsiElementPattern.Capture<PsiElement> getAfterPropertyAndInsideArrayObjectPattern(@NotNull String key) {
         return PlatformPatterns.psiElement().inFile(getMetadataFilePattern()).withParent(
-            PlatformPatterns.psiElement(JsonStringLiteral.class).withParent(
+            PlatformPatterns.psiElement(JsonStringLiteral.class).with(FirstItemInTreePatternCondition.getInstance()).withParent(
                 PlatformPatterns.psiElement(JsonProperty.class).withParent(
                     PlatformPatterns.psiElement(JsonObject.class).withParent(
                         PlatformPatterns.psiElement(JsonArray.class).withParent(
@@ -260,6 +259,24 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         // wtf: ???
         // looks like current cursor position is marked :)
         return value.replace("IntellijIdeaRulezzz", "").replace("IntellijIdeaRulezzz ", "").trim();
+    }
+
+    private static class FirstItemInTreePatternCondition extends PatternCondition<PsiElement> {
+
+        private static FirstItemInTreePatternCondition instance;
+
+        public static FirstItemInTreePatternCondition getInstance() {
+            return instance != null ? instance : (instance = new FirstItemInTreePatternCondition());
+        }
+
+        private FirstItemInTreePatternCondition() {
+            super("FirstItemInTree");
+        }
+
+        @Override
+        public boolean accepts(@NotNull PsiElement psiElement, ProcessingContext processingContext) {
+            return psiElement.getPrevSibling() == null;
+        }
     }
 
     private class MyIconCompletionProvider extends CompletionProvider<CompletionParameters> {
