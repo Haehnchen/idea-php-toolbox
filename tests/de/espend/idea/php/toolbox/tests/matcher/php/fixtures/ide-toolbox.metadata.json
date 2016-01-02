@@ -55,6 +55,7 @@
   "providers":[
     {
       "name": "date_format",
+      "lookup_strings": ["car"],
       "items":[
         {
           "lookup_string":"foo"

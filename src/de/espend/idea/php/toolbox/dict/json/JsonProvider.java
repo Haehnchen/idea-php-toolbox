@@ -1,9 +1,11 @@
 package de.espend.idea.php.toolbox.dict.json;
 
+import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -13,6 +15,11 @@ public class JsonProvider {
     private String name;
     private JsonRawLookupElement defaults;
     private Collection<JsonRawLookupElement> items = new ArrayList<JsonRawLookupElement>();
+
+    @SerializedName("lookup_strings")
+    private Collection<String> lookupStrings = new HashSet<String>();
+
+    private Collection<JsonRawLookupElement> myItems = null;
 
     @Nullable
     private JsonProviderSource source;
@@ -26,7 +33,19 @@ public class JsonProvider {
     }
 
     public Collection<JsonRawLookupElement> getItems() {
-        return items;
+        if(this.myItems != null) {
+            return this.myItems;
+        }
+
+        this.myItems = new ArrayList<JsonRawLookupElement>(items);
+
+        if(lookupStrings.size() > 0) {
+            for (String lookupElement : lookupStrings) {
+                this.myItems.add(JsonRawLookupElement.create(lookupElement));
+            }
+        }
+
+        return this.myItems;
     }
 
     @Nullable

@@ -20,7 +20,7 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
     }
 
     public void testSignatures() {
-        assertCompletionContains(PhpFileType.INSTANCE,  "<?php date('<caret>')", "bar", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php date('<caret>')", "bar", "foo", "car");
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php date_create()->format('<caret>')", "bar", "foo");
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php new \\DateTime('<caret>')", "bar", "foo");
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php date_create()->format(['<caret>'])", "bar", "foo");

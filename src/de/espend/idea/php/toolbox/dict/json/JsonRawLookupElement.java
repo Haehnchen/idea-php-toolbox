@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.dict.json;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -89,5 +90,11 @@ public class JsonRawLookupElement {
             this.type = defaultOptions.getType();
         }
 
+    }
+
+    public static JsonRawLookupElement create(@NotNull String lookupString) {
+        JsonRawLookupElement element = new JsonRawLookupElement();
+        element.lookupString = lookupString;
+        return element;
     }
 }
