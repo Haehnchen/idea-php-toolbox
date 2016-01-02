@@ -28,6 +28,7 @@ public class TwigMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
         assertCompletionContains(TwigFileType.INSTANCE,  "{{ foo('<caret>') }}", "bar", "foo");
         assertCompletionContains(TwigFileType.INSTANCE,  "{% if foo('<caret>') %}", "bar", "foo");
         assertCompletionContains(TwigFileType.INSTANCE,  "{% set bar = foo('<caret>') %}", "bar", "foo");
+        assertCompletionContains(TwigFileType.INSTANCE,  "{{ 'foo'|foo('<caret>') }}", "bar", "foo");
     }
 
     public void testFunctionPhpReferences() {
@@ -36,6 +37,8 @@ public class TwigMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
         assertNavigationMatch(TwigFileType.INSTANCE, "{{ foo('foo_<caret>return') }}", PlatformPatterns.psiElement(Method.class));
         assertNavigationMatch(TwigFileType.INSTANCE, "{{ foo(\"foo_<caret>return\") }}", PlatformPatterns.psiElement(Method.class));
+
+        assertNavigationMatch(TwigFileType.INSTANCE, "{{ 'bar'|foo('foo_<caret>return') }}", PlatformPatterns.psiElement(Method.class));
 
         assertNavigationMatch(TwigFileType.INSTANCE, "{% if foo('foo_<caret>return') %}", PlatformPatterns.psiElement(Method.class));
         assertNavigationMatch(TwigFileType.INSTANCE, "{% set bar = foo('foo_<caret>return') %}", PlatformPatterns.psiElement(Method.class));

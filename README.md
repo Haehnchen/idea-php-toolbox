@@ -189,9 +189,10 @@ foo(['foo' => '<caret>'])
 ### Twig
 
 ```twig
-{{ foo('<caret>' }}
+{{ foo('<caret>') }}
 {% if foo('<caret>') %}
 {% set bar = foo('<caret>') %}
+{{ 'bar'|foo('<caret>') }}
 ```
 
 ```javascript
