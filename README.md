@@ -186,7 +186,7 @@ foo(['foo' => '<caret>'])
 }
 ```
 
-### Twig
+#### Twig
 
 ```twig
 {{ foo('<caret>') }}
