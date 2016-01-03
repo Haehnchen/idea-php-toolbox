@@ -120,7 +120,7 @@ public class JsonParseUtil {
     public static class JsonFileFilter implements FileFilter {
         @Override
         public boolean accept(File pathname) {
-            return pathname.getName().endsWith(".json");
+            return pathname.getName().endsWith("-toolbox.metadata.json");
         }
     }
 

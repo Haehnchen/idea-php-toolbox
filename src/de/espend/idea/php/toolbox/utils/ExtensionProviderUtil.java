@@ -5,11 +5,13 @@ import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.*;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.io.IOUtil;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
@@ -22,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -42,6 +46,7 @@ public class ExtensionProviderUtil {
     );
 
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
+    private static Collection<JsonConfigFile> RESOURCE_FILES = null;
 
     private static final Key<CachedValue<Collection<JsonRegistrar>>> TYPE_CACHE = new Key<CachedValue<Collection<JsonRegistrar>>>("PHP_TOOLBOX_TYPE_CACHE");
     private static final Key<CachedValue<Collection<PhpToolboxProviderInterface>>> PROVIDER_CACHE = new Key<CachedValue<Collection<PhpToolboxProviderInterface>>>("PHP_TOOLBOX_PROVIDER_CACHE");
@@ -251,6 +256,33 @@ public class ExtensionProviderUtil {
         synchronized (APPLICATION_CACHE) {
             jsonConfigFiles.addAll(APPLICATION_CACHE.get(new HashSet<File>(Arrays.asList(phpToolboxApplicationService.getApplicationJsonFiles()))));
         }
+
+
+        if(RESOURCE_FILES == null) {
+            Collection<JsonConfigFile> files = new ArrayList<JsonConfigFile>();
+            for (String s : new String[]{"behat", "core", "phpunit", "symfony"}) {
+                InputStream stream = ExtensionProviderUtil.class.getClassLoader().getResourceAsStream("resources/json/" + s + "/.ide-toolbox.metadata.json");
+                if(stream == null) {
+                    continue;
+                }
+
+                String contents;
+                try {
+                    contents = StreamUtil.readText(stream, "UTF-8");
+                } catch (IOException e) {
+                    continue;
+                }
+
+                JsonConfigFile config = JsonParseUtil.getDeserializeConfig(contents);
+                if(config != null) {
+                    files.add(config);
+                }
+            }
+
+            RESOURCE_FILES = files;
+        }
+
+        jsonConfigFiles.addAll(RESOURCE_FILES);
 
         return jsonConfigFiles;
     }

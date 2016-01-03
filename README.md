@@ -40,13 +40,13 @@ $foo = new Bar();
 foo('\\DateTime');
 foo('\\DateTime:format');
 foo('\\DateTime::format');
-'\\DateTime::format';
+'DateTime::format';
 'date';
 ```
 
 ## Json Configuration
 
-All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*.json`
+All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*-toolbox.metadata.json`
 
 ```javascript
 {
