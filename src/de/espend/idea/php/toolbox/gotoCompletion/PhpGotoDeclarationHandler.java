@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import com.intellij.util.containers.ContainerUtil;
+import de.espend.idea.php.toolbox.gotoCompletion.contributor.GlobalStringClassGoto;
 import de.espend.idea.php.toolbox.gotoCompletion.contributor.PhpArrayCallbackGotoCompletion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +21,8 @@ import java.util.Set;
 public class PhpGotoDeclarationHandler extends CompletionContributor implements GotoDeclarationHandler {
 
     private static GotoCompletionContributor[] CONTRIBUTORS = new GotoCompletionContributor[] {
-        new PhpArrayCallbackGotoCompletion()
+        new PhpArrayCallbackGotoCompletion(),
+        new GlobalStringClassGoto(),
     };
 
     public PhpGotoDeclarationHandler() {

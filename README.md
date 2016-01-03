@@ -35,6 +35,15 @@ class Bar
 $foo = new Bar();
 ```
 
+### String class, method and function navigation
+```php
+foo('\\DateTime');
+foo('\\DateTime:format');
+foo('\\DateTime::format');
+'\\DateTime::format';
+'date';
+```
+
 ## Json Configuration
 
 All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*.json`
