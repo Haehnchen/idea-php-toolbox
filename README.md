@@ -2,15 +2,18 @@ Intellij / PhpStorm Plugin for PHP Improvements
 ========================
 
 [![Build Status](https://travis-ci.org/Haehnchen/idea-php-toolbox.svg?branch=master)](https://travis-ci.org/Haehnchen/idea-php-toolbox)
-[![Version](http://phpstorm.espend.de/badge/xxxx/version)](https://plugins.jetbrains.com/plugin/xxxx)
-[![Downloads](http://phpstorm.espend.de/badge/xxxx/downloads)](https://plugins.jetbrains.com/plugin/xxxx)
-[![Downloads last month](http://phpstorm.espend.de/badge/xxxx/last-month)](https://plugins.jetbrains.com/plugin/xxxx)
+[![Version](http://phpstorm.espend.de/badge/8133/version)](https://plugins.jetbrains.com/plugin/8133)
+[![Downloads](http://phpstorm.espend.de/badge/8133/downloads)](https://plugins.jetbrains.com/plugin/8133)
+[![Downloads last month](http://phpstorm.espend.de/badge/8133/last-month)](https://plugins.jetbrains.com/plugin/8133)
 
-Url : http://plugins.jetbrains.com/plugin?pr=&pluginId=xxx
+|   |   |
+| - | - |
+| Plugin Url | http://plugins.jetbrains.com/plugin?pr=&pluginId=8133 |
+| ID | de.espend.idea.php.toolbox |
+| Doc x | http://phpstorm.espend.de/php-toolbox |
 
-ID: de.espend.idea.php.toolbox
-
-Doc: http://phpstorm.espend.de/php-toolbox
+## Screenshots
+![Php Toolbox PHPUnit](https://plugins.jetbrains.com/files/8133/screenshot_15579.png)
 
 ## Core improvements
 
