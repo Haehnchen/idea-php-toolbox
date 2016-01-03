@@ -6,11 +6,11 @@ Intellij / PhpStorm Plugin for PHP Improvements
 [![Downloads](http://phpstorm.espend.de/badge/8133/downloads)](https://plugins.jetbrains.com/plugin/8133)
 [![Downloads last month](http://phpstorm.espend.de/badge/8133/last-month)](https://plugins.jetbrains.com/plugin/8133)
 
-|   |   |
-| - | - |
-| Plugin Url | http://plugins.jetbrains.com/plugin?pr=&pluginId=8133 |
-| ID | de.espend.idea.php.toolbox |
-| Doc x | http://phpstorm.espend.de/php-toolbox |
+Key         | Value
+----------- | -----------
+Plugin Url  | http://plugins.jetbrains.com/plugin?pr=&pluginId=8133
+ID          | de.espend.idea.php.toolbox
+Doc x       | http://phpstorm.espend.de/php-toolbox
 
 ## Screenshots
 ![Php Toolbox PHPUnit](https://plugins.jetbrains.com/files/8133/screenshot_15579.png)
