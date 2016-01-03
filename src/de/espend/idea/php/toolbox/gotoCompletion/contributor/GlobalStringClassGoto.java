@@ -3,6 +3,7 @@ package de.espend.idea.php.toolbox.gotoCompletion.contributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
 import com.intellij.patterns.ElementPattern;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
@@ -46,13 +47,19 @@ public class GlobalStringClassGoto implements GotoCompletionContributor {
             return new PsiElement[0];
         }
 
+        return getPsiElements(psiElement.getProject(), contents);
+    }
+
+    @NotNull
+    public static PsiElement[] getPsiElements(@NotNull Project project, @NotNull String contents) {
+
         Collection<PsiElement> psiElements = new HashSet<PsiElement>();
 
         // DateTime
         // date
         Matcher matcher = Pattern.compile("^([\\w\\\\-]+)$").matcher(contents);
         if (matcher.find()) {
-            PhpIndex phpIndex = PhpIndex.getInstance(psiElement.getProject());
+            PhpIndex phpIndex = PhpIndex.getInstance(project);
 
             ContainerUtil.addAllNotNull(psiElements, phpIndex.getAnyByFQN(contents));
             ContainerUtil.addAllNotNull(psiElements, phpIndex.getFunctionsByName(contents));
@@ -64,7 +71,7 @@ public class GlobalStringClassGoto implements GotoCompletionContributor {
         // DateTime::format
         matcher = Pattern.compile("^([\\w\\\\-]+):+([\\w_\\-]+)$").matcher(contents);
         if (matcher.find()) {
-            for (PhpClass phpClass : PhpIndex.getInstance(psiElement.getProject()).getAnyByFQN(matcher.group(1))) {
+            for (PhpClass phpClass : PhpIndex.getInstance(project).getAnyByFQN(matcher.group(1))) {
                 ContainerUtil.addIfNotNull(psiElements, phpClass.findMethodByName(matcher.group(2)));
             }
             return psiElements.toArray(new PsiElement[psiElements.size()]);

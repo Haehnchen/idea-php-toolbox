@@ -262,7 +262,10 @@ foo(['foo' => '<caret>'])
       "icon": "com.jetbrains.php.PhpIcons.METHOD"
       "presentable_text": "foo",
       "tail_text": "foo",
-      "type": "DateTime"
+      "type": "DateTime",
+      "target": "DateTime",
+      "target": "Ns\\Time::format",
+      "target": "DateTime:format",
     }
   ]
 }

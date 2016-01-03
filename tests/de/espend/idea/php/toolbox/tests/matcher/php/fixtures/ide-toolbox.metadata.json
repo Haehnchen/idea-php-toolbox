@@ -58,7 +58,8 @@
       "lookup_strings": ["car"],
       "items":[
         {
-          "lookup_string":"foo"
+          "lookup_string":"foo",
+          "target":"DateTime:format"
         },
         {
           "lookup_string":"bar"

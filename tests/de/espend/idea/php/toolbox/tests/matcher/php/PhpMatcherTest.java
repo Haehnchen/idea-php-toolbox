@@ -1,6 +1,8 @@
 package de.espend.idea.php.toolbox.tests.matcher.php;
 
+import com.intellij.patterns.PlatformPatterns;
 import com.jetbrains.php.lang.PhpFileType;
+import com.jetbrains.php.lang.psi.elements.Method;
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
 import java.io.File;
@@ -63,5 +65,9 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void testThatUnknownTypDoesNotProvideCompletion() {
         assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php unknown_type('<caret>')", "bar");
+    }
+
+    public void testThatLookupTargetNavigates() {
+        assertNavigationMatch(PhpFileType.INSTANCE,  "<?php date('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
     }
 }

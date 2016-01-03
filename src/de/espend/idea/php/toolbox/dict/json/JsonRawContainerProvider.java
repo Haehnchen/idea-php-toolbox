@@ -2,10 +2,12 @@ package de.espend.idea.php.toolbox.dict.json;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.completion.dict.JsonLookupElement;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
+import de.espend.idea.php.toolbox.gotoCompletion.contributor.GlobalStringClassGoto;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderArguments;
@@ -47,21 +49,20 @@ public class JsonRawContainerProvider implements PhpToolboxProviderInterface, Ph
     @NotNull
     @Override
     public Collection<PsiElement> getPsiTargets(@NotNull PhpToolboxDeclarationHandlerParameter parameter) {
+        Collection<PsiElement> psiElements = new ArrayList<PsiElement>();
 
         for (JsonRawLookupElement item : items) {
-
             if(item.getTarget() == null) {
                 continue;
             }
 
             String lookupString = item.getLookupString();
             if(lookupString != null && lookupString.equals(parameter.getContents())) {
-                System.out.println(item.getTarget());
+                Collections.addAll(psiElements, GlobalStringClassGoto.getPsiElements(parameter.getProject(), item.getTarget()));
             }
-
         }
 
-        return Collections.emptyList();
+        return psiElements;
     }
 
     @NotNull
