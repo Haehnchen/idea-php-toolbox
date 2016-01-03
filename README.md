@@ -46,7 +46,7 @@ foo('\\DateTime::format');
 
 ## Json Configuration
 
-All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*-toolbox.metadata.json`
+All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*-toolbox.metadata.json`. Find your application "Settings > Languages & Framework > PHP Toolbox"
 
 ```javascript
 {

@@ -30,7 +30,7 @@
     ]]>
   </change-notes>
 
-  <idea-version since-build="138.0"/>
+  <idea-version since-build="141.115"/>
 
   <depends>com.jetbrains.twig</depends>
   <depends>com.jetbrains.php</depends>
@@ -40,8 +40,16 @@
    TODO: Add provider
   <depends optional="true">de.espend.idea.php.annotation</depends>
   -->
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
+
+    <applicationConfigurable instance="de.espend.idea.php.toolbox.ui.application.ToolboxApplicationForm"
+                             displayName="PHP Toolbox"
+                             groupId="language"
+                             id="PhpToolbox.ApplicationForm"/>
+
     <php.typeProvider2 implementation="de.espend.idea.php.toolbox.type.PhpToolboxTypeProvider"/>
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler"/>
     <completion.contributor language="any" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxCompletionContributor"/>
