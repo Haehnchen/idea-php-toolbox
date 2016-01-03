@@ -8,15 +8,22 @@
 
       <h1>PHP Toolbox</h1>
 
+      <a href="https://github.com/Haehnchen/idea-php-toolbox">GitHub</a> || <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files">Json Examples</a>
+      <br/>
+
+      <p>
+      This plugin provides "Method References" and "Type Provider" extracted from the Symfony Plugin.
+      You can configure the plugin with simple per project files <code>.ide-toolbox.metadata.json</code> to support for eg <code>$f->('date_time')->format, new Datetime('caret')</code>.
+      Also it improves some PhpStorm Core functionality.
+      </p>
+
       <h2>Features:</h2>
       <ul>
-        <li></li>
-      </ul>
-
-      <h2>TODO:</h2>
-      <ul>
-        <li></li>
-      </ul>
+        <li>PHP: More type hint variable completion variants</li>
+        <li>PHP: Better callable arrays completion and navigation</li>
+        <li>PHP: Global string navigation for class, method and function syntax</li>
+        <li>JSON plugin references extract from Symfony Plugin: schema see <a href="https://github.com/Haehnchen/idea-php-toolbox">README</a></li>
+        <li>Basic json files for: Behat, PHPUnit, Symfony and Php Core</li>
 
     ]]></description>
 
@@ -24,7 +31,7 @@
 
     <h2>0.1</h2>
     <ul>
-      <li></li>
+      <li>First public release</li>
     </ul>
 
     ]]>
