@@ -22,6 +22,19 @@ function foo(FooAbstract $<caret>)
 function foo(FooExtension $<caret>)
 ```
 
+### Callable arrays
+```php
+class Bar
+{
+    public function foo()
+    {
+        [$this, 'foo<caret>']
+        [$foo, 'foo<caret>']
+    }
+}
+$foo = new Bar();
+```
+
 ## Json Configuration
 
 All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*.json`

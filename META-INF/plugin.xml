@@ -49,6 +49,9 @@
 
     <nameSuggestionProvider implementation="de.espend.idea.php.toolbox.refactoring.TypeHintSuggestionProvider" id="PHP"/>
 
+    <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
+    <completion.contributor language="PHP" implementationClass="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
+
   </extensions>
 
   <extensionPoints>
