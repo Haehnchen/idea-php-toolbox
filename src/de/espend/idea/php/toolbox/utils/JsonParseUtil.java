@@ -207,7 +207,7 @@ public class JsonParseUtil {
             }
 
             // foo:car but not foo:11
-            Matcher matcher = Pattern.compile("^([\\w\\\\-]+):+(\\d*[a-z_-][a-z_\\-\\d]*)$").matcher(signature);
+            Matcher matcher = Pattern.compile("^([\\w\\\\-]+):+(\\d*[a-zA-Z_-][a-zA-Z_\\-\\d]*)$").matcher(signature);
             if (matcher.find()) {
                 jsonSignatures.add(JsonSignature.createClassMethod(matcher.group(1), matcher.group(2), 0));
                 continue;

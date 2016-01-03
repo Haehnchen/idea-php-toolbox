@@ -117,6 +117,15 @@ public class JsonParseUtilTest extends Assert {
         assertEquals(0, sign.getIndex());
         assertEquals("foo", sign.getMethod());
 
+        sign = JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("PHPUnit_Framework_MockObject_Generator:getMock")).iterator().next();
+        assertEquals("PHPUnit_Framework_MockObject_Generator", sign.getClassName());
+        assertEquals("getMock", sign.getMethod());
+
+        sign = JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("PHPUnit_Framework_MockObject_Generator:getMock:1")).iterator().next();
+        assertEquals("PHPUnit_Framework_MockObject_Generator", sign.getClassName());
+        assertEquals("getMock", sign.getMethod());
+        assertEquals(1, sign.getIndex());
+
         sign = JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("\\Foo\\Bar:f_oo")).iterator().next();
         assertEquals("\\Foo\\Bar", sign.getClassName());
 
@@ -127,8 +136,10 @@ public class JsonParseUtilTest extends Assert {
         assertEquals("Foo\\B__--ar", sign.getClassName());
         assertEquals("foo", sign.getMethod());
 
-        sign = JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("\\Foo\\Bar:::::fo-o")).iterator().next();
+        sign = JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("\\Foo\\Bar:::::Fo_-o2")).iterator().next();
         assertEquals("\\Foo\\Bar", sign.getClassName());
+        assertEquals("Fo_-o2", sign.getMethod());
+        assertEquals(0, sign.getIndex());
 
         sign = JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("\\Foo\\Bar:foo:1")).iterator().next();
         assertEquals("\\Foo\\Bar", sign.getClassName());
@@ -149,6 +160,7 @@ public class JsonParseUtilTest extends Assert {
         assertEquals(1, sign.getIndex());
 
         assertEquals(0, JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("")).size());
+        assertEquals(0, JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("a:")).size());
 
         ArrayList<String> signatures = new ArrayList<String>();
         signatures.add(null);
