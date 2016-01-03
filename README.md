@@ -150,15 +150,36 @@ $f->foo('', '<caret>')
 
 ```php
 /** @var $f \\FooClass */
-$f->foo('DateTime')->format<caret>
+$f->foo('date_time')->format<caret>
 ```
 
 ```javascript
 {
-  "class": "FooClass",
-  "method": "foo",
-  "type": "type"
-},
+  "registrar":[
+    {
+      "provider":"date",
+      "language":"php",
+      "signatures":[
+        {
+          "class": "FooClass",
+          "method": "foo",
+          "type": "type"
+        }
+      ]
+    }
+  ],
+  "providers": [
+    {
+      "name": "date",
+      "items":[
+        {
+          "lookup_string": "date_time",
+          "type": "DateTime"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 #### Array
@@ -231,8 +252,8 @@ foo(['foo' => '<caret>'])
       "type_text": "Day of month (01..31)",
       "icon": "com.jetbrains.php.PhpIcons.METHOD"
       "presentable_text": "foo",
-      "type_text": "foo",
-      "tail_text": "foo"
+      "tail_text": "foo",
+      "type": "DateTime"
     }
   ]
 }
@@ -267,16 +288,6 @@ foo(['foo' => '<caret>'])
  
 ##### return
 
-```javascript
-{
-  "name": "foo",
-  "source": {
-    "contributor": "return",
-    "parameter": "Twig_Environment::getExtension"
-  }
-}
-```
-
 ```php
 class Bar implements Twig_Environment
 {
@@ -294,17 +305,17 @@ class Bar extends Twig_Environment
 }
 ```
 
-##### return_array
-
 ```javascript
 {
-  "name": "return_array",
+  "name": "foo",
   "source": {
-    "contributor": "return_array",
-    "parameter": "Foo:getNames"
+    "contributor": "return",
+    "parameter": "Twig_Environment::getExtension"
   }
 }
 ```
+
+##### return_array
 
 ```php
 class Bar implements Foo
@@ -323,7 +334,22 @@ class Bar extends Foo
 }
 ```
 
+```javascript
+{
+  "name": "return_array",
+  "source": {
+    "contributor": "return_array",
+    "parameter": "Foo:getNames"
+  }
+}
+```
+
 ##### sub_classes
+
+```php
+class Foo implements BehatContext {}
+class Foo extends BehatContext {}
+```
 
 ```javascript
 {
@@ -335,7 +361,4 @@ class Bar extends Foo
 }
 ```
 
-```php
-class Foo implements BehatContext {}
-class Foo extends BehatContext {}
-```
+
