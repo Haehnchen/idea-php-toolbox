@@ -1,6 +1,10 @@
 {
   "registrar":[
     {
+      "signature":[
+        "parameter:1",
+        "Foo\\Parameter::getFoo:1"
+      ],
       "signatures":[
         {
           "function": "date",

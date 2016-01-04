@@ -14,6 +14,7 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
+        myFixture.copyFileToProject("classes.php");
         myFixture.copyFileToProject("ide-toolbox.metadata.json", ".ide-toolbox.metadata.json");
     }
 
@@ -69,5 +70,21 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void testThatLookupTargetNavigates() {
         assertNavigationMatch(PhpFileType.INSTANCE,  "<?php date('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+    }
+
+    public void testThatParameterIndexStartsByZero() {
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n parameter('', '<caret>')", "bar", "car");
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n parameter(null, '<caret>')", "bar", "foo");
+
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n parameter('', '', '<caret>')", "bar", "car");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n parameter('<caret>'', '')", "bar", "car");
+
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n parameter('', 'foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n parameter(null, 'foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n/** @var $f \\Foo\\Parameter */\n$f->getFoo('', '<caret>')", "bar", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n/** @var $f \\Foo\\Parameter */\n$f->getFoo(null, '<caret>')", "bar", "foo");
+
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n/** @var $f \\Foo\\Parameter */\n$f->getFoo(null, 'foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
     }
 }
