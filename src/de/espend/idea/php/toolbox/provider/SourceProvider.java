@@ -5,10 +5,10 @@ import com.intellij.psi.PsiElement;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
-import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
-import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
+import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
+import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import org.jetbrains.annotations.NotNull;
 

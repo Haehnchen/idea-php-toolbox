@@ -54,6 +54,26 @@
       ],
       "provider":"date_format",
       "language":"php"
+    },
+    {
+      "signature":["t"],
+      "provider":"trait",
+      "language":"php"
+    },
+    {
+      "signature":["i"],
+      "provider":"interface",
+      "language":"php"
+    },
+    {
+      "signature":["c"],
+      "provider":"class",
+      "language":"php"
+    },
+    {
+      "signature":["ci"],
+      "provider":"class_interface",
+      "language":"php"
     }
   ],
   "providers":[

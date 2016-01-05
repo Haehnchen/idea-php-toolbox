@@ -1,7 +1,8 @@
-package de.espend.idea.php.toolbox.provider;
+package de.espend.idea.php.toolbox.provider.php;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
@@ -21,27 +22,18 @@ import java.util.HashSet;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class ClassProvider implements PhpToolboxProviderInterface, PhpToolboxTypeProviderInterface {
+abstract class PhpIndexAbstractProviderAbstract implements PhpToolboxProviderInterface, PhpToolboxTypeProviderInterface {
 
     @NotNull
     public Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter) {
+        PhpIndex instance = PhpIndex.getInstance(parameter.getProject());
 
         Collection<LookupElement> lookupElements = new ArrayList<LookupElement>();
-
-        PhpIndex phpIndex = PhpIndex.getInstance(parameter.getProject());
-        for (String className : phpIndex.getAllClassNames(parameter.getCompletionResultSet().getPrefixMatcher())) {
-            for(PhpClass phpClass: phpIndex.getClassesByName(className)) {
+        for (String className : getClasses(parameter)) {
+            for (PhpClass phpClass : getPhpClassesForLookup(instance, className)) {
                 lookupElements.add(
                     LookupElementBuilder.create(phpClass.getPresentableFQN()).withIcon(phpClass.getIcon())
                 );
-            }
-
-            if(this.withInterfaces()) {
-                for(PhpClass phpClass: phpIndex.getInterfacesByName(className)) {
-                    lookupElements.add(
-                        LookupElementBuilder.create(phpClass.getPresentableFQN()).withIcon(phpClass.getIcon())
-                    );
-                }
             }
         }
 
@@ -49,27 +41,28 @@ public class ClassProvider implements PhpToolboxProviderInterface, PhpToolboxTyp
     }
 
     @NotNull
-    @Override
-    public Collection<PsiElement> getPsiTargets(@NotNull PhpToolboxDeclarationHandlerParameter parameter) {
-
-        Collection<PsiElement> targets = new ArrayList<PsiElement>();
-        targets.addAll(PhpIndex.getInstance(parameter.getProject()).getClassesByFQN(parameter.getContents()));
-
-        if(this.withInterfaces()) {
-            targets.addAll(PhpIndex.getInstance(parameter.getProject()).getInterfacesByFQN(parameter.getContents()));
-        }
-
-        return targets;
+    protected Collection<String> getClasses(@NotNull PhpToolboxCompletionContributorParameter parameter) {
+        return PhpIndex.getInstance(parameter.getProject()).getAllClassNames(parameter.getCompletionResultSet().getPrefixMatcher());
     }
 
-    protected boolean withInterfaces() {
-        return false;
+    protected abstract Collection<PhpClass> getPhpClassesForLookup(@NotNull PhpIndex phpIndex, @NotNull String className);
+
+    @NotNull
+    protected Collection<PhpClass> resolveParameter(@NotNull PhpIndex phpIndex, @NotNull String parameter) {
+        return phpIndex.getAnyByFQN(parameter);
     }
 
     @NotNull
     @Override
-    public String getName() {
-        return "class";
+    public Collection<PsiElement> getPsiTargets(@NotNull PhpToolboxDeclarationHandlerParameter parameter) {
+        String contents = parameter.getContents();
+        if(!StringUtil.startsWithChar(contents, '\\')) {
+            contents = "\\" + contents;
+        }
+
+        return new ArrayList<PsiElement>(
+            resolveParameter(PhpIndex.getInstance(parameter.getProject()), contents)
+        );
     }
 
     @Nullable
@@ -79,5 +72,5 @@ public class ClassProvider implements PhpToolboxProviderInterface, PhpToolboxTyp
             PhpIndex.getInstance(args.getProject()).getAnyByFQN(args.getParameter())
         );
     }
-}
 
+}

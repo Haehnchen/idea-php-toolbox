@@ -4,6 +4,8 @@ import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.patterns.PlatformPatterns;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
+import de.espend.idea.php.toolbox.provider.php.ClassInterfaceProvider;
+import de.espend.idea.php.toolbox.provider.php.ClassProvider;
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
 import java.io.File;
@@ -24,7 +26,7 @@ public class ClassProviderTest extends SymfonyLightCodeInsightFixtureTestCase {
     }
 
     /**
-     * @see de.espend.idea.php.toolbox.provider.ClassProvider
+     * @see ClassProvider
      */
 
     public void testClassProvider() {
@@ -38,7 +40,7 @@ public class ClassProviderTest extends SymfonyLightCodeInsightFixtureTestCase {
     }
 
     /**
-     * @see de.espend.idea.php.toolbox.provider.ClassInterfaceProvider
+     * @see ClassInterfaceProvider
      */
     public void testClassInterfaceProvider() {
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php date('DateT<caret>')", "DateTime");

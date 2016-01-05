@@ -6,4 +6,14 @@ namespace Foo
     {
         public function getFoo() {}
     }
+
+    trait FooTrait {}
+    interface FooInterface {}
+}
+
+namespace {
+    function t() {};
+    function i() {};
+    function c() {};
+    function ci() {};
 }

@@ -87,4 +87,28 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n/** @var $f \\Foo\\Parameter */\n$f->getFoo(null, 'foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
     }
+
+    public void testPhpProviderFiltersTraits() {
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n t('<caret>')", "Foo\\FooTrait");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n t('<caret>')", "Foo\\Parameter");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n t('<caret>')", "Foo\\Parameter");
+    }
+
+    public void testPhpProviderFiltersInterface() {
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n i('<caret>')", "Foo\\FooInterface");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n i('<caret>')", "Foo\\Parameter");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n i('<caret>')", "Foo\\FooTrait");
+    }
+
+    public void testPhpProviderFiltersClass() {
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n c('<caret>')", "Foo\\Parameter");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n c('<caret>')", "Foo\\FooInterface");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n c('<caret>')", "Foo\\FooTrait");
+    }
+
+    public void testPhpProviderFiltersClassAndInterface() {
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n ci('<caret>')", "Foo\\Parameter");
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n ci('<caret>')", "Foo\\FooInterface");
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n ci('<caret>')", "Foo\\FooTrait");
+    }
 }

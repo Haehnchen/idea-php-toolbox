@@ -76,8 +76,10 @@
   </extensionPoints>
 
     <extensions defaultExtensionNs="de.espend.idea.php.toolbox.extension">
-        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.ClassProvider"/>
-        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.ClassInterfaceProvider"/>
+        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.ClassProvider"/>
+        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.ClassInterfaceProvider"/>
+        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.InterfaceProvider"/>
+        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.TraitProvider"/>
 
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor"/>
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.ArrayReturnSourceContributor"/>
