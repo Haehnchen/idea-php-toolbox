@@ -4,6 +4,7 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.psi.PsiElement;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
+import de.espend.idea.php.toolbox.extension.PhpToolboxProviderAbstract;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
@@ -18,7 +19,7 @@ import java.util.Collection;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class SourceProvider implements PhpToolboxProviderInterface {
+public class SourceProvider extends PhpToolboxProviderAbstract {
 
     private final String name;
     private final Collection<JsonProvider> sourceProviders;

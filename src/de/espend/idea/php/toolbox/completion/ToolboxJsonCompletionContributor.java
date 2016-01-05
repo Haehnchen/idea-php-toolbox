@@ -20,6 +20,7 @@ import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.PhpToolboxIcons;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
+import de.espend.idea.php.toolbox.provider.presentation.ProviderPresentation;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +43,19 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
                 for (PhpToolboxProviderInterface provider : ExtensionProviderUtil.getProviders(completionParameters.getPosition().getProject())) {
 
                     LookupElementBuilder lookupElement = LookupElementBuilder
-                        .create(provider.getName())
-                        .withIcon(PhpToolboxIcons.TOOLBOX);
+                        .create(provider.getName());
+
+                    ProviderPresentation presentation = provider.getPresentation();
+                    if(presentation != null) {
+                        if(presentation.getIcon() != null) {
+                            lookupElement = lookupElement.withIcon(presentation.getIcon());
+                        }
+                        if(presentation.getDescription() != null) {
+                            lookupElement = lookupElement.withTypeText(presentation.getDescription(), true);
+                        }
+                    } else {
+                        lookupElement = lookupElement.withIcon(PhpToolboxIcons.TOOLBOX);
+                    }
 
                     String s = provider.getClass().toString();
                     int i = s.lastIndexOf(".");

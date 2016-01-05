@@ -2,14 +2,13 @@ package de.espend.idea.php.toolbox.dict.json;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.psi.PsiElement;
-import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.completion.dict.JsonLookupElement;
-import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
+import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
+import de.espend.idea.php.toolbox.extension.PhpToolboxProviderAbstract;
 import de.espend.idea.php.toolbox.gotoCompletion.contributor.GlobalStringClassGoto;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
-import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderArguments;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderInterface;
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +22,7 @@ import java.util.Collections;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class JsonRawContainerProvider implements PhpToolboxProviderInterface, PhpToolboxTypeProviderInterface {
+public class JsonRawContainerProvider extends PhpToolboxProviderAbstract implements PhpToolboxTypeProviderInterface {
 
     private final String name;
     private final Collection<JsonRawLookupElement> items;

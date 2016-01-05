@@ -8,6 +8,7 @@ import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
+import de.espend.idea.php.toolbox.extension.PhpToolboxProviderAbstract;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderArguments;
@@ -22,7 +23,7 @@ import java.util.HashSet;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-abstract class PhpIndexAbstractProviderAbstract implements PhpToolboxProviderInterface, PhpToolboxTypeProviderInterface {
+abstract class PhpIndexAbstractProviderAbstract extends PhpToolboxProviderAbstract implements PhpToolboxTypeProviderInterface {
 
     @NotNull
     public Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter) {
