@@ -227,7 +227,7 @@ foo(['foo' => '<caret>'])
   "signature":[
     "ReflectionProperty:__construct",
     "class_exists",
-    "ReflectionProperty:__construct:1"
+    "is_subclass_of:1" // ":1" means 2nd argument (arguments indexing starts from 0)
   ]  
 }
 ```
@@ -304,28 +304,28 @@ foo(['foo' => '<caret>'])
 ##### return
 
 ```php
-class Bar implements Twig_Environment
+class SecurityExtension implements Twig_ExtensionInterface
 {
-    public function getExtension()
+    public function getName()
     {
-        return 'foo'
+        return 'security'
     }
 }
-class Bar extends Twig_Environment
+class WebProfilerExtension extends Twig_ExtensionInterface
 {
-    public function getExtension()
+    public function getName()
     {
-        return 'foo'
+        return 'profiler'
     }
 }
 ```
 
 ```javascript
 {
-  "name": "foo",
+  "name": "twig_extensions",
   "source": {
     "contributor": "return",
-    "parameter": "Twig_Environment::getExtension"
+    "parameter": "Twig_ExtensionInterface::getName"
   }
 }
 ```
@@ -333,28 +333,28 @@ class Bar extends Twig_Environment
 ##### return_array
 
 ```php
-class Bar implements Foo
+class UserAdmin implements AdminInterface
 {
-    public function getNames()
+    public function getExportFormats()
     {
-        return ['foo', 'bar']
+        return ['json', 'xml']
     }
 }
-class Bar extends Foo
+class TopicAdmin extends AdminInterface
 {
-    public function getNames()
+    public function getExportFormats()
     {
-        return ['foo', 'bar']
+        return ['csv', 'xls']
     }
 }
 ```
 
 ```javascript
 {
-  "name": "return_array",
+  "name": "sonata_admin_export_formats",
   "source": {
     "contributor": "return_array",
-    "parameter": "Foo:getNames"
+    "parameter": "Sonata\\AdminBundle\\Admin\\AdminInterface:getExportFormats"
   }
 }
 ```
@@ -368,7 +368,7 @@ class Foo extends BehatContext {}
 
 ```javascript
 {
-  "name": "foo",
+  "name": "behat_context_classes",
   "source": {
     "contributor": "sub_classes",
     "parameter": "BehatContext"
