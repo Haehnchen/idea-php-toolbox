@@ -111,4 +111,18 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
         assertCompletionContains(PhpFileType.INSTANCE, "<?php\n ci('<caret>')", "Foo\\FooInterface");
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n ci('<caret>')", "Foo\\FooTrait");
     }
+
+    public void testVariadicSignatureRegistrarMatcher() {
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n _variadic('<caret>')", "foo");
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n _variadic('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n _variadic('<caret>')", "foo");
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n _variadic('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n new \\Foo\\Variadic('<caret>')", "foo");
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n new \\Foo\\Variadic('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n /** @var $f \\Foo\\Variadic */\n $f->getFoo('<caret>')", "foo");
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n /** @var $f \\Foo\\Variadic */\n $f->getFoo('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+    }
 }

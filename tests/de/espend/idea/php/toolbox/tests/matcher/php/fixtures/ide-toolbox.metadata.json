@@ -74,6 +74,26 @@
       "signature":["ci"],
       "provider":"class_interface",
       "language":"php"
+    },
+    {
+      "signatures":[
+        {
+          "function": "_variadic",
+          "type": "variadic"
+        },
+        {
+          "class": "Foo\\Variadic",
+          "method": "__construct",
+          "type": "variadic"
+        },
+        {
+          "class": "Foo\\Variadic",
+          "method": "getFoo",
+          "type": "variadic"
+        }
+      ],
+      "provider":"date_format",
+      "language":"php"
     }
   ],
   "providers":[

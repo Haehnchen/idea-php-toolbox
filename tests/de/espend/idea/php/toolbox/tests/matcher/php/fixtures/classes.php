@@ -7,6 +7,11 @@ namespace Foo
         public function getFoo() {}
     }
 
+    class Variadic
+    {
+        public function getFoo() {}
+    }
+
     trait FooTrait {}
     interface FooInterface {}
 }
@@ -16,4 +21,5 @@ namespace {
     function i() {};
     function c() {};
     function ci() {};
+    function _variadic() {};
 }

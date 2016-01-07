@@ -91,6 +91,7 @@
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ArrayKeyValueSignatureRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ReturnStringSignatureRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ReturnArraySignatureRegistrarMatcher"/>
+        <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.VariadicSignatureRegistrarMatcher"/>
 
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.twig.TwigBlockRegistrarMatcher"/>
     </extensions>

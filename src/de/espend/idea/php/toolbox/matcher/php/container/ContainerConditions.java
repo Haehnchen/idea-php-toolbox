@@ -33,7 +33,7 @@ public class ContainerConditions {
         }
     }
 
-    private static class TypeSignatureCondition implements Condition<JsonSignature> {
+    public static class TypeSignatureCondition implements Condition<JsonSignature> {
         final private String type;
 
         public TypeSignatureCondition(@NotNull String type) {
