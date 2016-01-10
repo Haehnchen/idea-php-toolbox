@@ -1,9 +1,20 @@
 package de.espend.idea.php.toolbox.remote.util;
 
+import de.espend.idea.php.toolbox.remote.dic.Route;
+import de.espend.idea.php.toolbox.remote.dic.RouteInterface;
+import de.espend.idea.php.toolbox.remote.httpHandler.InfoActionHandler;
+import de.espend.idea.php.toolbox.remote.httpHandler.JsonStorageHandler;
+import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectHttpAction;
+import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectIndexHttpAction;
+import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectProviderPostHttpAction;
+import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectStorageClearHttpAction;
 import de.espend.idea.php.toolbox.remote.provider.JsonToolboxProvider;
 import de.espend.idea.php.toolbox.remote.provider.ProviderInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -28,4 +39,19 @@ public class RemoteUtil {
 
         return null;
     }
+
+    @NotNull
+    public static Collection<RouteInterface> getRoutes() {
+        Collection<RouteInterface> routes = new ArrayList<RouteInterface>();
+
+        routes.add(new Route("/", new InfoActionHandler()));
+        routes.add(new Route("/json-debug", new JsonStorageHandler()));
+        routes.add(new Route("/projects", new ProjectIndexHttpAction()));
+        routes.add(new Route("/projects/{project}", new ProjectHttpAction()));
+        routes.add(new Route("/projects/{project}/clear", new ProjectStorageClearHttpAction()));
+        routes.add(new Route("/projects/{project}/{provider}", "POST", new ProjectProviderPostHttpAction()));
+
+        return routes;
+    }
+
 }

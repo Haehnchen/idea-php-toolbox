@@ -1,30 +1,24 @@
-package de.espend.idea.php.toolbox.remote.httpHandler;
+package de.espend.idea.php.toolbox.remote.httpHandler.project;
 
 import com.google.gson.JsonSyntaxException;
 import com.intellij.openapi.project.Project;
-import com.sun.net.httpserver.HttpExchange;
 import de.espend.idea.php.toolbox.remote.RemoteStorage;
+import de.espend.idea.php.toolbox.remote.http.RequestMatcher;
 import de.espend.idea.php.toolbox.remote.http.JsonResponse;
+import de.espend.idea.php.toolbox.remote.http.Response;
 import de.espend.idea.php.toolbox.remote.httpHandler.dic.ProjectStorageDic;
 import de.espend.idea.php.toolbox.remote.provider.ProviderStorageInterface;
-import de.espend.idea.php.toolbox.remote.util.HttpExchangeUtil;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class ProjectGetActionHandler {
+public class ProjectHttpAction extends ProjectHttpActionAbstract {
 
-    public void handleProject(Project project, HttpExchange xchg, String[] pathElements) throws IOException {
-
-        if(pathElements.length > 2 && pathElements[2].equals("clear")) {
-            RemoteStorage.removeInstance(project);
-            HttpExchangeUtil.sendResponse(xchg, "cleared");
-            return;
-        }
-
+    @Override
+    protected Response handle(@NotNull Project project, @NotNull RequestMatcher requestMatcher) {
         ProjectStorageDic storageDic = new ProjectStorageDic();
 
         storageDic.name = project.getName();
@@ -37,6 +31,6 @@ public class ProjectGetActionHandler {
             }
         }
 
-        HttpExchangeUtil.sendResponse(xchg, new JsonResponse(storageDic));
+        return new JsonResponse(storageDic);
     }
 }

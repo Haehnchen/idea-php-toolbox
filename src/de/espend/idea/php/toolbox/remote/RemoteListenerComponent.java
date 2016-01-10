@@ -5,9 +5,6 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.ui.Messages;
 import com.sun.net.httpserver.HttpServer;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
-import de.espend.idea.php.toolbox.remote.httpHandler.InfoActionHandler;
-import de.espend.idea.php.toolbox.remote.httpHandler.JsonStorageHandler;
-import de.espend.idea.php.toolbox.remote.httpHandler.ProjectActionHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -50,9 +47,7 @@ public class RemoteListenerComponent implements ApplicationComponent {
             return;
         }
 
-        server.createContext("/projects", new ProjectActionHandler());
-        server.createContext("/json-debug", new JsonStorageHandler());
-        server.createContext("/", new InfoActionHandler());
+        server.createContext("/", new RouterHttpHandler());
 
         final HttpServer finalServer = server;
         listenerThread = new Thread(new Runnable() {

@@ -2,6 +2,7 @@ package de.espend.idea.php.toolbox.remote.httpHandler.dic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,4 +14,5 @@ public class InfoDic {
     public String versionName;
     public Collection<Map<String, String>> projects = new ArrayList<Map<String, String>>();
     public Collection<Map<String, String>> plugins = new ArrayList<Map<String, String>>();
+    public Collection<Map<String, String>> routes;
 }
