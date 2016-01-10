@@ -67,6 +67,8 @@
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
     <completion.contributor language="PHP" implementationClass="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
 
+    <applicationService serviceImplementation="fr.adrienbrault.idea.symfony2plugin.Symfony2ApplicationSettings"/>
+
   </extensions>
 
   <extensionPoints>
@@ -96,11 +98,15 @@
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.twig.TwigBlockRegistrarMatcher"/>
     </extensions>
 
-  <application-components>
-    <component>
-      <implementation-class>de.espend.idea.php.toolbox.PhpToolboxApplicationService</implementation-class>
-    </component>
-  </application-components>
+    <application-components>
+        <component>
+            <implementation-class>de.espend.idea.php.toolbox.PhpToolboxApplicationService</implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>de.espend.idea.php.toolbox.remote.RemoteListenerComponent</implementation-class>
+        </component>
+    </application-components>
 
   <project-components>
     <!-- Add your project components here -->

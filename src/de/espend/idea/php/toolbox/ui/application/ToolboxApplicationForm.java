@@ -1,14 +1,13 @@
 package de.espend.idea.php.toolbox.ui.application;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,8 +18,13 @@ public class ToolboxApplicationForm extends JDialog implements Configurable {
     private JPanel contentPane;
     private JButton buttonAppFolder;
     private JLabel labelFolder;
+    private JCheckBox checkBoxServerListenAll;
+    private JCheckBox checkBoxServerEnabled;
+    private JTextField textBoxServerPort;
+    private PhpToolboxApplicationService applicationService;
 
-    public ToolboxApplicationForm() {
+    public ToolboxApplicationForm(@NotNull PhpToolboxApplicationService applicationService) {
+        this.applicationService = applicationService;
         setContentPane(contentPane);
     }
 
@@ -74,17 +78,42 @@ public class ToolboxApplicationForm extends JDialog implements Configurable {
 
     @Override
     public boolean isModified() {
-        return false;
+        Integer integer = 0;
+        try {
+            integer = Integer.parseInt(textBoxServerPort.getText());
+        } catch (NumberFormatException ignored) {
+        }
+
+        return
+            applicationService.serverEnabled != checkBoxServerEnabled.isSelected() ||
+            applicationService.listenAll != checkBoxServerListenAll.isSelected() ||
+            integer != applicationService.serverPort
+            ;
     }
 
     @Override
     public void apply() throws ConfigurationException {
 
+        Integer port = 0;
+        try {
+            port = Integer.parseInt(textBoxServerPort.getText());
+        } catch (NumberFormatException ignored) {
+        }
+
+        if(port <= 0 || port > 65535) {
+            throw new ConfigurationException("Invalid port range");
+        }
+
+        applicationService.serverEnabled = checkBoxServerEnabled.isSelected();
+        applicationService.listenAll = checkBoxServerListenAll.isSelected();
+        applicationService.serverPort = port;
     }
 
     @Override
     public void reset() {
-
+        checkBoxServerEnabled.setSelected(applicationService.serverEnabled);
+        checkBoxServerListenAll.setSelected(applicationService.listenAll);
+        textBoxServerPort.setText(Integer.toString(applicationService.serverPort));
     }
 
     @Override
