@@ -71,8 +71,12 @@ public class PhpDocUtil {
                     }
                 }
             }
+        } else {
+            PhpDocParamTag docTag = methodParameter[currentIndex.getIndex()].getDocTag();
+            if(docTag != null) {
+                phpDocParamTags.add(docTag);
+            }
         }
-
 
         return phpDocParamTags;
     }

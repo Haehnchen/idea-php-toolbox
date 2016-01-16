@@ -32,3 +32,15 @@ namespace Foo {
 
     trait FooTrait {}
 }
+
+namespace {
+    /**
+     * @param string $var #Class
+     */
+    function foo($var, $foo) {}
+
+    /**
+     * @param string $car #Class
+     */
+    function car($var, $car) {}
+}

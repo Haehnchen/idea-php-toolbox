@@ -10,6 +10,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.documentation.phpdoc.psi.tags.PhpDocParamTag;
+import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
@@ -139,7 +140,10 @@ public class PhpDocTagGotoCompletionContributor implements GotoCompletionContrib
     @NotNull
     @Override
     public ElementPattern<? extends PsiElement> getPattern() {
-        return PlatformPatterns.psiElement();
+        return PlatformPatterns.psiElement().withParent(
+            PlatformPatterns.psiElement(StringLiteralExpression.class)
+                .withParent(ParameterList.class)
+        );
     }
 
     private static class PhpToolboxProviderInterfaceCondition implements Condition<PhpToolboxProviderInterface> {

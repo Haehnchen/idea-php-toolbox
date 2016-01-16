@@ -197,7 +197,8 @@ $f->foo('date_time')->format<caret>
 #### Inline Code
 
 ```php
-"<?php (new \Foo\Car())->foo('<caret>');
+(new \Foo\Car())->foo('<caret>');
+foo('<caret>');
 ```
 
 ```php
@@ -209,6 +210,11 @@ Class Car
     */
    public function foo($foo, $bar) {}
 }
+
+/**
+ * @param string $foo my Var #Class
+ */
+function foo($foo) {}
 ```
 
 #### Array

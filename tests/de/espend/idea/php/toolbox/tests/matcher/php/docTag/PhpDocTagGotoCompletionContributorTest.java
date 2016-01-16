@@ -38,4 +38,12 @@ public class PhpDocTagGotoCompletionContributorTest extends SymfonyLightCodeInsi
     public void testProviderAlias() {
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php (new \\Foo\\Compatibility())->foo('<caret>');", "DateTime");
     }
+
+    public void testFunctionSupport() {
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php foo('<caret>');", "DateTime");
+        assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php foo(null, '<caret>');", "DateTime");
+
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php car(null, '<caret>');", "DateTime");
+        assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php car('<caret>');", "DateTime");
+    }
 }
