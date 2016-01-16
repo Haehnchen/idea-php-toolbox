@@ -1,0 +1,14 @@
+{
+  "registrar":[
+    {
+      "provider":"class",
+      "language":"php",
+      "signatures":[
+        {
+          "class": "Foo\\Car",
+          "method": "foo"
+        }
+      ]
+    }
+  ]
+}
