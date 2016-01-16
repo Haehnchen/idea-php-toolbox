@@ -67,8 +67,6 @@
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
     <completion.contributor language="PHP" implementationClass="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
 
-    <applicationService serviceImplementation="fr.adrienbrault.idea.symfony2plugin.Symfony2ApplicationSettings"/>
-
   </extensions>
 
   <extensionPoints>

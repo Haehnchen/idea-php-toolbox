@@ -9,6 +9,7 @@ import com.intellij.util.ProcessingContext;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.gotoCompletion.contributor.GlobalStringClassGoto;
 import de.espend.idea.php.toolbox.gotoCompletion.contributor.PhpArrayCallbackGotoCompletion;
+import de.espend.idea.php.toolbox.matcher.php.docTag.PhpDocTagGotoCompletionContributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +24,7 @@ public class PhpGotoDeclarationHandler extends CompletionContributor implements 
     private static GotoCompletionContributor[] CONTRIBUTORS = new GotoCompletionContributor[] {
         new PhpArrayCallbackGotoCompletion(),
         new GlobalStringClassGoto(),
+        new PhpDocTagGotoCompletionContributor(),
     };
 
     public PhpGotoDeclarationHandler() {

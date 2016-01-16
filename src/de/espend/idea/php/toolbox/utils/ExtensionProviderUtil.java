@@ -63,7 +63,7 @@ public class ExtensionProviderUtil {
         return ContainerUtil.find(getProviders(project), new Condition<PhpToolboxProviderInterface>() {
             @Override
             public boolean value(PhpToolboxProviderInterface provider) {
-                return key.equals(provider.getName());
+                return key.equalsIgnoreCase(provider.getName());
             }
         });
     }

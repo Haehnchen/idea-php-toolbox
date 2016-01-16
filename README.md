@@ -194,6 +194,23 @@ $f->foo('date_time')->format<caret>
 }
 ```
 
+#### Inline Code
+
+```php
+"<?php (new \Foo\Car())->foo('<caret>');
+```
+
+```php
+Class Car
+{
+   /**
+    * @param string $foo my Var #Class
+    * @param string $bar my car #<ProviderName> foo bar
+    */
+   public function foo($foo, $bar) {}
+}
+```
+
 #### Array
 
 ```php
