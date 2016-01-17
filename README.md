@@ -399,6 +399,15 @@ class Foo extends BehatContext {}
 }
 ```
 
+###### traits
+```javascript
+{
+  "provider": "trait",
+  "language": "php"
+},
+```
+
+
 ### Server
 
  Enable server in `Languages & Frameworks -> PHP Toolbox` and restart PhpStorm
