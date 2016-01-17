@@ -106,9 +106,11 @@
         </component>
     </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <project-components>
+        <component>
+            <implementation-class>de.espend.idea.php.toolbox.PhpToolboxProjectComponent</implementation-class>
+        </component>
+    </project-components>
 
   <actions>
     <!-- Add your actions here -->

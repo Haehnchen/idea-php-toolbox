@@ -1,5 +1,6 @@
 package de.espend.idea.php.toolbox.remote;
 
+import com.google.gson.JsonSyntaxException;
 import com.intellij.openapi.project.Project;
 import de.espend.idea.php.toolbox.remote.provider.ProviderInterface;
 import de.espend.idea.php.toolbox.remote.provider.ProviderStorageInterface;
@@ -56,7 +57,10 @@ public class RemoteStorage {
     }
 
     public void set(@NotNull ProviderInterface provider, @NotNull String content) {
-        instances.put(provider.getAlias(), provider.getData(content));
+        try {
+            instances.put(provider.getAlias(), provider.getData(content));
+        } catch (JsonSyntaxException ignored) {
+        }
     }
 
     synchronized public static RemoteStorage getInstance(Project project){
