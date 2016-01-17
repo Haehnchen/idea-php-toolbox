@@ -167,6 +167,17 @@ public class JsonParseUtilTest extends Assert {
         assertEquals(0, JsonParseUtil.createSignaturesFromStrings(signatures).size());
     }
 
+    @Test
+    public void testEmptyString() {
+        assertNull(
+            JsonParseUtil.getDeserializeConfig("")
+        );
+
+        assertNull(
+            JsonParseUtil.getDeserializeConfig("{")
+        );
+    }
+
     private static class MyFunctionJsonSignatureCondition implements Condition<JsonSignature> {
         final private String function;
 

@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
+import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -29,11 +30,16 @@ public class JsonParseUtil {
     public static JsonConfigFile getDeserializeConfig(@NotNull String contents) {
 
         JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject;
+        JsonObject jsonObject = null;
         try {
             jsonObject = jsonParser.parse(contents).getAsJsonObject();
-        } catch (JsonSyntaxException e) {
-            System.out.println("invalid file");
+        } catch (JsonSyntaxException ignored) {
+        } catch (JsonIOException ignored) {
+        } catch (IllegalStateException ignored) {
+        }
+
+        if(jsonObject == null) {
+            PhpToolboxApplicationService.LOG.warn("Invalid json string found");
             return null;
         }
 
@@ -55,13 +61,17 @@ public class JsonParseUtil {
         }
 
         JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject;
+        JsonObject jsonObject = null;
 
         try {
             jsonObject = jsonParser.parse(br).getAsJsonObject();
-        } catch (JsonIOException e) {
-            return null;
-        } catch (JsonSyntaxException e) {
+        } catch (JsonIOException ignored) {
+        } catch (JsonSyntaxException ignored) {
+        } catch (IllegalStateException ignored) {
+        }
+
+        if(jsonObject == null) {
+            PhpToolboxApplicationService.LOG.warn(String.format("Invalid file '%s'", file.getAbsolutePath()));
             return null;
         }
 
@@ -76,7 +86,6 @@ public class JsonParseUtil {
                 new TypeToken<JsonConfigFile>(){}.getType()
             );
         } catch (JsonSyntaxException e) {
-            System.out.println("invalid file");
             return null;
         }
     }
