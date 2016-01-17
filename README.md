@@ -292,6 +292,7 @@ foo(['foo' => '<caret>'])
       "target": "DateTime",
       "target": "Ns\\Time::format",
       "target": "DateTime:format",
+      "target": "file://foo/foo.html.twig",
     }
   ]
 }
