@@ -14,7 +14,9 @@ import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
+import de.espend.idea.php.toolbox.extension.PhpToolboxTargetLocator;
 import de.espend.idea.php.toolbox.gotoCompletion.GotoCompletionContributor;
+import de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import org.apache.commons.lang.ArrayUtils;
@@ -24,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -101,8 +104,6 @@ public class PhpDocTagGotoCompletionContributor implements GotoCompletionContrib
             return new PsiElement[0];
         }
 
-        PhpToolboxDeclarationHandlerParameter args = null;
-
         Collection<PsiElement> targets = new ArrayList<PsiElement>();
 
         Collection<PhpDocParamTag> docTags = PhpDocUtil.getDocTagsForScope(psiElement);
@@ -110,27 +111,20 @@ public class PhpDocTagGotoCompletionContributor implements GotoCompletionContrib
             return new PsiElement[0];
         }
 
+        PhpToolboxDeclarationHandlerParameter args = null;
+
         for(PhpDocParamTag phpDocParamTag: docTags) {
             String providerName = extractProviderName(phpDocParamTag.getText());
             if(providerName == null) {
                 continue;
             }
 
-            List<PhpToolboxProviderInterface> filter = getProvidersByName(
-                psiElement,
-                providerName
-            );
-
-            if(filter.size() == 0) {
-                continue;
-            }
-
             if(args == null) {
-                args = new PhpToolboxDeclarationHandlerParameter(psiElement, contents);
+                args = new PhpToolboxDeclarationHandlerParameter(psiElement, contents, psiElement.getContainingFile().getFileType());
             }
 
-            for (PhpToolboxProviderInterface provider : filter) {
-                targets.addAll(provider.getPsiTargets(args));
+            for (PhpToolboxTargetLocator locator : PhpToolboxGotoDeclarationHandler.EXTENSIONS.getExtensions()) {
+                targets.addAll(locator.getTargets(args));
             }
         }
 
