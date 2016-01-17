@@ -18,6 +18,7 @@ import com.jetbrains.php.lang.psi.elements.PhpReference;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -277,12 +278,34 @@ public abstract class SymfonyLightCodeInsightFixtureTestCase extends LightCodeIn
         myFixture.checkHighlighting();
     }
 
-    protected void createDummyFiles(String... files) throws Exception {
+    protected void createDummyFiles(String... files) {
         for (String file : files) {
             String path = myFixture.getProject().getBaseDir().getPath() + "/" + file;
             File f = new File(path);
-            f.getParentFile().mkdirs();
-            f.createNewFile();
+            try {
+                f.getParentFile().mkdirs();
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                fail(String.format("failed to create file '%s'", file));
+            }
+        }
+    }
+
+    protected void deleteDummyFiles(String... files) {
+        for (String file : files) {
+            String path = myFixture.getProject().getBaseDir().getPath() + "/" + file;
+            File f = new File(path);
+            if(!f.exists()) {
+                continue;
+            }
+
+            try {
+                f.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail(String.format("failed to delete file '%s'", file));
+            }
         }
     }
 

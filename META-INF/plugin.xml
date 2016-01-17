@@ -96,7 +96,8 @@
 
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.twig.TwigBlockRegistrarMatcher"/>
 
-        <PhpToolboxTargetLocator implementation="de.espend.idea.php.toolbox.navigation.ProviderNavigationTargetLocator"/>
+        <PhpToolboxTargetLocator implementation="de.espend.idea.php.toolbox.navigation.locator.ProjectFileTargetLocator"/>
+        <PhpToolboxTargetLocator implementation="de.espend.idea.php.toolbox.navigation.locator.GlobalClassTargetLocator"/>
     </extensions>
 
     <application-components>

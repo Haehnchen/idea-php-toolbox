@@ -9,6 +9,8 @@ import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributo
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderAbstract;
 import de.espend.idea.php.toolbox.gotoCompletion.contributor.GlobalStringClassGoto;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
+import de.espend.idea.php.toolbox.navigation.locator.ProjectFileTargetLocator;
+import de.espend.idea.php.toolbox.navigation.locator.utils.TargetLocatorUtil;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderArguments;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderInterface;
 import org.apache.commons.lang.StringUtils;
@@ -57,7 +59,7 @@ public class JsonRawContainerProvider extends PhpToolboxProviderAbstract impleme
 
             String lookupString = item.getLookupString();
             if(lookupString != null && lookupString.equals(parameter.getContents())) {
-                Collections.addAll(psiElements, GlobalStringClassGoto.getPsiElements(parameter.getProject(), item.getTarget()));
+                psiElements.addAll(TargetLocatorUtil.getTargetsBySignature(parameter, item.getTarget()));
             }
         }
 

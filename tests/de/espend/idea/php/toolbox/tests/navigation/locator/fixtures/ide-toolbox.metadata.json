@@ -1,0 +1,26 @@
+{
+  "registrar":[
+    {
+      "signature":[
+        "date"
+      ],
+      "provider":"foo",
+      "language":"php"
+    }
+  ],
+  "providers":[
+    {
+      "name": "foo",
+      "items":[
+        {
+          "lookup_string":"foo",
+          "target":"file:///foo\\\\///foo.html.twig"
+        },
+        {
+          "lookup_string":"bla",
+          "target":"file://foo/foo.html.twig"
+        }
+      ]
+    }
+  ]
+}
