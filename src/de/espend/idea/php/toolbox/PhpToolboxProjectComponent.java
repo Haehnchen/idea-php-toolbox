@@ -11,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PhpToolboxProjectComponent implements ProjectComponent {
 
-    private static final String PRESIDENT_SERVER_FILE = "php-toolbox-server-storage.json";
-
     private Project project;
 
     public PhpToolboxProjectComponent(@NotNull Project project) {

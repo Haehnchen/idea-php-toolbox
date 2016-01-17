@@ -101,7 +101,7 @@
         </constraints>
         <properties>
           <font style="1"/>
-          <text value="Server Storage"/>
+          <text value="Server Storage (restart after change)"/>
         </properties>
       </component>
       <component id="34bac" class="javax.swing.JLabel">
