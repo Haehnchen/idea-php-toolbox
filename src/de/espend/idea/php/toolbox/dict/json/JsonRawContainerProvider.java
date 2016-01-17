@@ -82,6 +82,8 @@ public class JsonRawContainerProvider extends PhpToolboxProviderAbstract impleme
                 continue;
             }
 
+            type = type.replaceAll("\\\\+", "\\\\");
+
             // internal fully fqn needed by converter since phpstorm9;
             // we normalize it on our side for a unique collection
             if(!type.startsWith("\\")) {

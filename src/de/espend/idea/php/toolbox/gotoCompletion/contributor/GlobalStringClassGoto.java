@@ -54,6 +54,7 @@ public class GlobalStringClassGoto implements GotoCompletionContributor {
     public static PsiElement[] getPsiElements(@NotNull Project project, @NotNull String contents) {
 
         Collection<PsiElement> psiElements = new HashSet<PsiElement>();
+        contents = contents.replaceAll("\\\\+", "\\\\");
 
         // DateTime
         // date

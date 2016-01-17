@@ -31,6 +31,9 @@ abstract class PhpIndexAbstractProviderAbstract extends PhpToolboxProviderAbstra
 
         Collection<LookupElement> lookupElements = new ArrayList<LookupElement>();
         for (String className : getClasses(parameter)) {
+            // strip double backslash
+            className = className.replaceAll("\\\\+", "\\\\");
+
             for (PhpClass phpClass : getPhpClassesForLookup(instance, className)) {
                 lookupElements.add(
                     LookupElementBuilder.create(phpClass.getPresentableFQN()).withIcon(phpClass.getIcon())
@@ -69,8 +72,10 @@ abstract class PhpIndexAbstractProviderAbstract extends PhpToolboxProviderAbstra
     @Nullable
     @Override
     public Collection<PhpNamedElement> resolveParameter(@NotNull PhpToolboxTypeProviderArguments args) {
+        String type = args.getParameter().replaceAll("\\\\+", "\\\\");
+
         return new HashSet<PhpNamedElement>(
-            PhpIndex.getInstance(args.getProject()).getAnyByFQN(args.getParameter())
+            PhpIndex.getInstance(args.getProject()).getAnyByFQN(type)
         );
     }
 

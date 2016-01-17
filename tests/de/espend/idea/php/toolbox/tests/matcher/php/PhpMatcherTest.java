@@ -3,6 +3,7 @@ package de.espend.idea.php.toolbox.tests.matcher.php;
 import com.intellij.patterns.PlatformPatterns;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.Method;
+import com.jetbrains.php.lang.psi.elements.PhpClass;
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
 import java.io.File;
@@ -102,6 +103,8 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void testPhpProviderFiltersClass() {
         assertCompletionContains(PhpFileType.INSTANCE, "<?php\n c('<caret>')", "Foo\\Parameter");
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n c('Foo\\Parameter<caret>')", PlatformPatterns.psiElement(PhpClass.class));
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n c('Foo\\\\Parameter<caret>')", PlatformPatterns.psiElement(PhpClass.class));
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n c('<caret>')", "Foo\\FooInterface");
         assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n c('<caret>')", "Foo\\FooTrait");
     }

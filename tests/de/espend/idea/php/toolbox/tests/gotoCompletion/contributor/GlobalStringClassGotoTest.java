@@ -32,4 +32,8 @@ public class GlobalStringClassGotoTest extends SymfonyLightCodeInsightFixtureTes
     public void testFunctions() {
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php 'date<caret>'", PlatformPatterns.psiElement(Function.class).withName("date"));
     }
+
+    public void testMultipleQuotedClassNames() {
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php '\\\\\\DateTime<caret>'", PlatformPatterns.psiElement(PhpClass.class));
+    }
 }
