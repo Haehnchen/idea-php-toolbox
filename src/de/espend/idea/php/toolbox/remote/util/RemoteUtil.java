@@ -3,7 +3,7 @@ package de.espend.idea.php.toolbox.remote.util;
 import de.espend.idea.php.toolbox.remote.dic.Route;
 import de.espend.idea.php.toolbox.remote.dic.RouteInterface;
 import de.espend.idea.php.toolbox.remote.httpHandler.InfoActionHandler;
-import de.espend.idea.php.toolbox.remote.httpHandler.JsonStorageHandler;
+import de.espend.idea.php.toolbox.remote.httpHandler.project.JsonProjectStorageHandler;
 import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectHttpAction;
 import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectIndexHttpAction;
 import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectProviderPostHttpAction;
@@ -45,11 +45,11 @@ public class RemoteUtil {
         Collection<RouteInterface> routes = new ArrayList<RouteInterface>();
 
         routes.add(new Route("/", new InfoActionHandler()));
-        routes.add(new Route("/json-debug", new JsonStorageHandler()));
         routes.add(new Route("/projects", new ProjectIndexHttpAction()));
         routes.add(new Route("/projects/{project}", new ProjectHttpAction()));
         routes.add(new Route("/projects/{project}/clear", new ProjectStorageClearHttpAction()));
         routes.add(new Route("/projects/{project}/{provider}", "POST", new ProjectProviderPostHttpAction()));
+        routes.add(new Route("/projects/{project}/json-debug", new JsonProjectStorageHandler()));
 
         return routes;
     }
