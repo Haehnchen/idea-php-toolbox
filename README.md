@@ -399,4 +399,19 @@ class Foo extends BehatContext {}
 }
 ```
 
+### Server
 
+ Enable server in `Languages & Frameworks -> PHP Toolbox` and restart PhpStorm
+        
+```php
+[GET]  /
+[GET]  /projects
+[GET]  /projects/{project}
+[GET]  /projects/{project}/clear
+[POST] /projects/{project}/{provider}
+[GET]  /projects/{project}/json-debug
+```
+
+```php
+[POST]  http://127.0.0.1:48734/projects/{project}/php-toolbox-json # for json content; json encoded body needed
+```

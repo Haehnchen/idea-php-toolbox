@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.1</version>
+  <version>0.2</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -24,10 +24,25 @@
         <li>PHP: Global string navigation for class, method and function syntax</li>
         <li>JSON plugin references extract from Symfony Plugin: schema see <a href="https://github.com/Haehnchen/idea-php-toolbox">README</a></li>
         <li>Basic json files for: Behat, PHPUnit, Symfony and Php Core</li>
+        <li>Json REST-Server inside PhpStorm</li>
 
     ]]></description>
 
   <change-notes><![CDATA[
+
+    <h2>0.2</h2>
+    <ul>
+      <li>Add trait and interface provider <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/15">#15</a></li>
+      <li>Providers can provide presentable information</li>
+      <li>Add php variadic like provider</li>
+      <li>Add Json REST-Server</li>
+      <li>Migrate Symfony plugin inline code signature provider detection</li>
+      <li>skip invalid json files <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/23">#23</a></li>
+      <li>Fixing invalid completion for array values in key <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/18">#18</a></li>
+      <li>Allow double slashes for class and interfaces <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/25">#25</a></li>
+      <li>Provide extension point for target name resolving <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/34">#34</a></li>
+      <li>Add some more core json completion @Koc, @King2500 <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/pull/2">#2</a></li>
+    </ul>
 
     <h2>0.1</h2>
     <ul>
