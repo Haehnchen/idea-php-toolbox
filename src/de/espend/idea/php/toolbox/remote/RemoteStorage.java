@@ -57,10 +57,7 @@ public class RemoteStorage {
     }
 
     public void set(@NotNull ProviderInterface provider, @NotNull String content) {
-        try {
-            instances.put(provider.getAlias(), provider.getData(content));
-        } catch (JsonSyntaxException ignored) {
-        }
+        instances.put(provider.getAlias(), provider.getData(content));
     }
 
     synchronized public static RemoteStorage getInstance(Project project){

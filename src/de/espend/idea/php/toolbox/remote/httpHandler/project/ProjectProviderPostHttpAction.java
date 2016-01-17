@@ -1,12 +1,15 @@
 package de.espend.idea.php.toolbox.remote.httpHandler.project;
 
+import com.google.gson.JsonSyntaxException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.StreamUtil;
+import com.intellij.util.containers.HashMap;
 import de.espend.idea.php.toolbox.remote.RemoteStorage;
 import de.espend.idea.php.toolbox.remote.http.RequestMatcher;
 import de.espend.idea.php.toolbox.remote.http.JsonResponse;
 import de.espend.idea.php.toolbox.remote.http.Response;
 import de.espend.idea.php.toolbox.remote.httpHandler.dic.ErrorDic;
+import de.espend.idea.php.toolbox.remote.httpHandler.dic.SuccessDic;
 import de.espend.idea.php.toolbox.remote.provider.ProviderInterface;
 import de.espend.idea.php.toolbox.remote.util.RemoteUtil;
 import org.jetbrains.annotations.NotNull;
@@ -39,8 +42,13 @@ public class ProjectProviderPostHttpAction extends ProjectHttpActionAbstract {
         }
 
         RemoteStorage instance = RemoteStorage.getInstance(project);
-        instance.set(provider, content);
 
-        return new JsonResponse("OK");
+        try {
+            instance.set(provider, content);
+        } catch (Exception e) {
+            return new JsonResponse(ErrorDic.create(e.getMessage()), 400);
+        }
+
+        return new JsonResponse(SuccessDic.create("items added"));
     }
 }

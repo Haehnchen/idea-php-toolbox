@@ -16,6 +16,11 @@ public class JsonResponse extends Response {
         this.object = map;
     }
 
+    public JsonResponse(@NotNull Object object, int status) {
+        this(object);
+        this.setStatus(status);
+    }
+
     public JsonResponse(@NotNull Object object) {
         super("");
         this.object = object;
