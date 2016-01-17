@@ -117,15 +117,26 @@ public class PhpMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void testVariadicSignatureRegistrarMatcher() {
         assertCompletionContains(PhpFileType.INSTANCE, "<?php\n _variadic('<caret>')", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n _variadic(null, '<caret>')", "foo");
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n _variadic('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
 
         assertCompletionContains(PhpFileType.INSTANCE, "<?php\n _variadic('<caret>')", "foo");
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n _variadic('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
 
         assertCompletionContains(PhpFileType.INSTANCE, "<?php\n new \\Foo\\Variadic('<caret>')", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n new \\Foo\\Variadic(null, '<caret>')", "foo");
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n new \\Foo\\Variadic('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
 
         assertCompletionContains(PhpFileType.INSTANCE, "<?php\n /** @var $f \\Foo\\Variadic */\n $f->getFoo('<caret>')", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n /** @var $f \\Foo\\Variadic */\n $f->getFoo(null, '<caret>')", "foo");
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n /** @var $f \\Foo\\Variadic */\n $f->getFoo('foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+    }
+
+    public void testVariadicSignatureRegistrarMatcherOnIndex() {
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n _variadic_i(null, '<caret>')", "foo");
+        assertCompletionContains(PhpFileType.INSTANCE, "<?php\n _variadic_i(null, 'foo', '<caret>')", "foo");
+        assertNavigationMatch(PhpFileType.INSTANCE, "<?php\n _variadic_i(null, 'foo<caret>')", PlatformPatterns.psiElement(Method.class).withName("format"));
+
+        assertCompletionNotContains(PhpFileType.INSTANCE, "<?php\n _variadic_i('<caret>')", "foo");
     }
 }

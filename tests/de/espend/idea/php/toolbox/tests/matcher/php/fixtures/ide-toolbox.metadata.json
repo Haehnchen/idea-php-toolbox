@@ -90,6 +90,11 @@
           "class": "Foo\\Variadic",
           "method": "getFoo",
           "type": "variadic"
+        },
+        {
+          "function": "_variadic_i",
+          "type": "variadic",
+          "index": 1
         }
       ],
       "provider":"date_format",

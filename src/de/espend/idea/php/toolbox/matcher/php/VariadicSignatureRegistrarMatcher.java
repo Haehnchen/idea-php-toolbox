@@ -14,7 +14,10 @@ import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.matcher.php.util.PhpMatcherUtil;
 import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
+import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
+import fr.adrienbrault.idea.symfony2plugin.util.ParameterBag;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +44,23 @@ public class VariadicSignatureRegistrarMatcher implements LanguageRegistrarMatch
             return false;
         }
 
+        final ParameterBag parameterBag = PhpElementsUtil.getCurrentParameterIndex(stringLiteral);
+        if(parameterBag == null) {
+            return false;
+        }
+
+        // @TODO: use isVariadic on parameterList to find index
+        signatures = ContainerUtil.filter(signatures, new Condition<JsonSignature>() {
+            @Override
+            public boolean value(JsonSignature signature) {
+                return parameterBag.getIndex() >= signature.getIndex();
+            }
+        });
+
+        if(signatures.size() == 0) {
+            return false;
+        }
+
         PsiElement parameterList = stringLiteral.getParent();
         if(!(parameterList instanceof ParameterList)) {
             return false;
@@ -62,17 +82,32 @@ public class VariadicSignatureRegistrarMatcher implements LanguageRegistrarMatch
             }
         } else if(parent instanceof FunctionReference) {
             // foo("<caret>");
-            return PhpMatcherUtil.matchesArraySignature(stringLiteral, ContainerUtil.filter(signatures, ContainerConditions.FUNCTION_FILTER));
+            final String name = ((FunctionReference) parent).getName();
+            return name != null && null != ContainerUtil.find(signatures, new Condition<JsonSignature>() {
+                @Override
+                public boolean value(JsonSignature signature) {
+                    return name.equalsIgnoreCase(signature.getFunction());
+                }
+            });
+
         } else if(parent instanceof NewExpression) {
             // new Foo("<caret>");
             for (JsonSignature signature : ContainerUtil.filter(signatures, ContainerConditions.CONSTRUCTOR_FILTER)) {
-                if(new MethodMatcher.NewExpressionParameterMatcher(stringLiteral, signature.getIndex())
-                    .withSignature(signature.getClassName(), signature.getMethod())
-                    .match() != null
-                    )
-                {
-                    return true;
+                ClassReference classReference = ((NewExpression) parent).getClassReference();
+                if(classReference == null) {
+                    continue;
                 }
+
+                String fqn = classReference.getFQN();
+                if(fqn == null) {
+                    continue;
+                }
+
+                return new Symfony2InterfacesUtil().isInstanceOf(
+                    parameter.getElement().getProject(),
+                    fqn,
+                    signature.getClassName()
+                );
             }
         }
 

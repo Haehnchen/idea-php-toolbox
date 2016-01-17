@@ -22,4 +22,5 @@ namespace {
     function c() {};
     function ci() {};
     function _variadic() {};
+    function _variadic_i() {};
 }
