@@ -1,0 +1,35 @@
+{
+  "registrar":[
+    {
+      "signatures":[
+        {
+          "class": "Foo\\Bar",
+          "method": "foo",
+          "array": "bar"
+        },
+        {
+          "class": "Foo\\Foo",
+          "method": "__construct",
+          "array": "bar"
+        },
+        {
+          "function": "foo",
+          "array": "bar"
+        }
+      ],
+      "provider":"date_format",
+      "language":"php"
+    }
+  ],
+  "providers":[
+    {
+      "name": "date_format",
+      "items":[
+        {
+          "lookup_string":"car",
+          "target":"DateTime:format"
+        }
+      ]
+    }
+  ]
+}

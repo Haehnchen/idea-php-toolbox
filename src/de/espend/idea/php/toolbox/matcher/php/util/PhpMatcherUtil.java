@@ -68,7 +68,7 @@ public class PhpMatcherUtil {
         return false;
     }
 
-    public static boolean matchesArraySignature(@NotNull  PsiElement parent, @NotNull  Collection<JsonSignature> signatures) {
+    public static boolean matchesArraySignature(@NotNull  PsiElement parent, @NotNull Collection<JsonSignature> signatures) {
         Collection<JsonSignature> functionSignatures = filterFunctionSignatures(signatures);
         if(functionSignatures.size() == 0) {
             return false;

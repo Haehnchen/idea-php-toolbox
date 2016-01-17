@@ -12,12 +12,15 @@ import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
+import de.espend.idea.php.toolbox.matcher.php.util.PhpMatcherUtil;
+import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
 import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -57,22 +60,32 @@ public class ArrayKeyValueSignatureRegistrarMatcher implements LanguageRegistrar
             // new Foo(['foo' => '<caret>'])
             PsiElement parent = parameterList.getParent();
             if(parent instanceof NewExpression) {
-                if(new MethodMatcher.NewExpressionParameterMatcher(arrayCreationExpression, signature.getIndex())
+                if (!"__construct".equals(signature.getMethod()) || StringUtils.isBlank(signature.getClassName())) {
+                    continue;
+                }
+
+                if (new MethodMatcher.NewExpressionParameterMatcher(arrayCreationExpression, signature.getIndex())
                     .withSignature(signature.getClassName(), signature.getMethod())
                     .match() != null
-                    )
-                {
+                    ) {
                     return true;
                 }
 
-                continue;
-            }
+            } else if(parent instanceof MethodReference) {
+                if (StringUtils.isBlank(signature.getClassName()) || StringUtils.isBlank(signature.getMethod())) {
+                    continue;
+                }
 
-            // $v->foo(['foo' => '<caret>'])
-            if (MethodMatcher.getMatchedSignatureWithDepth(arrayCreationExpression, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(signature.getClassName(), signature.getMethod())}, signature.getIndex()) != null) {
-                return true;
+                if (MethodMatcher.getMatchedSignatureWithDepth(arrayCreationExpression, new MethodMatcher.CallToSignature[]{new MethodMatcher.CallToSignature(signature.getClassName(), signature.getMethod())}, signature.getIndex()) != null) {
+                    return true;
+                }
+            } else if(parent instanceof FunctionReference) {
+                if(StringUtils.isNotBlank(signature.getFunction())) {
+                    if(PhpElementsUtil.isFunctionReference(arrayCreationExpression, signature.getIndex(), signature.getFunction())) {
+                        return true;
+                    }
+                }
             }
-
         }
 
         return false;
@@ -118,9 +131,14 @@ public class ArrayKeyValueSignatureRegistrarMatcher implements LanguageRegistrar
         public boolean value(JsonSignature signature) {
             return
                 ContainerConditions.DEFAULT_TYPE_FILTER.value(signature) &&
-                signature.getArray() != null && StringUtils.isNotBlank(signature.getArray()) &&
-                signature.getClassName() != null && StringUtils.isNotBlank(signature.getClassName()) &&
-                signature.getMethod() != null && StringUtils.isNotBlank(signature.getMethod());
+                signature.getArray() != null && StringUtils.isNotBlank(signature.getArray()) && (
+                 (
+                     signature.getClassName() != null && StringUtils.isNotBlank(signature.getClassName()) &&
+                     signature.getMethod() != null && StringUtils.isNotBlank(signature.getMethod())
+                 ) ||
+                   signature.getFunction() != null && StringUtils.isNotBlank(signature.getFunction())
+                )
+                ;
         }
     }
 }
