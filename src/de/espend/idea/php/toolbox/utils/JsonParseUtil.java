@@ -85,9 +85,12 @@ public class JsonParseUtil {
                 jsonObject,
                 new TypeToken<JsonConfigFile>(){}.getType()
             );
-        } catch (JsonSyntaxException e) {
-            return null;
+        } catch (JsonIOException ignored) {
+        } catch (JsonSyntaxException ignored) {
+        } catch (IllegalStateException ignored) {
         }
+
+        return null;
     }
 
     public static Map<String, Collection<JsonRawLookupElement>> getProviderJsonRawLookupElements(Collection<JsonProvider> jsonProviders) {
