@@ -8,11 +8,14 @@ import com.intellij.util.ProcessingContext;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.twig.TwigFileType;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
+import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.utils.RegistrarMatchUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -32,19 +35,24 @@ public class ToolboxCompletionContributor extends CompletionContributor {
                     return;
                 }
 
-                Collection<PhpToolboxProviderInterface> providers = RegistrarMatchUtil.getProviders(position);
+                Map<PhpToolboxProviderInterface, Set<JsonRegistrar>> providers = RegistrarMatchUtil.getProviders(position);
                 if(providers.size() == 0) {
                     return;
                 }
 
                 PhpToolboxCompletionContributorParameter parameter = null;
-                for (PhpToolboxProviderInterface provider : providers) {
+                for (Map.Entry<PhpToolboxProviderInterface, Set<JsonRegistrar>> provider : providers.entrySet()) {
 
                     if(parameter == null) {
-                        parameter = new PhpToolboxCompletionContributorParameter(completionParameters, processingContext, completionResultSet);
+                        parameter = new PhpToolboxCompletionContributorParameter(
+                            completionParameters,
+                            processingContext,
+                            completionResultSet,
+                            provider.getValue()
+                        );
                     }
 
-                    completionResultSet.addAllElements(provider.getLookupElements(parameter));
+                    completionResultSet.addAllElements(provider.getKey().getLookupElements(parameter));
                 }
 
             }

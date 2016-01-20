@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import com.jetbrains.twig.TwigFileType;
 import com.jetbrains.twig.TwigTokenTypes;
+import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.utils.RegistrarMatchUtil;
@@ -17,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -49,7 +52,7 @@ public class PhpToolboxGotoDeclarationHandler implements GotoDeclarationHandler 
             return new PsiElement[0];
         }
 
-        Collection<PhpToolboxProviderInterface> providers = RegistrarMatchUtil.getProviders(psiElement);
+        Map<PhpToolboxProviderInterface, Set<JsonRegistrar>> providers = RegistrarMatchUtil.getProviders(psiElement);
         if(providers.size() == 0) {
             return new PsiElement[0];
         }
@@ -57,8 +60,8 @@ public class PhpToolboxGotoDeclarationHandler implements GotoDeclarationHandler 
         PhpToolboxDeclarationHandlerParameter parameter = new PhpToolboxDeclarationHandlerParameter(psiElement, selectedItem, fileType);
 
         Collection<PsiElement> targets = new HashSet<PsiElement>();
-        for (PhpToolboxProviderInterface provider : providers) {
-            targets.addAll(provider.getPsiTargets(parameter));
+        for (Map.Entry<PhpToolboxProviderInterface, Set<JsonRegistrar>> provider : providers.entrySet()) {
+            targets.addAll(provider.getKey().getPsiTargets(parameter));
         }
 
         return targets.toArray(new PsiElement[targets.size()]);

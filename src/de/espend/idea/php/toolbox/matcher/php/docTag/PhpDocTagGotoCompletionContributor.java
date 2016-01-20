@@ -13,6 +13,7 @@ import com.jetbrains.php.lang.documentation.phpdoc.psi.tags.PhpDocParamTag;
 import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
+import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxTargetLocator;
 import de.espend.idea.php.toolbox.gotoCompletion.GotoCompletionContributor;
@@ -63,7 +64,7 @@ public class PhpDocTagGotoCompletionContributor implements GotoCompletionContrib
             }
 
             if(parameter == null) {
-                parameter = new PhpToolboxCompletionContributorParameter(completionParameters, context, resultSet);
+                parameter = new PhpToolboxCompletionContributorParameter(completionParameters, context, resultSet, new HashSet<JsonRegistrar>());
             }
 
             for (PhpToolboxProviderInterface provider : filter) {

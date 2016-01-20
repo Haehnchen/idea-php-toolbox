@@ -3,6 +3,9 @@ package de.espend.idea.php.toolbox.utils;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.containers.*;
+import com.intellij.util.containers.HashMap;
+import com.intellij.util.containers.HashSet;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
@@ -11,10 +14,7 @@ import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -22,11 +22,11 @@ import java.util.HashSet;
 public class RegistrarMatchUtil {
 
     @NotNull
-    public static Collection<PhpToolboxProviderInterface> getProviders(@NotNull PsiElement psiElement) {
+    public static Map<PhpToolboxProviderInterface, Set<JsonRegistrar>> getProviders(@NotNull PsiElement psiElement) {
 
         Collection<JsonRegistrar> registrars = ExtensionProviderUtil.getRegistrar(psiElement.getProject(), ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class));
         if(registrars.size() == 0) {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
 
         FileType fileType = psiElement.getContainingFile().getFileType();
@@ -34,7 +34,7 @@ public class RegistrarMatchUtil {
 
         Collection<PhpToolboxProviderInterface> providers = null;
 
-        Collection<PhpToolboxProviderInterface> providerInterfaces = new HashSet<PhpToolboxProviderInterface>();
+        Map<PhpToolboxProviderInterface, Set<JsonRegistrar>> providerMatches = new HashMap<PhpToolboxProviderInterface, Set<JsonRegistrar>>();
 
         for (JsonRegistrar registrar : registrars) {
 
@@ -77,7 +77,13 @@ public class RegistrarMatchUtil {
                 }
 
                 if(matcher.matches(parameter)) {
-                    providerInterfaces.addAll(matchedProviders);
+                    for (PhpToolboxProviderInterface matchedProvider : matchedProviders) {
+                        if(providerMatches.containsKey(matchedProvider)) {
+                            providerMatches.get(matchedProvider).add(registrar);
+                        }
+                        providerMatches.put(matchedProvider, ContainerUtil.newHashSet(registrar));
+                    }
+
                     break;
                 }
 
@@ -85,7 +91,7 @@ public class RegistrarMatchUtil {
 
         }
 
-        return providerInterfaces;
+        return providerMatches;
     }
 
 }

@@ -15,7 +15,12 @@
         }
       ],
       "provider":"date_format",
-      "language":"php"
+      "language":"php",
+      "parameters": {
+        "foo": true,
+        "bar": 1,
+        "car": "bobby car"
+      }
     },
     {
       "signatures":[

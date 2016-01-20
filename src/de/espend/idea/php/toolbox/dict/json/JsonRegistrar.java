@@ -1,13 +1,12 @@
 package de.espend.idea.php.toolbox.dict.json;
 
+import com.intellij.util.containers.HashMap;
 import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -27,6 +26,9 @@ public class JsonRegistrar {
 
     @Nullable
     private String language;
+
+    @NotNull
+    private Map<String, Object> parameters = new HashMap<String, Object>();
 
     private boolean references = false ;
 
@@ -61,5 +63,11 @@ public class JsonRegistrar {
     public boolean isReferences() {
         return references;
     }
+
+    @NotNull
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
 }
 

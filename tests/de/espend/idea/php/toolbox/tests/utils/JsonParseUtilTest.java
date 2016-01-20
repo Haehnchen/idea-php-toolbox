@@ -178,6 +178,19 @@ public class JsonParseUtilTest extends Assert {
         );
     }
 
+    @Test
+    public void testParameterRegistrarMappedAsObject() {
+        File testFile = new File(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").getFile());
+
+        JsonRegistrar next = JsonParseUtil.getDeserializeConfig(testFile).getRegistrar().iterator().next();
+
+        Map<String, Object> parameters = next.getParameters();
+
+        assertTrue((Boolean) parameters.get("foo"));
+        assertEquals(1.0, parameters.get("bar"));
+        assertEquals("bobby car", parameters.get("car"));
+    }
+
     private static class MyFunctionJsonSignatureCondition implements Condition<JsonSignature> {
         final private String function;
 
