@@ -5,12 +5,9 @@ import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ProcessingContext;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
-import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -19,16 +16,15 @@ public class PhpToolboxCompletionContributorParameter {
 
     @NotNull
     private final CompletionParameters completionParameters;
-    private final ProcessingContext processingContext;
-    @NotNull
-    private final CompletionResultSet completionResultSet;
-    @NotNull
-    private final Collection<JsonRegistrar> registrars;
 
     @NotNull
-    public Collection<JsonRegistrar> getRegistrars() {
-        return registrars;
-    }
+    private final ProcessingContext processingContext;
+
+    @NotNull
+    private final CompletionResultSet completionResultSet;
+
+    @NotNull
+    private final Collection<JsonRegistrar> registrars;
 
     public PhpToolboxCompletionContributorParameter(
         @NotNull CompletionParameters completionParameters,
@@ -36,7 +32,6 @@ public class PhpToolboxCompletionContributorParameter {
         @NotNull CompletionResultSet completionResultSet,
         @NotNull Collection<JsonRegistrar> registrars
     ) {
-
         this.completionParameters = completionParameters;
         this.processingContext = processingContext;
         this.completionResultSet = completionResultSet;
@@ -48,6 +43,7 @@ public class PhpToolboxCompletionContributorParameter {
         return completionParameters;
     }
 
+    @NotNull
     public ProcessingContext getProcessingContext() {
         return processingContext;
     }
@@ -62,4 +58,13 @@ public class PhpToolboxCompletionContributorParameter {
         return completionParameters.getPosition().getProject();
     }
 
+    @NotNull
+    public JsonRegistrar getRegistrar() {
+        return registrars.iterator().next();
+    }
+
+    @NotNull
+    public Collection<JsonRegistrar> getRegistrars() {
+        return registrars;
+    }
 }
