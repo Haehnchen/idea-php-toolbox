@@ -18,5 +18,10 @@ public abstract class ProviderPresentation {
     public String getDescription() {
         return null;
     }
+
+    @Nullable
+    public ProviderParameter[] getParameter() {
+        return null;
+    }
 }
 

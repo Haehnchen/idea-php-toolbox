@@ -46,21 +46,27 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
                         .create(provider.getName());
 
                     ProviderPresentation presentation = provider.getPresentation();
+                    String description = null;
                     if(presentation != null) {
                         if(presentation.getIcon() != null) {
                             lookupElement = lookupElement.withIcon(presentation.getIcon());
                         }
-                        if(presentation.getDescription() != null) {
-                            lookupElement = lookupElement.withTypeText(presentation.getDescription(), true);
-                        }
+                        description = presentation.getDescription();
                     } else {
                         lookupElement = lookupElement.withIcon(PhpToolboxIcons.TOOLBOX);
                     }
 
-                    String s = provider.getClass().toString();
-                    int i = s.lastIndexOf(".");
-                    if(i > 0) {
-                        lookupElement = lookupElement.withTypeText(s.substring(i + 1), true);
+                    // Overwrite with class name
+                    if(description == null) {
+                        String s = provider.getClass().toString();
+                        int i = s.lastIndexOf(".");
+                        if(i > 0) {
+                            lookupElement = lookupElement.withTypeText(s.substring(i + 1), true);
+                        }
+                    }
+
+                    if(description != null) {
+                        lookupElement = lookupElement.withTypeText(description, true);
                     }
 
                     completionResultSet.addElement(lookupElement);
@@ -149,7 +155,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         // "providers":[{"date": "foo"}]
         extend(CompletionType.BASIC,
             getAfterPropertyAndInsideArrayObjectPattern("registrar"),
-            new MyStringCompletionProvider("signatures", "provider", "language", "signature")
+            new MyStringCompletionProvider("signatures", "provider", "language", "signature", "parameters")
         );
 
         // root: {"providers": ..., "registrar": ...}

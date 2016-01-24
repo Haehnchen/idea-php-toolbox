@@ -4,6 +4,7 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ProcessingContext;
+import de.espend.idea.php.toolbox.dict.MapObjectBag;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,8 @@ public class PhpToolboxCompletionContributorParameter {
 
     @NotNull
     private final Collection<JsonRegistrar> registrars;
+
+    private MapObjectBag bag;
 
     public PhpToolboxCompletionContributorParameter(
         @NotNull CompletionParameters completionParameters,
@@ -61,6 +64,11 @@ public class PhpToolboxCompletionContributorParameter {
     @NotNull
     public JsonRegistrar getRegistrar() {
         return registrars.iterator().next();
+    }
+
+    @NotNull
+    public MapObjectBag getParameterBag() {
+        return this.bag != null ? this.bag : (this.bag = new MapObjectBag(registrars.iterator().next().getParameters()));
     }
 
     @NotNull
