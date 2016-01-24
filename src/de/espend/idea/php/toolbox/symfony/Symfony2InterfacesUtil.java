@@ -1,4 +1,4 @@
-package fr.adrienbrault.idea.symfony2plugin;
+package de.espend.idea.php.toolbox.symfony;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -10,8 +10,8 @@ import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.MethodReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
-import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
+import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
+import de.espend.idea.php.toolbox.symfony.util.MethodMatcher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

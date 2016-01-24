@@ -1,4 +1,4 @@
-package fr.adrienbrault.idea.symfony2plugin.util;
+package de.espend.idea.php.toolbox.symfony.util;
 
 import com.intellij.psi.PsiElement;
 

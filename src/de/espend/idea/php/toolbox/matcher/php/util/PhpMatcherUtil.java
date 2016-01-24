@@ -1,6 +1,5 @@
 package de.espend.idea.php.toolbox.matcher.php.util;
 
-import com.intellij.openapi.util.Condition;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.containers.ContainerUtil;
@@ -8,8 +7,8 @@ import com.jetbrains.php.lang.psi.elements.Function;
 import com.jetbrains.php.lang.psi.elements.Method;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
-import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
+import de.espend.idea.php.toolbox.symfony.Symfony2InterfacesUtil;
+import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 

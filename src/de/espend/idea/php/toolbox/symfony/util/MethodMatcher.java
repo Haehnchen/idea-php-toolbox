@@ -1,10 +1,10 @@
-package fr.adrienbrault.idea.symfony2plugin.util;
+package de.espend.idea.php.toolbox.symfony.util;
 
 import com.intellij.psi.PsiElement;
 import com.jetbrains.php.lang.psi.elements.*;
-import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
-import fr.adrienbrault.idea.symfony2plugin.dic.MethodReferenceBag;
+import de.espend.idea.php.toolbox.symfony.Symfony2InterfacesUtil;
+import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
+import de.espend.idea.php.toolbox.symfony.dic.MethodReferenceBag;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

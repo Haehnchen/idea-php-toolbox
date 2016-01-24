@@ -12,15 +12,13 @@ import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
-import de.espend.idea.php.toolbox.matcher.php.util.PhpMatcherUtil;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
-import fr.adrienbrault.idea.symfony2plugin.util.MethodMatcher;
+import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
+import de.espend.idea.php.toolbox.symfony.util.MethodMatcher;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>

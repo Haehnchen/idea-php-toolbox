@@ -1,4 +1,4 @@
-package fr.adrienbrault.idea.symfony2plugin.codeInsight.utils;
+package de.espend.idea.php.toolbox.symfony.utils;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.patterns.PlatformPatterns;
@@ -14,9 +14,8 @@ import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import com.jetbrains.php.lang.patterns.PhpPatterns;
 import com.jetbrains.php.lang.psi.elements.*;
-import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
-import fr.adrienbrault.idea.symfony2plugin.dic.MethodReferenceBag;
-import fr.adrienbrault.idea.symfony2plugin.util.ParameterBag;
+import de.espend.idea.php.toolbox.symfony.dic.MethodReferenceBag;
+import de.espend.idea.php.toolbox.symfony.util.ParameterBag;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

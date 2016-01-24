@@ -13,7 +13,7 @@ import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
 import de.espend.idea.php.toolbox.provider.source.contributor.utils.ReturnSourceUtil;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
+import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 

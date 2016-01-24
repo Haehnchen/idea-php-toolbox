@@ -6,8 +6,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.lang.PhpLangUtil;
 import com.jetbrains.php.lang.documentation.phpdoc.psi.tags.PhpDocParamTag;
 import com.jetbrains.php.lang.psi.elements.*;
-import fr.adrienbrault.idea.symfony2plugin.util.ParameterBag;
-import fr.adrienbrault.idea.symfony2plugin.util.PsiElementUtils;
+import de.espend.idea.php.toolbox.symfony.util.ParameterBag;
+import de.espend.idea.php.toolbox.symfony.util.PsiElementUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

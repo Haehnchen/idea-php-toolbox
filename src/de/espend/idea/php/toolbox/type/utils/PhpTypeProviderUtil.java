@@ -4,7 +4,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.*;
-import fr.adrienbrault.idea.symfony2plugin.codeInsight.utils.PhpElementsUtil;
+import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;

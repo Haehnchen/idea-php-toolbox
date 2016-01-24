@@ -16,7 +16,7 @@ import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.type.utils.PhpTypeProviderUtil;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
-import fr.adrienbrault.idea.symfony2plugin.Symfony2InterfacesUtil;
+import de.espend.idea.php.toolbox.symfony.Symfony2InterfacesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

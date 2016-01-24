@@ -1,8 +1,8 @@
-package fr.adrienbrault.idea.symfony2plugin.dic;
+package de.espend.idea.php.toolbox.symfony.dic;
 
 import com.jetbrains.php.lang.psi.elements.MethodReference;
 import com.jetbrains.php.lang.psi.elements.ParameterList;
-import fr.adrienbrault.idea.symfony2plugin.util.ParameterBag;
+import de.espend.idea.php.toolbox.symfony.util.ParameterBag;
 
 public class MethodReferenceBag {
 
