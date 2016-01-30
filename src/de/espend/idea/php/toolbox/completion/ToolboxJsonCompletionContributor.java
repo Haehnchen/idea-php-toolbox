@@ -425,6 +425,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
             }
 
             ToolboxJsonFileCompletionArguments arguments = new ToolboxJsonFileCompletionArguments(
+                type,
                 resultSet
             );
 

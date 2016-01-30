@@ -15,9 +15,13 @@ public class ToolboxJsonFileCompletionArguments {
     }
 
     @NotNull
+    private final TYPE type;
+
+    @NotNull
     private final CompletionResultSet resultSet;
 
-    public ToolboxJsonFileCompletionArguments(@NotNull CompletionResultSet resultSet) {
+    public ToolboxJsonFileCompletionArguments(@NotNull TYPE type, @NotNull CompletionResultSet resultSet) {
+        this.type = type;
         this.resultSet = resultSet;
     }
 
@@ -28,5 +32,10 @@ public class ToolboxJsonFileCompletionArguments {
 
     public void addLookupString(@NotNull String lookup) {
         resultSet.addElement(LookupElementBuilder.create(lookup));
+    }
+
+    @NotNull
+    public TYPE getType() {
+        return type;
     }
 }
