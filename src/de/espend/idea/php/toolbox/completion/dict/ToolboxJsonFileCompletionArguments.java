@@ -2,6 +2,7 @@ package de.espend.idea.php.toolbox.completion.dict;
 
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import de.espend.idea.php.toolbox.PhpToolboxIcons;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -31,7 +32,7 @@ public class ToolboxJsonFileCompletionArguments {
     }
 
     public void addLookupString(@NotNull String lookup) {
-        resultSet.addElement(LookupElementBuilder.create(lookup));
+        resultSet.addElement(LookupElementBuilder.create(lookup).withIcon(PhpToolboxIcons.TOOLBOX));
     }
 
     @NotNull

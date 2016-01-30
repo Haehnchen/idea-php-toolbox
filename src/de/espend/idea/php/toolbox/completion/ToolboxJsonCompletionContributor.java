@@ -4,6 +4,7 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.json.psi.*;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PatternCondition;
@@ -18,9 +19,12 @@ import com.jetbrains.php.completion.PhpLookupElement;
 import com.jetbrains.php.completion.insert.PhpReferenceInsertHandler;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
+import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.PhpToolboxIcons;
 import de.espend.idea.php.toolbox.completion.dict.ToolboxJsonFileCompletionArguments;
+import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.extension.*;
+import de.espend.idea.php.toolbox.provider.presentation.ProviderParameter;
 import de.espend.idea.php.toolbox.provider.presentation.ProviderPresentation;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -109,6 +114,31 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
 
                     for(PhpClass phpClass: phpIndex.getInterfacesByName(className)) {
                         resultSet.addElement(new MyPhpLookupElement(phpClass));
+                    }
+                }
+            }
+        });
+
+        // "registrar" => "parameters" => "foo"
+        extend(CompletionType.BASIC, getAfterPropertyAndInsideObjectPattern("parameters"), new CompletionProvider<CompletionParameters>() {
+            @Override
+            protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
+                // @TODO: filter for provider name
+                for (PhpToolboxProviderInterface provider : ExtensionProviderUtil.getProviders(completionParameters.getPosition().getProject())) {
+                    ProviderPresentation presentation = provider.getPresentation();
+                    if(presentation == null) {
+                        continue;
+                    }
+
+                    ProviderParameter[] parameter = presentation.getParameter();
+                    if(parameter == null) {
+                        continue;
+                    }
+
+                    for (ProviderParameter providerParameter : parameter) {
+                        resultSet.addElement(
+                            LookupElementBuilder.create(providerParameter.getName()).withTypeText(providerParameter.getType().toString().toLowerCase(), true)
+                        );
                     }
                 }
             }
