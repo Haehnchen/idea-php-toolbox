@@ -4,6 +4,7 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.json.psi.*;
+import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PatternCondition;
 import com.intellij.patterns.PlatformPatterns;
@@ -18,8 +19,8 @@ import com.jetbrains.php.completion.insert.PhpReferenceInsertHandler;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.PhpToolboxIcons;
-import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
-import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
+import de.espend.idea.php.toolbox.completion.dict.ToolboxJsonFileCompletionArguments;
+import de.espend.idea.php.toolbox.extension.*;
 import de.espend.idea.php.toolbox.provider.presentation.ProviderPresentation;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,10 @@ import java.lang.reflect.Modifier;
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 public class ToolboxJsonCompletionContributor extends CompletionContributor {
+
+    public static final ExtensionPointName<ToolboxJsonFileCompletion> EXTENSIONS = new ExtensionPointName<ToolboxJsonFileCompletion>(
+        "de.espend.idea.php.toolbox.extension.ToolboxJsonFileCompletion"
+    );
 
     public ToolboxJsonCompletionContributor() {
 
@@ -78,7 +83,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         extend(
             CompletionType.BASIC,
             getNextToPropertyPattern("language"),
-            new MyStringCompletionProvider("php", "twig")
+            new MyStringCompletionProvider(ToolboxJsonFileCompletionArguments.TYPE.LANGUAGE, "php", "twig")
         );
 
         // "function":"date"
@@ -128,14 +133,14 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         extend(
             CompletionType.BASIC,
             getNextToPropertyPattern("type"),
-            new MyStringCompletionProvider("default", "return", "array_key", "type")
+            new MyStringCompletionProvider(ToolboxJsonFileCompletionArguments.TYPE.SIGNATURE_TYPE, "default", "return", "array_key", "type")
         );
 
         // "signatures":[{"date": "foo"}]
         extend(
             CompletionType.BASIC,
             getAfterPropertyAndInsideArrayObjectPattern("signatures"),
-            new MyStringCompletionProvider("index", "type", "array", "function", "class", "method", "field")
+            new MyStringCompletionProvider(ToolboxJsonFileCompletionArguments.TYPE.SIGNATURE_KEY, "index", "type", "array", "function", "class", "method", "field")
         );
 
         // "defaults|items":[{"date": "foo"}]
@@ -155,7 +160,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         // "providers":[{"date": "foo"}]
         extend(CompletionType.BASIC,
             getAfterPropertyAndInsideArrayObjectPattern("registrar"),
-            new MyStringCompletionProvider("signatures", "provider", "language", "signature", "parameters")
+            new MyStringCompletionProvider(ToolboxJsonFileCompletionArguments.TYPE.PROVIDER_KEY, "signatures", "provider", "language", "signature", "parameters")
         );
 
         // root: {"providers": ..., "registrar": ...}
@@ -395,7 +400,13 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
 
     private static class MyStringCompletionProvider extends CompletionProvider<CompletionParameters> {
 
+        private ToolboxJsonFileCompletionArguments.TYPE type;
         private String[] strings;
+
+        public MyStringCompletionProvider(@NotNull ToolboxJsonFileCompletionArguments.TYPE type, @NotNull String... strings) {
+            this.type = type;
+            this.strings = strings;
+        }
 
         public MyStringCompletionProvider(@NotNull String... strings) {
             this.strings = strings;
@@ -407,6 +418,18 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
                 resultSet.addElement(
                     LookupElementBuilder.create(s).withIcon(PhpToolboxIcons.TOOLBOX)
                 );
+            }
+
+            if(type == null) {
+                return;
+            }
+
+            ToolboxJsonFileCompletionArguments arguments = new ToolboxJsonFileCompletionArguments(
+                resultSet
+            );
+
+            for (ToolboxJsonFileCompletion ext : EXTENSIONS.getExtensions()) {
+                ext.addCompletions(arguments);
             }
         }
     }
