@@ -28,6 +28,9 @@ public class JsonSignature {
     @Nullable
     private String method;
 
+    @Nullable
+    private String field;
+
     public int getIndex() {
         return index;
     }
@@ -55,6 +58,11 @@ public class JsonSignature {
     @Nullable
     public String getType() {
         return type;
+    }
+
+    @Nullable
+    public String getField() {
+        return field;
     }
 
     @NotNull

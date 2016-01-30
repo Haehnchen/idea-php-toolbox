@@ -135,7 +135,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         extend(
             CompletionType.BASIC,
             getAfterPropertyAndInsideArrayObjectPattern("signatures"),
-            new MyStringCompletionProvider("index", "type", "array", "function", "class", "method")
+            new MyStringCompletionProvider("index", "type", "array", "function", "class", "method", "field")
         );
 
         // "defaults|items":[{"date": "foo"}]
