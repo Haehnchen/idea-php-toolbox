@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -23,12 +23,17 @@
         <li>PHP: Better callable arrays completion and navigation</li>
         <li>PHP: Global string navigation for class, method and function syntax</li>
         <li>JSON plugin references extract from Symfony Plugin: schema see <a href="https://github.com/Haehnchen/idea-php-toolbox">README</a></li>
-        <li>Basic json files for: Behat, PHPUnit, Symfony and Php Core</li>
+        <li>Basic json files for: Behat, PHPUnit, Symfony and PHP Core</li>
         <li>Json REST-Server inside PhpStorm</li>
 
     ]]></description>
 
   <change-notes><![CDATA[
+
+    <h2>0.2.2</h2>
+    <ul>
+      <li>Add some more extension point and api improvements for foreign plugins</li>
+    </ul>
 
     <h2>0.2.1</h2>
     <ul>
