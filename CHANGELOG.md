@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### 0.2.2
+* Add some more extension point and api improvements for foreign plugins
+
+### 0.2.1
+* Add parameters to registrar json object and pipe to parameter #37
+    
 ### 0.2
 * Add trait and interface provider #15
 * Providers can provide presentable information
