@@ -17,6 +17,7 @@ import com.intellij.psi.util.PsiModificationTracker;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.*;
+import de.espend.idea.php.toolbox.extension.JsonStreamResource;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
@@ -49,6 +50,12 @@ public class ExtensionProviderUtil {
     public static final ExtensionPointName<LanguageRegistrarMatcherInterface> REGISTRAR_MATCHER = new ExtensionPointName<LanguageRegistrarMatcherInterface>(
         "de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcher"
     );
+
+    private static final ExtensionPointName<JsonStreamResource> STREAM_RESOURCES = new ExtensionPointName<JsonStreamResource>(
+        "de.espend.idea.php.toolbox.extension.JsonStreamResource"
+    );
+
+    private static final Object STREAM_RESOURCES_LOCK = new Object();
 
     final private static JsonFileCache APPLICATION_CACHE = new JsonFileCache();
     private static Collection<JsonConfigFile> RESOURCE_FILES = null;
@@ -262,32 +269,8 @@ public class ExtensionProviderUtil {
             jsonConfigFiles.addAll(APPLICATION_CACHE.get(new HashSet<File>(Arrays.asList(phpToolboxApplicationService.getApplicationJsonFiles()))));
         }
 
-
-        if(RESOURCE_FILES == null) {
-            Collection<JsonConfigFile> files = new ArrayList<JsonConfigFile>();
-            for (String s : new String[]{"behat", "core", "phpunit", "symfony"}) {
-                InputStream stream = ExtensionProviderUtil.class.getClassLoader().getResourceAsStream("resources/json/" + s + "/.ide-toolbox.metadata.json");
-                if(stream == null) {
-                    continue;
-                }
-
-                String contents;
-                try {
-                    contents = StreamUtil.readText(stream, "UTF-8");
-                } catch (IOException e) {
-                    continue;
-                }
-
-                JsonConfigFile config = JsonParseUtil.getDeserializeConfig(contents);
-                if(config != null) {
-                    files.add(config);
-                }
-            }
-
-            RESOURCE_FILES = files;
-        }
-
-        jsonConfigFiles.addAll(RESOURCE_FILES);
+        // resources files by plugins
+        jsonConfigFiles.addAll(getResourceFiles());
 
         // @TODO: solve object and cache issue
         ProviderStorageInterface providerStorage = RemoteStorage.getInstance(project).get("php-toolbox-json");
@@ -299,6 +282,34 @@ public class ExtensionProviderUtil {
         }
 
         return jsonConfigFiles;
+    }
+
+    @NotNull
+    private static Collection<JsonConfigFile> getResourceFiles() {
+        synchronized (STREAM_RESOURCES_LOCK) {
+            if(RESOURCE_FILES != null) {
+                return RESOURCE_FILES;
+            }
+
+            Collection<JsonConfigFile> files = new ArrayList<JsonConfigFile>();
+            for (JsonStreamResource resource : STREAM_RESOURCES.getExtensions()) {
+                for (InputStream stream : resource.getInputStreams()) {
+                    String contents;
+                    try {
+                        contents = StreamUtil.readText(stream, "UTF-8");
+                    } catch (IOException e) {
+                        continue;
+                    }
+
+                    JsonConfigFile config = JsonParseUtil.getDeserializeConfig(contents);
+                    if(config != null) {
+                        files.add(config);
+                    }
+                }
+            }
+
+            return RESOURCE_FILES = files;
+        }
     }
 
     @NotNull

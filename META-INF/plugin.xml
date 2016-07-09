@@ -100,6 +100,7 @@
     <extensionPoint name="extension.LanguageRegistrarMatcher" interface="de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface"/>
     <extensionPoint name="extension.PhpToolboxTargetLocator" interface="de.espend.idea.php.toolbox.extension.PhpToolboxTargetLocator"/>
     <extensionPoint name="extension.ToolboxJsonFileCompletion" interface="de.espend.idea.php.toolbox.extension.ToolboxJsonFileCompletion"/>
+    <extensionPoint name="extension.JsonStreamResource" interface="de.espend.idea.php.toolbox.extension.JsonStreamResource"/>
   </extensionPoints>
 
     <extensions defaultExtensionNs="de.espend.idea.php.toolbox.extension">
@@ -124,6 +125,8 @@
 
         <PhpToolboxTargetLocator implementation="de.espend.idea.php.toolbox.navigation.locator.ProjectFileTargetLocator"/>
         <PhpToolboxTargetLocator implementation="de.espend.idea.php.toolbox.navigation.locator.GlobalClassTargetLocator"/>
+
+        <JsonStreamResource implementation="de.espend.idea.php.toolbox.provider.InternalJsonStreamResource"/>
     </extensions>
 
     <application-components>
