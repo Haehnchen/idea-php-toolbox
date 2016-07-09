@@ -183,16 +183,43 @@ public class JsonParseUtil {
 
         String className = icon.substring(0, endIndex);
 
+        Class<?> iconClass = findClass(className);
+        if(iconClass == null) {
+            return null;
+        }
+
         try {
-            Class<?> iconClass = Class.forName(className);
             Field field = iconClass.getDeclaredField(icon.substring(endIndex + 1));
             return ((Icon) field.get(null));
 
-        } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Provide support for some more user friendly use cases
+     *
+     * com.intellij.icons.AllIcons$Actions.Back -> com.intellij.icons.AllIcons.Actions.Back
+     */
+    @Nullable
+    private static Class<?> findClass(@NotNull String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException ignored) {
         }
 
-        return null;
+        int i = className.lastIndexOf(".");
+        if(i <= 0) {
+            return null;
+        }
+
+        className = className.substring(0, i) + "$" + className.substring(i + 1);
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
     }
 
     @NotNull
