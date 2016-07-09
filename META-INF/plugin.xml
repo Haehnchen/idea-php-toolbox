@@ -108,6 +108,7 @@
         <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.ClassInterfaceProvider"/>
         <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.InterfaceProvider"/>
         <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.TraitProvider"/>
+        <PhpToolboxProviderInterface implementation="de.espend.idea.php.toolbox.provider.php.FunctionProvider"/>
 
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.StringReturnSourceContributor"/>
         <SourceContributorInterface implementation="de.espend.idea.php.toolbox.provider.source.contributor.ArrayReturnSourceContributor"/>
