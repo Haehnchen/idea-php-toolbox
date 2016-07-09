@@ -45,7 +45,7 @@ public class PhpGotoDeclarationHandler extends CompletionContributor implements 
             return null;
         }
 
-        Set<PsiElement> psiElements = new HashSet<PsiElement>();
+        Set<PsiElement> psiElements = new HashSet<>();
         for (final GotoCompletionContributor contributor : CONTRIBUTORS) {
             if(!contributor.getPattern().accepts(psiElement)) {
                 continue;

@@ -1,6 +1,5 @@
 package de.espend.idea.php.toolbox.remote;
 
-import com.google.gson.JsonSyntaxException;
 import com.intellij.openapi.project.Project;
 import de.espend.idea.php.toolbox.remote.provider.ProviderInterface;
 import de.espend.idea.php.toolbox.remote.provider.ProviderStorageInterface;
@@ -16,10 +15,10 @@ import java.util.Map;
  */
 public class RemoteStorage {
 
-    protected static Map<Project, RemoteStorage> instance = new HashMap<Project, RemoteStorage>();
+    protected static Map<Project, RemoteStorage> instance = new HashMap<>();
 
     protected Project project;
-    protected Map<String, ProviderStorageInterface> instances = new HashMap<String, ProviderStorageInterface>();
+    protected Map<String, ProviderStorageInterface> instances = new HashMap<>();
 
     public boolean has(@NotNull String provider) {
         return instances.containsKey(provider);

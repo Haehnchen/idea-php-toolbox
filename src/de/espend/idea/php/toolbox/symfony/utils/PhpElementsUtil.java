@@ -175,12 +175,7 @@ public class PhpElementsUtil {
         }
 
         final String tempVariableName = parameters[parameterIndex].getName();
-        return PsiTreeUtil.collectElements(method.getLastChild(), new PsiElementFilter() {
-            @Override
-            public boolean isAccepted(PsiElement element) {
-                return element instanceof Variable && tempVariableName.equals(((Variable) element).getName());
-            }
-        });
+        return PsiTreeUtil.collectElements(method.getLastChild(), element -> element instanceof Variable && tempVariableName.equals(((Variable) element).getName()));
 
     }
 
@@ -388,7 +383,7 @@ public class PhpElementsUtil {
     @Nullable
     static public String getMethodReturnAsString(@NotNull Method method) {
 
-        final Set<String> values = new HashSet<String>();
+        final Set<String> values = new HashSet<>();
         method.acceptChildren(new PsiRecursiveElementWalkingVisitor() {
             @Override
             public void visitElement(PsiElement element) {

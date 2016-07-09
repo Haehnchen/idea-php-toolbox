@@ -19,7 +19,7 @@ public class TwigBlockRegistrarMatcher implements LanguageRegistrarMatcherInterf
 
     @Override
     public boolean matches(@NotNull LanguageMatcherParameter parameter) {
-        Set<String> functions = new HashSet<String>();
+        Set<String> functions = new HashSet<>();
 
         for (JsonSignature signature : parameter.getSignatures()) {
             if(StringUtils.isBlank(signature.getFunction())) {

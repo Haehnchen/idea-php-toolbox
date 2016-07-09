@@ -37,7 +37,7 @@ public class RouterHttpHandler implements HttpHandler {
                 continue;
             }
 
-            List<String> matches = new ArrayList<String>();
+            List<String> matches = new ArrayList<>();
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 matches.add(matcher.group(i));
             }
@@ -45,7 +45,7 @@ public class RouterHttpHandler implements HttpHandler {
             Matcher varMatcher = Pattern.compile("\\{([\\w-]+)\\}").matcher(route.getPath());
 
             int n = 0;
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             while (varMatcher.find() ) {
                 map.put(varMatcher.group(1), matches.get(n++));
             }

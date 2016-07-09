@@ -19,12 +19,7 @@ public class PhpToolboxProjectComponent implements ProjectComponent {
 
     @Override
     public void projectOpened() {
-        DumbService.getInstance(project).smartInvokeLater(new Runnable() {
-            @Override
-            public void run() {
-                PersistentStorageUtil.load(project);
-            }
-        });
+        DumbService.getInstance(project).smartInvokeLater(() -> PersistentStorageUtil.load(project));
     }
 
     @Override

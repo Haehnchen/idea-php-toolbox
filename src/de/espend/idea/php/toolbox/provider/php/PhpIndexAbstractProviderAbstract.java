@@ -9,7 +9,6 @@ import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderAbstract;
-import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderArguments;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderInterface;
@@ -29,7 +28,7 @@ abstract class PhpIndexAbstractProviderAbstract extends PhpToolboxProviderAbstra
     public Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter) {
         PhpIndex instance = PhpIndex.getInstance(parameter.getProject());
 
-        Collection<LookupElement> lookupElements = new ArrayList<LookupElement>();
+        Collection<LookupElement> lookupElements = new ArrayList<>();
         for (String className : getClasses(parameter)) {
             // strip double backslash
             className = className.replaceAll("\\\\+", "\\\\");
@@ -64,7 +63,7 @@ abstract class PhpIndexAbstractProviderAbstract extends PhpToolboxProviderAbstra
             contents = "\\" + contents;
         }
 
-        return new ArrayList<PsiElement>(
+        return new ArrayList<>(
             resolveParameter(PhpIndex.getInstance(parameter.getProject()), contents)
         );
     }
@@ -74,7 +73,7 @@ abstract class PhpIndexAbstractProviderAbstract extends PhpToolboxProviderAbstra
     public Collection<PhpNamedElement> resolveParameter(@NotNull PhpToolboxTypeProviderArguments args) {
         String type = args.getParameter().replaceAll("\\\\+", "\\\\");
 
-        return new HashSet<PhpNamedElement>(
+        return new HashSet<>(
             PhpIndex.getInstance(args.getProject()).getAnyByFQN(type)
         );
     }

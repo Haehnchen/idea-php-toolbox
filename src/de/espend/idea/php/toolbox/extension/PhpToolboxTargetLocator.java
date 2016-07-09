@@ -1,7 +1,6 @@
 package de.espend.idea.php.toolbox.extension;
 
 import com.intellij.psi.PsiElement;
-import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.navigation.locator.TargetLocatorParameter;
 import org.jetbrains.annotations.NotNull;
 

@@ -33,18 +33,15 @@ public class InfoActionHandler implements HttpAction {
         info.versionName = ApplicationInfo.getInstance().getVersionName();
         info.projects = ProjectIndexHttpAction.getProjects();
 
-        info.routes = ContainerUtil.map(RemoteUtil.getRoutes(), new Function<RouteInterface, Map<String, String>>() {
-            @Override
-            public Map<String, String> fun(final RouteInterface route) {
-                return new HashMap<String, String>() {{
-                    put("path", route.getPath());
-                    put("method", route.getMethod());
-                }};
-            }
+        info.routes = ContainerUtil.map(RemoteUtil.getRoutes(), route -> {
+            return new HashMap<String, String>() {{
+                put("path", route.getPath());
+                put("method", route.getMethod());
+            }};
         });
 
         for (IdeaPluginDescriptor descriptor : PluginManager.getPlugins()) {
-            Map<String, String> map = new TreeMap<String, String>();
+            Map<String, String> map = new TreeMap<>();
 
             map.put("name", descriptor.getName());
             map.put("version", descriptor.getVersion());

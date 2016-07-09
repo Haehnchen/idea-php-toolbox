@@ -14,10 +14,10 @@ public class JsonProvider {
 
     private String name;
     private JsonRawLookupElement defaults;
-    private Collection<JsonRawLookupElement> items = new ArrayList<JsonRawLookupElement>();
+    private Collection<JsonRawLookupElement> items = new ArrayList<>();
 
     @SerializedName("lookup_strings")
-    private Collection<String> lookupStrings = new HashSet<String>();
+    private Collection<String> lookupStrings = new HashSet<>();
 
     private Collection<JsonRawLookupElement> myItems = null;
 
@@ -37,7 +37,7 @@ public class JsonProvider {
             return this.myItems;
         }
 
-        this.myItems = new ArrayList<JsonRawLookupElement>(items);
+        this.myItems = new ArrayList<>(items);
 
         if(lookupStrings.size() > 0) {
             for (String lookupElement : lookupStrings) {

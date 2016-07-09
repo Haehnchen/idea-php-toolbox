@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,9 +32,7 @@ public class JsonParseUtil {
         JsonObject jsonObject = null;
         try {
             jsonObject = jsonParser.parse(contents).getAsJsonObject();
-        } catch (JsonSyntaxException ignored) {
-        } catch (JsonIOException ignored) {
-        } catch (IllegalStateException ignored) {
+        } catch (JsonSyntaxException | IllegalStateException | JsonIOException ignored) {
         }
 
         if(jsonObject == null) {
@@ -65,9 +62,7 @@ public class JsonParseUtil {
 
         try {
             jsonObject = jsonParser.parse(br).getAsJsonObject();
-        } catch (JsonIOException ignored) {
-        } catch (JsonSyntaxException ignored) {
-        } catch (IllegalStateException ignored) {
+        } catch (JsonIOException | IllegalStateException | JsonSyntaxException ignored) {
         }
 
         if(jsonObject == null) {
@@ -85,9 +80,7 @@ public class JsonParseUtil {
                 jsonObject,
                 new TypeToken<JsonConfigFile>(){}.getType()
             );
-        } catch (JsonIOException ignored) {
-        } catch (JsonSyntaxException ignored) {
-        } catch (IllegalStateException ignored) {
+        } catch (JsonIOException | IllegalStateException | JsonSyntaxException ignored) {
         }
 
         return null;
@@ -95,7 +88,7 @@ public class JsonParseUtil {
 
     public static Map<String, Collection<JsonRawLookupElement>> getProviderJsonRawLookupElements(Collection<JsonProvider> jsonProviders) {
 
-        Map<String, Collection<JsonRawLookupElement>> jsonLookupElements = new HashMap<String, Collection<JsonRawLookupElement>>();
+        Map<String, Collection<JsonRawLookupElement>> jsonLookupElements = new HashMap<>();
 
         for (JsonProvider provider: jsonProviders) {
 
@@ -108,7 +101,7 @@ public class JsonParseUtil {
             if(lookupItems != null && lookupItems.size() > 0) {
 
                 if(!jsonLookupElements.containsKey(providerName)) {
-                    jsonLookupElements.put(providerName, new ArrayList<JsonRawLookupElement>());
+                    jsonLookupElements.put(providerName, new ArrayList<>());
                 }
 
                 // merge default values
@@ -195,11 +188,7 @@ public class JsonParseUtil {
             Field field = iconClass.getDeclaredField(icon.substring(endIndex + 1));
             return ((Icon) field.get(null));
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
 
@@ -209,7 +198,7 @@ public class JsonParseUtil {
     @NotNull
     public static Collection<JsonSignature> createSignaturesFromStrings(@NotNull Collection<String> signatures) {
 
-        Collection<JsonSignature> jsonSignatures = new ArrayList<JsonSignature>();
+        Collection<JsonSignature> jsonSignatures = new ArrayList<>();
 
         for (String signature : signatures) {
             if(signature == null || StringUtils.isBlank(signature)) {

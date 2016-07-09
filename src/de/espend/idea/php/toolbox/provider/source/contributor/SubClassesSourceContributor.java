@@ -28,7 +28,7 @@ public class SubClassesSourceContributor implements SourceContributorInterface {
             return Collections.emptyList();
         }
 
-        Collection<LookupElement> lookupElements = new ArrayList<LookupElement>();
+        Collection<LookupElement> lookupElements = new ArrayList<>();
         for (PhpClass phpClass : PhpIndex.getInstance(parameter.getProject()).getAllSubclasses(sourceParameter)) {
             lookupElements.add(
                 LookupElementBuilder.create(phpClass.getPresentableFQN()).withIcon(phpClass.getIcon())
@@ -51,7 +51,7 @@ public class SubClassesSourceContributor implements SourceContributorInterface {
             return Collections.emptyList();
         }
 
-        final Collection<PsiElement> psiElements = new ArrayList<PsiElement>();
+        final Collection<PsiElement> psiElements = new ArrayList<>();
 
         for (PhpClass phpClass : PhpIndex.getInstance(parameter.getProject()).getAllSubclasses(sourceParameter)) {
             if(StringUtils.stripStart(contents, "\\").equalsIgnoreCase(StringUtils.stripStart(phpClass.getPresentableFQN(), "\\"))) {

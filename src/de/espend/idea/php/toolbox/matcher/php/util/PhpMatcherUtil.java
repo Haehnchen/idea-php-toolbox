@@ -88,6 +88,6 @@ public class PhpMatcherUtil {
      */
     @NotNull
     public static Collection<JsonSignature> filterFunctionSignatures(@NotNull Collection<JsonSignature> signatures) {
-        return new HashSet<JsonSignature>(ContainerUtil.filter(signatures, ContainerConditions.FUNCTION_FILTER));
+        return new HashSet<>(ContainerUtil.filter(signatures, ContainerConditions.FUNCTION_FILTER));
     }
 }

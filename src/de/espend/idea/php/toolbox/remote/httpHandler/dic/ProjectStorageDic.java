@@ -9,5 +9,5 @@ import java.util.Map;
 public class ProjectStorageDic {
     public String name;
     public String presentableUrl;
-    public Map<String, Object> storages = new HashMap<String, Object>();
+    public Map<String, Object> storages = new HashMap<>();
 }

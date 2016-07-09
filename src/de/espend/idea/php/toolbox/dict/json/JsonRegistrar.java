@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.HashSet;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -14,10 +13,10 @@ import java.util.HashSet;
 public class JsonRegistrar {
 
     @NotNull
-    private Collection<String> signature = new HashSet<String>();
+    private Collection<String> signature = new HashSet<>();
 
     @NotNull
-    private Collection<JsonSignature> signatures = new ArrayList<JsonSignature>();
+    private Collection<JsonSignature> signatures = new ArrayList<>();
 
     private Collection<JsonSignature> mySignatures = null;
 
@@ -28,7 +27,7 @@ public class JsonRegistrar {
     private String language;
 
     @NotNull
-    private Map<String, Object> parameters = new HashMap<String, Object>();
+    private Map<String, Object> parameters = new HashMap<>();
 
     private boolean references = false ;
 
@@ -51,7 +50,7 @@ public class JsonRegistrar {
             return this.mySignatures;
         }
 
-        this.mySignatures = new ArrayList<JsonSignature>(signatures);
+        this.mySignatures = new ArrayList<>(signatures);
 
         if(this.signature.size() > 0) {
             this.mySignatures.addAll(JsonParseUtil.createSignaturesFromStrings(this.signature));

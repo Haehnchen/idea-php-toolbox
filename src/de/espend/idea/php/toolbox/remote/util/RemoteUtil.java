@@ -42,7 +42,7 @@ public class RemoteUtil {
 
     @NotNull
     public static Collection<RouteInterface> getRoutes() {
-        Collection<RouteInterface> routes = new ArrayList<RouteInterface>();
+        Collection<RouteInterface> routes = new ArrayList<>();
 
         routes.add(new Route("/", new InfoActionHandler()));
         routes.add(new Route("/projects", new ProjectIndexHttpAction()));

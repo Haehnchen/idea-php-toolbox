@@ -23,7 +23,7 @@ public class ReturnSourceUtil {
      * "Foo::bar, Foo:car"
      */
     public static Collection<Pair<String, String>> extractParameter(@NotNull String parameters) {
-        Collection<Pair<String, String>> methods = new ArrayList<Pair<String, String>>();
+        Collection<Pair<String, String>> methods = new ArrayList<>();
 
         String[] sourceParameter = parameters.split(",");
         for (String s : sourceParameter) {

@@ -35,14 +35,10 @@ public class RemoteListenerComponent implements ApplicationComponent {
             server = HttpServer.create(new InetSocketAddress(host, port), 0);
         } catch (IOException e) {
             PhpToolboxApplicationService.LOG.error(String.format("Can't bind with server to %s:%s", host, port));
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                public void run() {
-                    Messages.showMessageDialog(
-                        String.format("Can't bind with server to %s:%s", host, port), "PHP Toolbox",
-                        Messages.getErrorIcon()
-                    );
-                }
-            });
+            ApplicationManager.getApplication().invokeLater(() -> Messages.showMessageDialog(
+                String.format("Can't bind with server to %s:%s", host, port), "PHP Toolbox",
+                Messages.getErrorIcon()
+            ));
 
             return;
         }
@@ -50,12 +46,9 @@ public class RemoteListenerComponent implements ApplicationComponent {
         server.createContext("/", new RouterHttpHandler());
 
         final HttpServer finalServer = server;
-        listenerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                finalServer.start();
-                PhpToolboxApplicationService.LOG.info(String.format("Starting server on %s:%s", host, port));
-            }
+        listenerThread = new Thread(() -> {
+            finalServer.start();
+            PhpToolboxApplicationService.LOG.info(String.format("Starting server on %s:%s", host, port));
         });
 
         listenerThread.start();

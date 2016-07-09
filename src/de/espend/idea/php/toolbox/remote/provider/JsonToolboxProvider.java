@@ -20,12 +20,7 @@ public class JsonToolboxProvider implements ProviderInterface<JsonConfigFile> {
     @Nullable
     @Override
     public ProviderStorageInterface<JsonConfigFile> getData(final @NotNull String content) throws JsonSyntaxException {
-        return new ProviderStorageInterface<JsonConfigFile>() {
-            @Override
-            public JsonConfigFile getData() throws JsonSyntaxException {
-                return new Gson().fromJson(content, JsonConfigFile.class);
-            }
-        };
+        return () -> new Gson().fromJson(content, JsonConfigFile.class);
     }
 
     @Override

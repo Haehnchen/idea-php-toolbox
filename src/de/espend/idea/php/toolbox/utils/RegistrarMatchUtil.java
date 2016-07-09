@@ -5,7 +5,6 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.*;
 import com.intellij.util.containers.HashMap;
-import com.intellij.util.containers.HashSet;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
@@ -34,7 +33,7 @@ public class RegistrarMatchUtil {
 
         Collection<PhpToolboxProviderInterface> providers = null;
 
-        Map<PhpToolboxProviderInterface, Set<JsonRegistrar>> providerMatches = new HashMap<PhpToolboxProviderInterface, Set<JsonRegistrar>>();
+        Map<PhpToolboxProviderInterface, Set<JsonRegistrar>> providerMatches = new HashMap<>();
 
         for (JsonRegistrar registrar : registrars) {
 
@@ -52,7 +51,7 @@ public class RegistrarMatchUtil {
                 providers = ExtensionProviderUtil.getProviders(psiElement.getProject());
             }
 
-            Collection<PhpToolboxProviderInterface> matchedProviders = new ArrayList<PhpToolboxProviderInterface>();
+            Collection<PhpToolboxProviderInterface> matchedProviders = new ArrayList<>();
             for (PhpToolboxProviderInterface provider : providers) {
                 String name = provider.getName();
                 if (name.equals(registrar.getProvider())) {

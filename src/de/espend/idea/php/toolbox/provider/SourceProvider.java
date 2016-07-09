@@ -5,7 +5,6 @@ import com.intellij.psi.PsiElement;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.dict.json.JsonProvider;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderAbstract;
-import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
@@ -33,7 +32,7 @@ public class SourceProvider extends PhpToolboxProviderAbstract {
     @Override
     public Collection<LookupElement> getLookupElements(@NotNull PhpToolboxCompletionContributorParameter parameter) {
 
-        Collection<LookupElement> lookupElements = new ArrayList<LookupElement>();
+        Collection<LookupElement> lookupElements = new ArrayList<>();
         SourceContributorParameter params = null;
         for (JsonProvider sourceProvider : sourceProviders) {
             if(sourceProvider.getSource() == null || sourceProvider.getSource().getContributor() == null) {
@@ -59,7 +58,7 @@ public class SourceProvider extends PhpToolboxProviderAbstract {
     @Override
     public Collection<PsiElement> getPsiTargets(@NotNull PhpToolboxDeclarationHandlerParameter parameter) {
 
-        Collection<PsiElement> targets = new ArrayList<PsiElement>();
+        Collection<PsiElement> targets = new ArrayList<>();
         SourceContributorDeclarationHandlerParameter params = null;
         for (JsonProvider sourceProvider : sourceProviders) {
             if(sourceProvider.getSource() == null || sourceProvider.getSource().getContributor() == null) {

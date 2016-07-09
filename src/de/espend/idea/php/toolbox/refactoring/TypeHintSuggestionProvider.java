@@ -35,12 +35,7 @@ public class TypeHintSuggestionProvider implements NameSuggestionProvider
             return null;
         }
 
-        List<String> filter = ContainerUtil.filter(PhpNameSuggestionUtil.variableNameByType((Parameter) psiElement, psiElement.getProject(), false), new Condition<String>() {
-            @Override
-            public boolean value(String s) {
-                return !StringUtil.containsChar(s, '\\');
-            }
-        });
+        List<String> filter = ContainerUtil.filter(PhpNameSuggestionUtil.variableNameByType((Parameter) psiElement, psiElement.getProject(), false), s -> !StringUtil.containsChar(s, '\\'));
 
         if(filter.size() == 0) {
             return null;

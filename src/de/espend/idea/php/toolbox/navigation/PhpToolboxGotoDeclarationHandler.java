@@ -71,7 +71,7 @@ public class PhpToolboxGotoDeclarationHandler implements GotoDeclarationHandler 
 
         PhpToolboxDeclarationHandlerParameter parameter = new PhpToolboxDeclarationHandlerParameter(psiElement, selectedItem, fileType);
 
-        Collection<PsiElement> targets = new HashSet<PsiElement>();
+        Collection<PsiElement> targets = new HashSet<>();
         for (Map.Entry<PhpToolboxProviderInterface, Set<JsonRegistrar>> provider : providers.entrySet()) {
             targets.addAll(provider.getKey().getPsiTargets(parameter));
         }

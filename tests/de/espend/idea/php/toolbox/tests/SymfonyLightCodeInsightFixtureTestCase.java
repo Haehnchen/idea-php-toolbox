@@ -104,7 +104,7 @@ public abstract class SymfonyLightCodeInsightFixtureTestCase extends LightCodeIn
             targetShortcut = "\\" + targetShortcut;
         }
 
-        Set<String> classTargets = new HashSet<String>();
+        Set<String> classTargets = new HashSet<>();
 
         for (GotoDeclarationHandler gotoDeclarationHandler : Extensions.getExtensions(GotoDeclarationHandler.EP_NAME)) {
             PsiElement[] gotoDeclarationTargets = gotoDeclarationHandler.getGotoDeclarationTargets(psiElement, 0, myFixture.getEditor());
@@ -144,7 +144,7 @@ public abstract class SymfonyLightCodeInsightFixtureTestCase extends LightCodeIn
         myFixture.configureByText(languageFileType, configureByText);
         PsiElement psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
 
-        Set<String> targetStrings = new HashSet<String>();
+        Set<String> targetStrings = new HashSet<>();
 
         for (GotoDeclarationHandler gotoDeclarationHandler : Extensions.getExtensions(GotoDeclarationHandler.EP_NAME)) {
 
@@ -168,7 +168,7 @@ public abstract class SymfonyLightCodeInsightFixtureTestCase extends LightCodeIn
         myFixture.configureByText(languageFileType, configureByText);
         PsiElement psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
 
-        Set<String> targets = new HashSet<String>();
+        Set<String> targets = new HashSet<>();
 
         for (GotoDeclarationHandler gotoDeclarationHandler : Extensions.getExtensions(GotoDeclarationHandler.EP_NAME)) {
             PsiElement[] gotoDeclarationTargets = gotoDeclarationHandler.getGotoDeclarationTargets(psiElement, 0, myFixture.getEditor());

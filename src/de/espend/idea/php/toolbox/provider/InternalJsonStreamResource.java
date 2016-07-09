@@ -15,7 +15,7 @@ public class InternalJsonStreamResource implements JsonStreamResource {
     @NotNull
     @Override
     public Collection<InputStream> getInputStreams() {
-        Collection<InputStream> inputStreams = new ArrayList<InputStream>();
+        Collection<InputStream> inputStreams = new ArrayList<>();
 
         // not scanning directory; performance because we are inside .jar file
         String[] strings = {

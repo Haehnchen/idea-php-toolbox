@@ -54,7 +54,7 @@ public class PhpDocUtil {
             return null;
         }
 
-        Collection<PhpDocParamTag> phpDocParamTags = new ArrayList<PhpDocParamTag>();
+        Collection<PhpDocParamTag> phpDocParamTags = new ArrayList<>();
 
         if(method instanceof Method) {
             for(Method implementedMethod: getImplementedMethods((Method) method)) {
@@ -82,7 +82,7 @@ public class PhpDocUtil {
     }
 
     private static Method[] getImplementedMethods(@NotNull Method method) {
-        ArrayList<Method> items = getImplementedMethods(method.getContainingClass(), method, new ArrayList<Method>());
+        ArrayList<Method> items = getImplementedMethods(method.getContainingClass(), method, new ArrayList<>());
         return items.toArray(new Method[items.size()]);
     }
 

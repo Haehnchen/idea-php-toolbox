@@ -53,8 +53,8 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
         }
 
         // @TODO: pipe provider names
-        Set<String> methods = new HashSet<String>();
-        Set<String> functions = new HashSet<String>();
+        Set<String> methods = new HashSet<>();
+        Set<String> functions = new HashSet<>();
         for (JsonRegistrar type : types) {
             for (JsonSignature signature: ContainerUtil.filter(type.getSignatures(), ContainerConditions.RETURN_TYPE_TYPE)) {
                 if(signature.getFunction() != null && StringUtils.isNotBlank(signature.getFunction())) {
@@ -123,7 +123,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
 
         Set<String> providers = getProviderNames(project, (Function) phpNamedElement);
 
-        Collection<PhpNamedElement> elements = new HashSet<PhpNamedElement>();
+        Collection<PhpNamedElement> elements = new HashSet<>();
         elements.addAll(phpNamedElements);
 
         for (String providerName : providers) {
@@ -151,7 +151,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
     private Set<String> getProviderNames(@NotNull Project project, @NotNull Function method) {
         Collection<JsonRegistrar> types = ExtensionProviderUtil.getTypes(project);
 
-        Set<String> providers = new HashSet<String>();
+        Set<String> providers = new HashSet<>();
 
         Symfony2InterfacesUtil symfony2InterfacesUtil = null;
 

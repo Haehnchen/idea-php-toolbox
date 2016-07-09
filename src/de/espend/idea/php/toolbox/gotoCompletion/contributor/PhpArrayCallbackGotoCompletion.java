@@ -61,7 +61,7 @@ public class PhpArrayCallbackGotoCompletion implements GotoCompletionContributor
     @Override
     public PsiElement[] getGotoDeclarationTargets(@NotNull PsiElement psiElement, int i, Editor editor) {
 
-        Collection<PsiElement> psiElements = new HashSet<PsiElement>();
+        Collection<PsiElement> psiElements = new HashSet<>();
 
         PsiElement parent = psiElement.getParent();
         if(parent instanceof StringLiteralExpression) {

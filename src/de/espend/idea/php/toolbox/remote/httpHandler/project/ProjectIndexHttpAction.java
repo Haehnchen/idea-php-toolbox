@@ -29,10 +29,10 @@ public class ProjectIndexHttpAction implements HttpAction {
     @NotNull
     public static Collection<Map<String, String>> getProjects() {
 
-        Collection<Map<String, String>> projects = new ArrayList<Map<String, String>>();
+        Collection<Map<String, String>> projects = new ArrayList<>();
 
         for(Project project: ProjectManager.getInstance().getOpenProjects()) {
-            Map<String, String> projectMap = new TreeMap<String, String>();
+            Map<String, String> projectMap = new TreeMap<>();
 
             projectMap.put("name", project.getName());
             projectMap.put("basePath", project.getBasePath());

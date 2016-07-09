@@ -2,7 +2,6 @@ package de.espend.idea.php.toolbox.tests.utils;
 
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.io.StreamUtil;
-import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.dict.json.*;
 import de.espend.idea.php.toolbox.utils.JsonParseUtil;
@@ -53,11 +52,8 @@ public class JsonParseUtilTest extends Assert {
         assertTrue(ContainerUtil.filter(next.getSignatures(), new MyFunctionJsonSignatureCondition("foo")).size() > 0);
         assertTrue(ContainerUtil.filter(next.getSignatures(), new MyFunctionJsonSignatureCondition("date")).size() > 0);
 
-        assertTrue(ContainerUtil.filter(next.getSignatures(), new Condition<JsonSignature>() {
-            @Override
-            public boolean value(JsonSignature jsonSignature) {
-                return "DateTime".equals(jsonSignature.getClassName());
-            }
+        assertTrue(ContainerUtil.filter(next.getSignatures(), jsonSignature -> {
+            return "DateTime".equals(jsonSignature.getClassName());
         }).size() > 0);
     }
 
@@ -73,12 +69,7 @@ public class JsonParseUtilTest extends Assert {
         assertNotNull(object);
         assertEquals(object.hashCode(), ContainerUtil.find(next.getSignatures(), new MyFunctionJsonSignatureCondition("apple")).hashCode());
 
-        assertTrue(ContainerUtil.filter(next.getSignatures(), new Condition<JsonSignature>() {
-            @Override
-            public boolean value(JsonSignature jsonSignature) {
-                return "apple".equals(jsonSignature.getClassName()) && "car".equals(jsonSignature.getMethod());
-            }
-        }).size() > 0);
+        assertTrue(ContainerUtil.filter(next.getSignatures(), jsonSignature -> "apple".equals(jsonSignature.getClassName()) && "car".equals(jsonSignature.getMethod())).size() > 0);
     }
 
     @Test
@@ -90,7 +81,7 @@ public class JsonParseUtilTest extends Assert {
             e.printStackTrace();
         }
 
-        List<JsonProvider> registrar = new ArrayList<JsonProvider>(elements.getProviders());
+        List<JsonProvider> registrar = new ArrayList<>(elements.getProviders());
 
         assertEquals("date_format", registrar.get(0).getName());
 
@@ -162,7 +153,7 @@ public class JsonParseUtilTest extends Assert {
         assertEquals(0, JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("")).size());
         assertEquals(0, JsonParseUtil.createSignaturesFromStrings(Collections.singletonList("a:")).size());
 
-        ArrayList<String> signatures = new ArrayList<String>();
+        ArrayList<String> signatures = new ArrayList<>();
         signatures.add(null);
         assertEquals(0, JsonParseUtil.createSignaturesFromStrings(signatures).size());
     }

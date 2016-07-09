@@ -13,7 +13,6 @@ import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.utils.RegistrarMatchUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 

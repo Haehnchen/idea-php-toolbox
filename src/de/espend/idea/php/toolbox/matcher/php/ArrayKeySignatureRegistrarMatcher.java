@@ -25,12 +25,7 @@ import java.util.Collection;
  */
 public class ArrayKeySignatureRegistrarMatcher implements LanguageRegistrarMatcherInterface {
 
-    private static final Condition<JsonSignature> ARRAY_KEY_FILTER = new Condition<JsonSignature>() {
-        @Override
-        public boolean value(JsonSignature signature) {
-            return "array_key".equals(signature.getType());
-        }
-    };
+    private static final Condition<JsonSignature> ARRAY_KEY_FILTER = signature -> "array_key".equals(signature.getType());
 
     @Override
     public boolean matches(@NotNull LanguageMatcherParameter parameter) {

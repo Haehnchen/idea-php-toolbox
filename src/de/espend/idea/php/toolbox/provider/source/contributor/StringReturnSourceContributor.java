@@ -30,7 +30,7 @@ public class StringReturnSourceContributor implements SourceContributorInterface
     @Override
     public Collection<LookupElement> getLookupElements(@NotNull SourceContributorParameter parameter) {
 
-        Collection<LookupElement> lookupElements = new ArrayList<LookupElement>();
+        Collection<LookupElement> lookupElements = new ArrayList<>();
 
         ReturnVisitor visitor = null;
 
@@ -64,7 +64,7 @@ public class StringReturnSourceContributor implements SourceContributorInterface
             return Collections.emptyList();
         }
 
-        final Collection<PsiElement> psiElements = new ArrayList<PsiElement>();
+        final Collection<PsiElement> psiElements = new ArrayList<>();
 
         ReturnVisitor visitor = null;
 

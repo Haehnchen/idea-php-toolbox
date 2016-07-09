@@ -11,8 +11,8 @@ import java.util.*;
  */
 public class JsonFileCache {
 
-    final Map<File, Long> filesMTime = new HashMap<File, Long>();
-    final Map<File, JsonConfigFile> configs = new HashMap<File, JsonConfigFile>();
+    final Map<File, Long> filesMTime = new HashMap<>();
+    final Map<File, JsonConfigFile> configs = new HashMap<>();
 
     public Collection<JsonConfigFile> get(Set<File> files) {
 
@@ -51,7 +51,7 @@ public class JsonFileCache {
         }
 
         // filter null values, if we get invalid json file
-        List<JsonConfigFile> configList = new ArrayList<JsonConfigFile>();
+        List<JsonConfigFile> configList = new ArrayList<>();
         for (JsonConfigFile jsonConfigFile : configs.values()) {
             if(jsonConfigFile != null) {
                 configList.add(jsonConfigFile);

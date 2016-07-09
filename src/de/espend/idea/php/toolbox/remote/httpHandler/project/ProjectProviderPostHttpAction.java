@@ -1,9 +1,7 @@
 package de.espend.idea.php.toolbox.remote.httpHandler.project;
 
-import com.google.gson.JsonSyntaxException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.StreamUtil;
-import com.intellij.util.containers.HashMap;
 import de.espend.idea.php.toolbox.remote.RemoteStorage;
 import de.espend.idea.php.toolbox.remote.http.RequestMatcher;
 import de.espend.idea.php.toolbox.remote.http.JsonResponse;

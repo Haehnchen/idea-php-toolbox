@@ -15,7 +15,7 @@ public class Response {
 
     private int status = 200;
     private String content = "";
-    private Map<String, String> headers = new HashMap<String, String>();
+    private Map<String, String> headers = new HashMap<>();
 
     public Response() {
     }

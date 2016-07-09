@@ -43,12 +43,7 @@ public class VariadicSignatureRegistrarMatcher implements LanguageRegistrarMatch
         }
 
         // @TODO: use isVariadic on parameterList to find index
-        signatures = ContainerUtil.filter(signatures, new Condition<JsonSignature>() {
-            @Override
-            public boolean value(JsonSignature signature) {
-                return parameterBag.getIndex() >= signature.getIndex();
-            }
-        });
+        signatures = ContainerUtil.filter(signatures, signature -> parameterBag.getIndex() >= signature.getIndex());
 
         if(signatures.size() == 0) {
             return false;
@@ -76,11 +71,8 @@ public class VariadicSignatureRegistrarMatcher implements LanguageRegistrarMatch
         } else if(parent instanceof FunctionReference) {
             // foo("<caret>");
             final String name = ((FunctionReference) parent).getName();
-            return name != null && null != ContainerUtil.find(signatures, new Condition<JsonSignature>() {
-                @Override
-                public boolean value(JsonSignature signature) {
-                    return name.equalsIgnoreCase(signature.getFunction());
-                }
+            return name != null && null != ContainerUtil.find(signatures, signature -> {
+                return name.equalsIgnoreCase(signature.getFunction());
             });
 
         } else if(parent instanceof NewExpression) {

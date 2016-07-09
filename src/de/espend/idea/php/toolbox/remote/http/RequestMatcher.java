@@ -1,6 +1,5 @@
 package de.espend.idea.php.toolbox.remote.http;
 
-import com.intellij.openapi.project.Project;
 import com.sun.net.httpserver.HttpExchange;
 import de.espend.idea.php.toolbox.remote.http.Response;
 import de.espend.idea.php.toolbox.remote.util.HttpExchangeUtil;

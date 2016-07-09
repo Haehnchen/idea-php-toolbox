@@ -15,9 +15,7 @@ import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
-import de.espend.idea.php.toolbox.extension.PhpToolboxTargetLocator;
 import de.espend.idea.php.toolbox.gotoCompletion.GotoCompletionContributor;
-import de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
 import org.apache.commons.lang.ArrayUtils;
@@ -64,7 +62,7 @@ public class PhpDocTagGotoCompletionContributor implements GotoCompletionContrib
             }
 
             if(parameter == null) {
-                parameter = new PhpToolboxCompletionContributorParameter(completionParameters, context, resultSet, new HashSet<JsonRegistrar>());
+                parameter = new PhpToolboxCompletionContributorParameter(completionParameters, context, resultSet, new HashSet<>());
             }
 
             for (PhpToolboxProviderInterface provider : filter) {
@@ -107,7 +105,7 @@ public class PhpDocTagGotoCompletionContributor implements GotoCompletionContrib
 
         PhpToolboxDeclarationHandlerParameter args = null;
 
-        Collection<PsiElement> targets = new ArrayList<PsiElement>();
+        Collection<PsiElement> targets = new ArrayList<>();
 
         Collection<PhpDocParamTag> docTags = PhpDocUtil.getDocTagsForScope(psiElement);
         if (docTags == null || docTags.size() == 0) {

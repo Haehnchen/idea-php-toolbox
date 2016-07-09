@@ -42,9 +42,7 @@ public class PersistentStorageUtil {
         JsonObject parse = null;
         try {
             parse = jsonParser.parse(s).getAsJsonObject();
-        } catch (JsonSyntaxException ignored) {
-        } catch (JsonIOException ignored) {
-        } catch (IllegalStateException ignored) {
+        } catch (JsonSyntaxException | IllegalStateException | JsonIOException ignored) {
         }
 
         if(parse == null)  {

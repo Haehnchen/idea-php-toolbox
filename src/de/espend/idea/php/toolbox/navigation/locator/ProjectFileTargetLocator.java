@@ -38,7 +38,7 @@ public class ProjectFileTargetLocator implements PhpToolboxTargetLocator {
             return Collections.emptyList();
         }
 
-        Collection<PsiElement> targets = new ArrayList<PsiElement>();
+        Collection<PsiElement> targets = new ArrayList<>();
         targets.add(file);
 
         return targets;

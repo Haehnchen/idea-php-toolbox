@@ -8,8 +8,8 @@ import java.util.Collection;
  */
 public class JsonConfigFile {
 
-    private Collection<JsonRegistrar> registrar = new ArrayList<JsonRegistrar>();
-    private Collection<JsonProvider> providers = new ArrayList<JsonProvider>();
+    private Collection<JsonRegistrar> registrar = new ArrayList<>();
+    private Collection<JsonProvider> providers = new ArrayList<>();
 
     public JsonConfigFile() {
     }
