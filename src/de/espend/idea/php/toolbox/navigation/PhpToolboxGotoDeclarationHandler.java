@@ -5,6 +5,8 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiInvalidElementAccessException;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import com.jetbrains.twig.TwigFileType;
@@ -28,9 +30,19 @@ public class PhpToolboxGotoDeclarationHandler implements GotoDeclarationHandler 
 
     @Nullable
     @Override
-    public PsiElement[] getGotoDeclarationTargets(PsiElement psiElement, int i, Editor editor) {
+    public PsiElement[] getGotoDeclarationTargets(@Nullable PsiElement psiElement, int i, Editor editor) {
+        if(psiElement == null) {
+            return new PsiElement[0];
+        }
 
-        FileType fileType = psiElement.getContainingFile().getFileType();
+        PsiFile containingFile;
+        try {
+            containingFile = psiElement.getContainingFile();
+        } catch (PsiInvalidElementAccessException e) {
+            return new PsiElement[0];
+        }
+
+        FileType fileType = containingFile.getFileType();
         if(!(fileType instanceof PhpFileType) && !(fileType instanceof TwigFileType)) {
             return new PsiElement[0];
         }
