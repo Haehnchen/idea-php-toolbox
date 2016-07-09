@@ -62,7 +62,7 @@
     ]]>
   </change-notes>
 
-  <idea-version since-build="141.115"/>
+  <idea-version since-build="145.0"/>
 
   <depends>com.jetbrains.twig</depends>
   <depends>com.jetbrains.php</depends>
