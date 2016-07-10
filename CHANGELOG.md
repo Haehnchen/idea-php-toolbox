@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### 0.3.0
+* Add extension point for json resource
+* Fix worker exited due to exception java.lang.NullPointerException #51
+* Java8 and PhpStorm 2016.x migration
+* Icons from com.intellij.icons.AllIcons sub-classes not working #43
+* Add function provider #38
+* Update static json thx to: @King2500, @havvg
+
 ### 0.2.2
 * Add some more extension point and api improvements for foreign plugins
 

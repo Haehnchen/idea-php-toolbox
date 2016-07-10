@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.2.2</version>
+  <version>0.3.0</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -29,6 +29,16 @@
     ]]></description>
 
   <change-notes><![CDATA[
+
+    <h2>0.3.0</h2>
+    <ul>
+      <li>Add extension point for json resource</li>
+      <li>Fix worker exited due to exception java.lang.NullPointerException <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/51">#51</a></li>
+      <li>Java8 and PhpStorm 2016.x migration</li>
+      <li>Icons from com.intellij.icons.AllIcons sub-classes not working <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/43">#43</a></li>
+      <li>Add function provider <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/38">#38</a></li>
+      <li>Update static json thx to: @King2500, @havvg</li>
+    </ul>
 
     <h2>0.2.2</h2>
     <ul>
