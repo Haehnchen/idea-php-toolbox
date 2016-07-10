@@ -30,6 +30,7 @@ public class InternalJsonStreamResource implements JsonStreamResource {
             "symfony/form",
             "symfony/framework-bundle",
             "symfony/http-foundation",
+            "twig"
         };
 
         for (String s : strings) {
