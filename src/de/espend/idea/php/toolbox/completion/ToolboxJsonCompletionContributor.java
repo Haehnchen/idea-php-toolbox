@@ -173,7 +173,7 @@ public class ToolboxJsonCompletionContributor extends CompletionContributor {
         extend(
             CompletionType.BASIC,
             PlatformPatterns.or(getAfterPropertyAndInsideArrayObjectPattern("defaults"), getAfterPropertyAndInsideArrayObjectPattern("items")),
-            new MyStringCompletionProvider("lookup_string", "presentable_text", "type_text", "type", "icon", "target")
+            new MyStringCompletionProvider("lookup_string", "presentable_text", "tail_text", "type_text", "type", "icon", "target")
         );
 
         // "providers":[{"date": "foo"}]
