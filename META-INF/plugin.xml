@@ -23,7 +23,7 @@
         <li>PHP: Better callable arrays completion and navigation</li>
         <li>PHP: Global string navigation for class, method and function syntax</li>
         <li>JSON plugin references extract from Symfony Plugin: schema see <a href="https://github.com/Haehnchen/idea-php-toolbox">README</a></li>
-        <li>Basic json files for: Behat, PHPUnit, Symfony and PHP Core</li>
+        <li>Basic json files for: Behat, PHPUnit, Doctrine, Symfony, Twig and PHP Core</li>
         <li>Json REST-Server inside PhpStorm</li>
 
     ]]></description>
