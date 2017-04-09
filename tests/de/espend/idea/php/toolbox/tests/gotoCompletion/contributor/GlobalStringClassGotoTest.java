@@ -7,10 +7,20 @@ import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
+import java.io.File;
+
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 public class GlobalStringClassGotoTest extends SymfonyLightCodeInsightFixtureTestCase {
+    public void setUp() throws Exception {
+        super.setUp();
+        myFixture.copyFileToProject("classes.php");
+    }
+
+    public String getTestDataPath() {
+        return new File(this.getClass().getResource("fixtures").getFile()).getAbsolutePath();
+    }
 
     public void testClassNames() {
         assertNavigationMatch(PhpFileType.INSTANCE, "<?php k('DateTime<caret>')", PlatformPatterns.psiElement(PhpClass.class));

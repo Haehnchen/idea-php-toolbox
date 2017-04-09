@@ -43,4 +43,10 @@ namespace {
      * @param string $car #Class
      */
     function car($var, $car) {}
+
+    function date() {}
+    class DateTime
+    {
+        public function format($foobar) {}
+    }
 }

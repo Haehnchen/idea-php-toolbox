@@ -12,6 +12,7 @@ public class IssueCasesTest  extends SymfonyLightCodeInsightFixtureTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
+        myFixture.copyFileToProject("classes.php");
         myFixture.copyFileToProject("issue.php");
         myFixture.copyFileToProject("issue-ide-toolbox.metadata.json", ".ide-toolbox.metadata.json");
     }

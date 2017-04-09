@@ -14,4 +14,10 @@ namespace Foo
 namespace {
     function car() {}
     function clazz() {}
+
+    function date() {}
+    class DateTime
+    {
+        public function format() {}
+    }
 }

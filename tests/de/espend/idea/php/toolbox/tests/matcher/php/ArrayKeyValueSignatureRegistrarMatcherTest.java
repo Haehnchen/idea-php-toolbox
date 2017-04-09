@@ -14,6 +14,7 @@ public class ArrayKeyValueSignatureRegistrarMatcherTest extends SymfonyLightCode
 
     public void setUp() throws Exception {
         super.setUp();
+        myFixture.copyFileToProject("classes.php");
         myFixture.copyFileToProject("ArrayKeyValue.php");
         myFixture.copyFileToProject("ArrayKeyValue.ide-toolbox.metadata.json", ".ide-toolbox.metadata.json");
     }

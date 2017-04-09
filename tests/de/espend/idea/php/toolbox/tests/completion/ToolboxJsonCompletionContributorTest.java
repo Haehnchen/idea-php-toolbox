@@ -3,12 +3,22 @@ package de.espend.idea.php.toolbox.tests.completion;
 
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
+import java.io.File;
+
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  *
  * @see de.espend.idea.php.toolbox.completion.ToolboxJsonCompletionContributor
  */
 public class ToolboxJsonCompletionContributorTest extends SymfonyLightCodeInsightFixtureTestCase {
+    public void setUp() throws Exception {
+        super.setUp();
+        myFixture.copyFileToProject("classes.php");
+    }
+
+    public String getTestDataPath() {
+        return new File(this.getClass().getResource("fixtures").getFile()).getAbsolutePath();
+    }
 
     public void testProvider() {
         assertCompletionContains("foo-toolbox.metadata.json",

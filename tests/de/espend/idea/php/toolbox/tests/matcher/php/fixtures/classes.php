@@ -23,4 +23,10 @@ namespace {
     function ci() {};
     function _variadic() {};
     function _variadic_i() {};
+
+    function date() {}
+    class DateTime
+    {
+        public function format() {}
+    }
 }
