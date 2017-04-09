@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 0.4.0
+* PhpStorm 2017.1 build
+* Add more static json configurations [#15](https://github.com/Haehnchen/idea-php-toolbox/issues/15), [#14](https://github.com/Haehnchen/idea-php-toolbox/issues/14), [#11](https://github.com/Haehnchen/idea-php-toolbox/issues/11), [#10](https://github.com/Haehnchen/idea-php-toolbox/issues/10), [#9](https://github.com/Haehnchen/idea-php-toolbox/issues/9), [#8](https://github.com/Haehnchen/idea-php-toolbox/issues/8) @stof @Koc @King2500
+
 ### 0.3.0
 * Add extension point for json resource
 * Fix worker exited due to exception java.lang.NullPointerException #51

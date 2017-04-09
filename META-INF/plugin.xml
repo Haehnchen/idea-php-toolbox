@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -29,6 +29,12 @@
     ]]></description>
 
   <change-notes><![CDATA[
+
+    <h2>0.4.0</h2>
+    <ul>
+      <li>PhpStorm 2017.1 build</li>
+      <li>Add more static json configurations <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/15">#15</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/14">#14</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/11">#11</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/10">#10</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/9">#9</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/8">#8</a> @stof @Koc @King2500</li>
+    </ul>
 
     <h2>0.3.0</h2>
     <ul>
