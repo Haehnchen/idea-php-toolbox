@@ -3,12 +3,10 @@ package de.espend.idea.php.toolbox.remote.httpHandler;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.application.ApplicationInfo;
-import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.remote.http.HttpAction;
-import de.espend.idea.php.toolbox.remote.http.RequestMatcher;
-import de.espend.idea.php.toolbox.remote.dic.RouteInterface;
 import de.espend.idea.php.toolbox.remote.http.JsonResponse;
+import de.espend.idea.php.toolbox.remote.http.RequestMatcher;
 import de.espend.idea.php.toolbox.remote.http.Response;
 import de.espend.idea.php.toolbox.remote.httpHandler.dic.InfoDic;
 import de.espend.idea.php.toolbox.remote.httpHandler.project.ProjectIndexHttpAction;
@@ -33,12 +31,10 @@ public class InfoActionHandler implements HttpAction {
         info.versionName = ApplicationInfo.getInstance().getVersionName();
         info.projects = ProjectIndexHttpAction.getProjects();
 
-        info.routes = ContainerUtil.map(RemoteUtil.getRoutes(), route -> {
-            return new HashMap<String, String>() {{
-                put("path", route.getPath());
-                put("method", route.getMethod());
-            }};
-        });
+        info.routes = ContainerUtil.map(RemoteUtil.getRoutes(), route -> new HashMap<String, String>() {{
+            put("path", route.getPath());
+            put("method", route.getMethod());
+        }});
 
         for (IdeaPluginDescriptor descriptor : PluginManager.getPlugins()) {
             Map<String, String> map = new TreeMap<>();

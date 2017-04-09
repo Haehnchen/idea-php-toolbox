@@ -3,7 +3,6 @@ package de.espend.idea.php.toolbox.utils;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.psi.PsiFile;
@@ -28,7 +27,6 @@ import de.espend.idea.php.toolbox.remote.provider.ProviderStorageInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -66,9 +64,7 @@ public class ExtensionProviderUtil {
 
     @Nullable
     public static PhpToolboxProviderInterface getProvider(@NotNull Project project, final @NotNull String key) {
-        return ContainerUtil.find(getProviders(project), provider -> {
-            return key.equalsIgnoreCase(provider.getName());
-        });
+        return ContainerUtil.find(getProviders(project), provider -> key.equalsIgnoreCase(provider.getName()));
     }
 
     @NotNull

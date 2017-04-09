@@ -136,7 +136,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
             PhpToolboxTypeProviderArguments args = new PhpToolboxTypeProviderArguments(
                 project,
                 parameter,
-                providerMap.containsKey(providerName) ? providerMap.get(providerName) : Collections.<JsonRawLookupElement>emptyList()
+                providerMap.containsKey(providerName) ? providerMap.get(providerName) : Collections.emptyList()
             );
 
             Collection<PhpNamedElement> items = ((PhpToolboxTypeProviderInterface) provider).resolveParameter(args);

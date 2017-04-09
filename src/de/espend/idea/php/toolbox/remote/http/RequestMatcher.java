@@ -29,7 +29,7 @@ public class RequestMatcher {
 
     @Nullable
     public String getVar(@NotNull String var) {
-        return vars.containsKey(var) ? vars.get(var) : null;
+        return vars.getOrDefault(var, null);
     }
 
     @NotNull

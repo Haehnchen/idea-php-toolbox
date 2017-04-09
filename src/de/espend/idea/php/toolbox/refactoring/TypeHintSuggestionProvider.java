@@ -1,6 +1,5 @@
 package de.espend.idea.php.toolbox.refactoring;
 
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.SuggestedNameInfo;

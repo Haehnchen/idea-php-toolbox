@@ -11,8 +11,8 @@ import de.espend.idea.php.toolbox.dict.matcher.LanguageMatcherParameter;
 import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.symfony.Symfony2InterfacesUtil;
-import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
 import de.espend.idea.php.toolbox.symfony.util.ParameterBag;
+import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -71,9 +71,9 @@ public class VariadicSignatureRegistrarMatcher implements LanguageRegistrarMatch
         } else if(parent instanceof FunctionReference) {
             // foo("<caret>");
             final String name = ((FunctionReference) parent).getName();
-            return name != null && null != ContainerUtil.find(signatures, signature -> {
-                return name.equalsIgnoreCase(signature.getFunction());
-            });
+            return name != null && null != ContainerUtil.find(signatures, signature ->
+                name.equalsIgnoreCase(signature.getFunction())
+            );
 
         } else if(parent instanceof NewExpression) {
             // new Foo("<caret>");

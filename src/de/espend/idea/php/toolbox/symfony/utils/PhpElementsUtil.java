@@ -7,7 +7,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementWalkingVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
-import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.PhpLanguage;

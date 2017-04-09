@@ -13,7 +13,6 @@ import com.jetbrains.php.lang.documentation.phpdoc.psi.tags.PhpDocParamTag;
 import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import de.espend.idea.php.toolbox.completion.dict.PhpToolboxCompletionContributorParameter;
-import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.gotoCompletion.GotoCompletionContributor;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
