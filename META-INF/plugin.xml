@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -29,6 +29,12 @@
     ]]></description>
 
   <change-notes><![CDATA[
+
+    <h2>0.4.1</h2>
+    <ul>
+      <li>Add PSR-11 ContainerInterface support / Zend\ServiceManager <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/pull/17">#17</a> @bcremer</li>
+      <li>Add support of the latest (namespaced) PHPUnit<a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/pull/16">#16</a></li>
+    </ul>
 
     <h2>0.4.0</h2>
     <ul>

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 0.4.1
+* Add PSR-11 ContainerInterface support / Zend\ServiceManager [#17](https://github.com/Haehnchen/idea-php-toolbox-json-files/pull/17) @bcremer
+* Add support of the latest (namespaced) PHPUnit[#16](https://github.com/Haehnchen/idea-php-toolbox-json-files/pull/16)
+
 ### 0.4.0
 * PhpStorm 2017.1 build
 * Add more static json configurations [#15](https://github.com/Haehnchen/idea-php-toolbox/issues/15), [#14](https://github.com/Haehnchen/idea-php-toolbox/issues/14), [#11](https://github.com/Haehnchen/idea-php-toolbox/issues/11), [#10](https://github.com/Haehnchen/idea-php-toolbox/issues/10), [#9](https://github.com/Haehnchen/idea-php-toolbox/issues/9), [#8](https://github.com/Haehnchen/idea-php-toolbox/issues/8) @stof @Koc @King2500
