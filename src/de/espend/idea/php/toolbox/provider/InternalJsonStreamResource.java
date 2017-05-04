@@ -26,6 +26,7 @@ public class InternalJsonStreamResource implements JsonStreamResource {
             "http",
             "mockery",
             "php-http/message-factory",
+            "psr/container",
             "psr/http-message",
             "phpunit",
             "symfony/browserkit",
