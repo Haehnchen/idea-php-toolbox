@@ -1,22 +1,22 @@
 package de.espend.idea.php.toolbox.type;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.*;
-import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider2;
+import com.jetbrains.php.lang.psi.resolve.types.PhpType;
+import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider3;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import de.espend.idea.php.toolbox.dict.json.JsonRegistrar;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
+import de.espend.idea.php.toolbox.symfony.Symfony2InterfacesUtil;
 import de.espend.idea.php.toolbox.type.utils.PhpTypeProviderUtil;
 import de.espend.idea.php.toolbox.utils.ExtensionProviderUtil;
-import de.espend.idea.php.toolbox.symfony.Symfony2InterfacesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
+public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
 
     final static char TRIM_KEY = '\u0195';
 
@@ -37,12 +37,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
 
     @Nullable
     @Override
-    public String getType(PsiElement e) {
-
-        if (DumbService.getInstance(e.getProject()).isDumb()) {
-            return null;
-        }
-
+    public PhpType getType(PsiElement e) {
         if(!(e instanceof FunctionReference)) {
             return null;
         }
@@ -56,7 +51,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
         Set<String> methods = new HashSet<>();
         Set<String> functions = new HashSet<>();
         for (JsonRegistrar type : types) {
-            for (JsonSignature signature: ContainerUtil.filter(type.getSignatures(), ContainerConditions.RETURN_TYPE_TYPE)) {
+            for (JsonSignature signature: ContainerUtil.filter(new ArrayList<>(type.getSignatures()), ContainerConditions.RETURN_TYPE_TYPE)) {
                 if(signature.getFunction() != null && StringUtils.isNotBlank(signature.getFunction())) {
                     functions.add(signature.getFunction());
                 }
@@ -71,7 +66,10 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
         // Foo::app('bar')
         if(e instanceof MethodReference) {
             if(methods.contains(((FunctionReference) e).getName())) {
-                return PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
+                String referenceSignature =  PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
+                if(referenceSignature != null) {
+                    return new PhpType().add("#" + this.getKey() + referenceSignature);
+                }
             }
 
             return null;
@@ -79,14 +77,17 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider2 {
 
         // foo('bar')
         if(functions.contains(((FunctionReference) e).getName())) {
-            return PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
+            String referenceSignature = PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
+            if(referenceSignature != null) {
+                return new PhpType().add("#" + this.getKey() + referenceSignature);
+            }
         }
 
         return null;
     }
 
     @Override
-    public Collection<? extends PhpNamedElement> getBySignature(String expression, Project project) {
+    public Collection<? extends PhpNamedElement> getBySignature(String expression, Set<String> visited, int depth, Project project) {
 
         // get back our original call
         // since phpstorm 7.1.2 we need to validate this

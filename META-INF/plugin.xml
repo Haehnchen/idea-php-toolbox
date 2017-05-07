@@ -94,8 +94,10 @@
    TODO: Add provider
   <depends optional="true">de.espend.idea.php.annotation</depends>
   -->
-    <extensions defaultExtensionNs="com.intellij">
-    </extensions>
+
+  <extensions defaultExtensionNs="com.jetbrains.php">
+    <typeProvider3 implementation="de.espend.idea.php.toolbox.type.PhpToolboxTypeProvider"/>
+  </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
 
@@ -104,7 +106,6 @@
                              groupId="language"
                              id="PhpToolbox.ApplicationForm"/>
 
-    <php.typeProvider2 implementation="de.espend.idea.php.toolbox.type.PhpToolboxTypeProvider"/>
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler"/>
     <completion.contributor language="any" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxCompletionContributor"/>
     <completion.contributor language="JSON" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxJsonCompletionContributor"/>
