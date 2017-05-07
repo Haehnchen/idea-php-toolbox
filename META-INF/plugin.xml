@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -30,6 +30,11 @@
 
   <change-notes><![CDATA[
 
+    <h2>0.4.2</h2>
+    <ul>
+      <li>Fix ConcurrentModificationException signature filter <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/66">#66</a> and migrate to PhpTypeProvider3 <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/58">#58</a></li>
+    </ul>
+
     <h2>0.4.1</h2>
     <ul>
       <li>Add PSR-11 ContainerInterface support / Zend\ServiceManager <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/pull/17">#17</a> @bcremer</li>
@@ -39,7 +44,7 @@
     <h2>0.4.0</h2>
     <ul>
       <li>PhpStorm 2017.1 build</li>
-      <li>Add more static json configurations <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/15">#15</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/14">#14</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/11">#11</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/10">#10</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/9">#9</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/8">#8</a> @stof @Koc @King2500</li>
+      <li>Add more static json configurations <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/issues/15">#15</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/issues/14">#14</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/issues/11">#11</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/issues/10">#10</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/issues/9">#9</a>, <a href="https://github.com/Haehnchen/idea-php-toolbox-json-files/issues/8">#8</a> @stof @Koc @King2500</li>
     </ul>
 
     <h2>0.3.0</h2>
