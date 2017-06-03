@@ -2,6 +2,7 @@ package de.espend.idea.php.toolbox.type;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.PhpIndex;
@@ -22,6 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static com.intellij.openapi.util.Pair.pair;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -47,40 +51,31 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
             return null;
         }
 
+        String name = ((FunctionReference) e).getName();
+
         // @TODO: pipe provider names
-        Set<String> methods = new HashSet<>();
-        Set<String> functions = new HashSet<>();
+        Set<Integer> indexes = new HashSet<>();
         for (JsonRegistrar type : types) {
             for (JsonSignature signature: ContainerUtil.filter(new ArrayList<>(type.getSignatures()), ContainerConditions.RETURN_TYPE_TYPE)) {
-                if(signature.getFunction() != null && StringUtils.isNotBlank(signature.getFunction())) {
-                    functions.add(signature.getFunction());
+                // $this->foo('bar')
+                // Foo::app('bar')
+                if(e instanceof MethodReference && StringUtils.isNotBlank(signature.getClassName()) && StringUtils.isNotBlank(signature.getMethod()) && signature.getMethod().equals(name)) {
+                    indexes.add(signature.getIndex());
                 }
-
-                if(signature.getClassName() != null && signature.getMethod() != null && StringUtils.isNotBlank(signature.getClassName()) && StringUtils.isNotBlank(signature.getMethod())) {
-                    methods.add(signature.getMethod());
+                // foo('bar')
+                else if(StringUtils.isNotBlank(signature.getFunction()) && signature.getFunction().equals(name)) {
+                    indexes.add(signature.getIndex());
                 }
             }
         }
 
-        // $this->foo('bar')
-        // Foo::app('bar')
-        if(e instanceof MethodReference) {
-            if(methods.contains(((FunctionReference) e).getName())) {
-                String referenceSignature =  PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
-                if(referenceSignature != null) {
-                    return new PhpType().add("#" + this.getKey() + referenceSignature);
-                }
-            }
-
+        if(indexes.isEmpty()) {
             return null;
         }
 
-        // foo('bar')
-        if(functions.contains(((FunctionReference) e).getName())) {
-            String referenceSignature = PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY);
-            if(referenceSignature != null) {
-                return new PhpType().add("#" + this.getKey() + referenceSignature);
-            }
+        String referenceSignature = PhpTypeProviderUtil.getReferenceSignature((FunctionReference) e, TRIM_KEY, indexes);
+        if(referenceSignature != null) {
+            return new PhpType().add("#" + this.getKey() + referenceSignature);
         }
 
         return null;
@@ -91,13 +86,13 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
 
         // get back our original call
         // since phpstorm 7.1.2 we need to validate this
-        int endIndex = expression.lastIndexOf(TRIM_KEY);
+        int endIndex = expression.lastIndexOf(String.valueOf(TRIM_KEY) + TRIM_KEY);
         if(endIndex == -1) {
             return Collections.emptySet();
         }
 
         String originalSignature = expression.substring(0, endIndex);
-        String parameter = expression.substring(endIndex + 1);
+        String parametersSignature = expression.substring(endIndex + 2);
 
         // search for called method
         PhpIndex phpIndex = PhpIndex.getInstance(project);
@@ -112,8 +107,15 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
             return phpNamedElements;
         }
 
-        parameter = PhpTypeProviderUtil.getResolvedParameter(phpIndex, parameter);
-        if(parameter == null) {
+        List<String> parts = Arrays.asList(parametersSignature.split(String.valueOf(TRIM_KEY)));
+        Map<Integer, String> parameters = parts.stream()
+            .collect(toMap(
+                part -> Integer.parseInt(part.substring(0, 1)),
+                part -> PhpTypeProviderUtil.getResolvedParameter(phpIndex, part.substring(1))
+            ));
+        parameters.values().removeIf(Objects::isNull);
+
+        if (parameters.isEmpty()) {
             return phpNamedElements;
         }
 
@@ -122,12 +124,19 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
             ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class)
         );
 
-        Set<String> providers = getProviderNames(project, (Function) phpNamedElement);
+        Set<Pair<String, Integer>> providers = getProviderNames(project, (Function) phpNamedElement);
 
         Collection<PhpNamedElement> elements = new HashSet<>();
         elements.addAll(phpNamedElements);
 
-        for (String providerName : providers) {
+        for (Pair<String, Integer> providerPair : providers) {
+            String providerName = providerPair.first;
+            Integer index = providerPair.second;
+
+            String parameter = parameters.get(index);
+            if (parameter == null) {
+                continue;
+            }
 
             PhpToolboxProviderInterface provider = ExtensionProviderUtil.getProvider(project, providerName);
             if(!(provider instanceof PhpToolboxTypeProviderInterface)) {
@@ -149,10 +158,10 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
         return elements;
     }
 
-    private Set<String> getProviderNames(@NotNull Project project, @NotNull Function method) {
+    private Set<Pair<String, Integer>> getProviderNames(@NotNull Project project, @NotNull Function method) {
         Collection<JsonRegistrar> types = ExtensionProviderUtil.getTypes(project);
 
-        Set<String> providers = new HashSet<>();
+        Set<Pair<String, Integer>> providers = new HashSet<>();
 
         Symfony2InterfacesUtil symfony2InterfacesUtil = null;
 
@@ -169,13 +178,13 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
                         }
 
                         if (symfony2InterfacesUtil.isCallTo((Method) method, sig.getClassName(), sig.getMethod())) {
-                            providers.add(type.getProvider());
+                            providers.add(pair(type.getProvider(), sig.getIndex()));
                             break;
                         }
                     }
                 } else if(StringUtils.isNotBlank(sig.getFunction()) && funcName.equals(sig.getFunction())) {
                     // function condition
-                    providers.add(type.getProvider());
+                    providers.add(pair(type.getProvider(), sig.getIndex()));
                     break;
                 }
             }

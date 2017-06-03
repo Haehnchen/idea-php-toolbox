@@ -7,7 +7,8 @@ import com.jetbrains.php.lang.psi.elements.*;
 import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -16,11 +17,16 @@ public class PhpTypeProviderUtil {
 
     @Nullable
     public static String getReferenceSignature(FunctionReference methodReference, char trimKey) {
-        return getReferenceSignature(methodReference, trimKey, 1);
+        return getReferenceSignature(methodReference, trimKey, 0);
     }
 
     @Nullable
-    public static String getReferenceSignature(FunctionReference functionReference, char trimKey, int equalParameterCount) {
+    public static String getReferenceSignature(FunctionReference functionReference, char trimKey, int parameterIndex) {
+        return getReferenceSignature(functionReference, trimKey, new HashSet<>(parameterIndex));
+    }
+
+    @Nullable
+    public static String getReferenceSignature(FunctionReference functionReference, char trimKey, Set<Integer> parameterIndexes) {
 
         String refSignature = functionReference.getSignature();
         if(StringUtil.isEmpty(refSignature)) {
@@ -28,34 +34,49 @@ public class PhpTypeProviderUtil {
         }
 
         PsiElement[] parameters = functionReference.getParameters();
-        if (parameters.length != equalParameterCount) {
-            return null;
-        }
 
-        PsiElement parameter = parameters[0];
+        Map<Integer, String> parameterSignatures = new HashMap<>();
 
-        // we already have a string value
-        if ((parameter instanceof StringLiteralExpression)) {
-            String param = ((StringLiteralExpression)parameter).getContents();
-            if (StringUtil.isNotEmpty(param)) {
-                return refSignature + trimKey + param;
+        for (int parameterIndex : parameterIndexes) {
+            if (parameterIndex + 1 > parameters.length) {
+                continue;
             }
 
-            return null;
-        }
+            PsiElement parameter = parameters[parameterIndex];
 
-        // whitelist here; we can also provide some more but think of performance
-        // Service::NAME, $this->name and Entity::CLASS;
-        if (parameter instanceof PhpReference && (parameter instanceof ClassConstantReference || parameter instanceof FieldReference)) {
-            String signature = ((PhpReference) parameter).getSignature();
-            if (StringUtil.isNotEmpty(signature)) {
-                return refSignature + trimKey + signature;
+            // we already have a string value
+            if ((parameter instanceof StringLiteralExpression)) {
+                String param = ((StringLiteralExpression)parameter).getContents();
+                if (StringUtil.isEmpty(param)) {
+                    continue;
+                }
+
+                parameterSignatures.put(parameterIndex, param);
             }
 
+            // whitelist here; we can also provide some more but think of performance
+            // Service::NAME, $this->name and Entity::CLASS;
+            if (parameter instanceof PhpReference && (parameter instanceof ClassConstantReference || parameter instanceof FieldReference)) {
+                String signature = ((PhpReference) parameter).getSignature();
+                if (StringUtil.isEmpty(signature)) {
+                    continue;
+                }
+
+                parameterSignatures.put(parameterIndex, signature);
+            }
+        }
+
+        if (parameterSignatures.isEmpty()) {
             return null;
         }
 
-        return null;
+        String parametersSignature = parameterSignatures
+                .entrySet()
+                .stream()
+                .map(entry -> entry.getKey() + entry.getValue())
+                .collect(Collectors.joining(String.valueOf(trimKey)));
+
+        return refSignature + trimKey + trimKey + parametersSignature;
     }
 
     /**

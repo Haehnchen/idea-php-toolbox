@@ -8,12 +8,19 @@
           "type": "type"
         },
         {
+          "class": "Foo\\Baz",
+          "method": "foo",
+          "index": 1,
+          "type": "type"
+        },
+        {
           "class": "Foo\\Bar",
           "method": "app",
           "type": "type"
         },
         {
           "function": "car",
+          "index": 1,
           "type": "type"
         }
       ],
