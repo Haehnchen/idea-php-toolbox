@@ -6,8 +6,12 @@ namespace Foo
     {
         const DATETIME = 'datetime';
 
-        public function foo() {}
+        public function foo($class) {}
         public static function app() {}
+    }
+    class Baz
+    {
+        public function foo($_, $class) {}
     }
 }
 

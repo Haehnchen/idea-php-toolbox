@@ -31,6 +31,13 @@ public class PhpToolboxTypeProviderTest extends SymfonyLightCodeInsightFixtureTe
             PlatformPatterns.psiElement(Method.class).withName("format")
         );
 
+        // Same method name but different class and parameter index
+        assertPhpReferenceResolveTo(PhpFileType.INSTANCE, "<?php\n" +
+            "/** @var $f \\Foo\\Baz */\n" +
+            "$f->foo('', 'datetime')->for<caret>mat()",
+            PlatformPatterns.psiElement(Method.class).withName("format")
+        );
+
         assertPhpReferenceResolveTo(PhpFileType.INSTANCE, "<?php\n" +
             "/** @var $f \\Foo\\Bar */\n" +
             "$f->foo(\\Foo\\Bar::DATETIME)->for<caret>mat()",
@@ -40,12 +47,12 @@ public class PhpToolboxTypeProviderTest extends SymfonyLightCodeInsightFixtureTe
 
     public void testPhpTypeForFunctions() {
         assertPhpReferenceResolveTo(PhpFileType.INSTANCE, "<?php\n" +
-            "car('datetime')->for<caret>mat()",
+            "car('', 'datetime')->for<caret>mat()",
             PlatformPatterns.psiElement(Method.class).withName("format")
         );
 
         assertPhpReferenceResolveTo(PhpFileType.INSTANCE, "<?php\n" +
-            "car(\\Foo\\Bar::DATETIME)->for<caret>mat()",
+            "car('', \\Foo\\Bar::DATETIME)->for<caret>mat()",
             PlatformPatterns.psiElement(Method.class).withName("format")
         );
     }
