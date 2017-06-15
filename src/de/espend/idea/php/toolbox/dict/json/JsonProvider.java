@@ -8,12 +8,19 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
+ * Model json input
+ *
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 public class JsonProvider {
 
+    @Nullable
     private String name;
+
+    @Nullable
     private JsonRawLookupElement defaults;
+
+    @Nullable
     private Collection<JsonRawLookupElement> items = new ArrayList<>();
 
     @SerializedName("lookup_strings")
@@ -24,33 +31,37 @@ public class JsonProvider {
     @Nullable
     private JsonProviderSource source;
 
+    @Nullable
     public String getName() {
         return name;
     }
 
+    @Nullable
     public JsonRawLookupElement getDefaults() {
         return defaults;
     }
 
-    public Collection<JsonRawLookupElement> getItems() {
+    synchronized public Collection<JsonRawLookupElement> getItems() {
         if(this.myItems != null) {
             return this.myItems;
         }
 
-        this.myItems = new ArrayList<>(items);
+        Collection<JsonRawLookupElement> items = new ArrayList<>();
+        if(this.items != null && this.items.size() > 0) {
+            items.addAll(this.items);
+        }
 
         if(lookupStrings.size() > 0) {
             for (String lookupElement : lookupStrings) {
-                this.myItems.add(JsonRawLookupElement.create(lookupElement));
+                items.add(JsonRawLookupElement.create(lookupElement));
             }
         }
 
-        return this.myItems;
+        return this.myItems = items;
     }
 
     @Nullable
     public JsonProviderSource getSource() {
         return source;
     }
-
 }

@@ -104,12 +104,15 @@ public class ExtensionProviderUtil {
             for (JsonProvider provider : fileProviders) {
                 JsonProviderSource source = provider.getSource();
                 if(source != null) {
-
                     if(sourceProviders == null) {
                         sourceProviders = new HashMap<>();
                     }
 
                     String name = provider.getName();
+                    if(name == null) {
+                        continue;
+                    }
+
                     if(!sourceProviders.containsKey(name)) {
                         sourceProviders.put(name, new ArrayList<>(Collections.singletonList(provider)));
                     } else {
