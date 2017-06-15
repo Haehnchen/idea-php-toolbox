@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.4.3
+* Updated TypeProvider to support different method/function parameters [#67](https://github.com/Haehnchen/idea-php-toolbox/issues/67) @CarsonF
+* Make json model thread safe to fix ArrayIndexOutOfBoundsException [#61](https://github.com/Haehnchen/idea-php-toolbox/issues/61)
+
 ## 0.4.2
 * Fix ConcurrentModificationException signature filter [#66](https://github.com/Haehnchen/idea-php-toolbox/issues/66) and migrate to PhpTypeProvider3 [#58](https://github.com/Haehnchen/idea-php-toolbox/issues/58)
 
