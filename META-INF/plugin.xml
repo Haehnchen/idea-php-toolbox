@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.4.3</version>
+  <version>0.4.4</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -30,9 +30,14 @@
 
   <change-notes><![CDATA[
 
+    <h2>0.4.4</h2>
+    <ul>
+      <li>Add more validation for type index type resolve <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/67">#67</a> <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/68">#68</a></li>
+    </ul>
+
     <h2>0.4.3</h2>
     <ul>
-      <li>Updated TypeProvider to support different method/function parameters <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/67">#67</a> @CarsonF </li>
+      <li>Updated TypeProvider to support different method/function parameters <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/67">#67</a> @CarsonF</li>
       <li>Make json model thread safe to fix ArrayIndexOutOfBoundsException <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/61">#61</a></li>
     </ul>
 

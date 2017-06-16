@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.4.4
+* Add more validation for type index type resolve [#67](https://github.com/Haehnchen/idea-php-toolbox/issues/67) [#68](https://github.com/Haehnchen/idea-php-toolbox/issues/68)
+
 ## 0.4.3
 * Updated TypeProvider to support different method/function parameters [#67](https://github.com/Haehnchen/idea-php-toolbox/issues/67) @CarsonF
 * Make json model thread safe to fix ArrayIndexOutOfBoundsException [#61](https://github.com/Haehnchen/idea-php-toolbox/issues/61)
