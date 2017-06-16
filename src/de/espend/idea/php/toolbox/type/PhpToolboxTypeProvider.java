@@ -86,13 +86,13 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
 
         // get back our original call
         // since phpstorm 7.1.2 we need to validate this
-        int endIndex = expression.lastIndexOf(String.valueOf(TRIM_KEY) + TRIM_KEY);
+        int endIndex = expression.indexOf(String.valueOf(TRIM_KEY));
         if(endIndex == -1) {
             return Collections.emptySet();
         }
 
         String originalSignature = expression.substring(0, endIndex);
-        String parametersSignature = expression.substring(endIndex + 2);
+        String parametersSignature = expression.substring(endIndex + 1);
 
         // search for called method
         PhpIndex phpIndex = PhpIndex.getInstance(project);
@@ -107,14 +107,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
             return phpNamedElements;
         }
 
-        List<String> parts = Arrays.asList(parametersSignature.split(String.valueOf(TRIM_KEY)));
-        Map<Integer, String> parameters = parts.stream()
-            .collect(toMap(
-                part -> Integer.parseInt(part.substring(0, 1)),
-                part -> PhpTypeProviderUtil.getResolvedParameter(phpIndex, part.substring(1))
-            ));
-        parameters.values().removeIf(Objects::isNull);
-
+        Map<Integer, String> parameters = getParameters(parametersSignature, phpIndex);
         if (parameters.isEmpty()) {
             return phpNamedElements;
         }
@@ -191,5 +184,37 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
         }
 
         return providers;
+    }
+
+    /**
+     * Split possible multi index parameter "1#foobar|2#foobar"
+     */
+    @NotNull
+    private Map<Integer, String> getParameters(@NotNull String parametersSignature, @NotNull PhpIndex phpIndex) {
+        Map<Integer, String> parameters = new HashMap<>();
+
+        // "1#foobar|2#foobar"
+        for (String s : parametersSignature.split(String.valueOf(TRIM_KEY))) {
+            String[] split = s.split(String.valueOf(PhpTypeProviderUtil.PARAMETER_SPLIT_CHAR));
+            if(split.length != 2) {
+                continue;
+            }
+
+            int i;
+            try {
+                i = Integer.parseInt(split[0]);
+            } catch (NumberFormatException e) {
+                continue;
+            }
+
+            String parameter = PhpTypeProviderUtil.getResolvedParameter(phpIndex, split[1]);
+            if(parameter == null) {
+                continue;
+            }
+
+            parameters.put(i, parameter);
+        }
+
+        return parameters;
     }
 }

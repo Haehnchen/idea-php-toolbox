@@ -15,15 +15,10 @@ import java.util.stream.Collectors;
  */
 public class PhpTypeProviderUtil {
 
-    @Nullable
-    public static String getReferenceSignature(FunctionReference methodReference, char trimKey) {
-        return getReferenceSignature(methodReference, trimKey, 0);
-    }
-
-    @Nullable
-    public static String getReferenceSignature(FunctionReference functionReference, char trimKey, int parameterIndex) {
-        return getReferenceSignature(functionReference, trimKey, new HashSet<>(parameterIndex));
-    }
+    /**
+     * 1#foobar
+     */
+    public static char PARAMETER_SPLIT_CHAR = '\u0180';
 
     @Nullable
     public static String getReferenceSignature(FunctionReference functionReference, char trimKey, Set<Integer> parameterIndexes) {
@@ -73,10 +68,10 @@ public class PhpTypeProviderUtil {
         String parametersSignature = parameterSignatures
                 .entrySet()
                 .stream()
-                .map(entry -> entry.getKey() + entry.getValue())
+                .map(entry -> entry.getKey() + String.valueOf(PARAMETER_SPLIT_CHAR) + entry.getValue())
                 .collect(Collectors.joining(String.valueOf(trimKey)));
 
-        return refSignature + trimKey + trimKey + parametersSignature;
+        return refSignature + trimKey + parametersSignature;
     }
 
     /**
