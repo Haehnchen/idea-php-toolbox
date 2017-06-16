@@ -5,9 +5,13 @@ import com.intellij.psi.PsiElement;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.*;
 import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -85,13 +89,7 @@ public class PhpTypeProviderUtil {
         if(parameter.startsWith("#K#C")) {
             // PhpStorm9: #K#C\Class\Foo.class
             if(parameter.endsWith(".class")) {
-                return parameter.substring(4, parameter.length() - 6);
-            }
-
-            // PhpStorm8: #K#C\Class\Foo.
-            // workaround since signature has empty type
-            if(parameter.endsWith(".")) {
-                return parameter.substring(4, parameter.length() - 1);
+                return StringUtils.stripStart(parameter.substring(4, parameter.length() - 6), "\\");
             }
         }
 
