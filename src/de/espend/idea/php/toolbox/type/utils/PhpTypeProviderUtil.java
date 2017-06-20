@@ -63,6 +63,21 @@ public class PhpTypeProviderUtil {
 
                 parameterSignatures.put(parameterIndex, signature);
             }
+
+            // new Entity()
+            if (parameter instanceof NewExpression) {
+                ClassReference classReference = ((NewExpression) parameter).getClassReference();
+                if (classReference == null) {
+                    continue;
+                }
+                String signature = classReference.getSignature();
+                if (StringUtil.isEmpty(signature)) {
+                    continue;
+                }
+                signature = "#K" + signature + ".class";
+
+                parameterSignatures.put(parameterIndex, signature);
+            }
         }
 
         if (parameterSignatures.isEmpty()) {

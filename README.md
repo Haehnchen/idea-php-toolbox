@@ -163,7 +163,9 @@ $f->foo('', '<caret>')
 ```php
 /** @var $f \\FooClass */
 $f->foo('date_time')->format<caret>
-$f->bar('', date_time')->format<caret>
+$f->foo(DateTime::class)->format<caret>
+$f->foo(new DateTime())->format<caret>
+$f->bar('', 'date_time')->format<caret>
 ```
 
 ```javascript
