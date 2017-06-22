@@ -85,5 +85,9 @@ public class PhpToolboxTypeProviderTest extends SymfonyLightCodeInsightFixtureTe
                 "clazz('\\\\DateTime')->for<caret>mat()",
             PlatformPatterns.psiElement(Method.class).withName("format")
         );
+        assertPhpReferenceResolveTo(PhpFileType.INSTANCE, "<?php\n" +
+                "clazz(new DateTime())->for<caret>mat()",
+            PlatformPatterns.psiElement(Method.class).withName("format")
+        );
     }
 }

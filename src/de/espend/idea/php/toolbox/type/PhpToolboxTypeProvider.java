@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 import static com.intellij.openapi.util.Pair.pair;
-import static java.util.stream.Collectors.toMap;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
