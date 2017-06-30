@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.4.4</version>
+  <version>0.4.5</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -29,6 +29,11 @@
     ]]></description>
 
   <change-notes><![CDATA[
+
+    <h2>0.4.5</h2>
+    <ul>
+      <li>Allow resolving parameter types from new expressions. `foo(new Bar())` <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/69">#69</a></li>
+    </ul>
 
     <h2>0.4.4</h2>
     <ul>

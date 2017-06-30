@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.4.5
+* Allow resolving parameter types from new expressions. `foo(new Bar())` [#69](https://github.com/Haehnchen/idea-php-toolbox/issues/69)
+
 ## 0.4.4
 * Add more validation for type index type resolve [#67](https://github.com/Haehnchen/idea-php-toolbox/issues/67) [#68](https://github.com/Haehnchen/idea-php-toolbox/issues/68)
 
