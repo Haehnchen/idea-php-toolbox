@@ -49,4 +49,14 @@ namespace {
     {
         public function format($foobar) {}
     }
+
+    class TestClass
+    {
+        /**
+         * @param string $var #Class
+         */
+        public function __construct($var, $foo)
+        {
+        }
+    }
 }

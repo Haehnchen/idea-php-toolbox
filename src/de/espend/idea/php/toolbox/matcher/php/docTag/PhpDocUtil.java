@@ -33,13 +33,8 @@ public class PhpDocUtil {
         }
 
         PsiElement parent = parameterList.getParent();
-        if(!(parent instanceof FunctionReference)) {
-            return null;
-        }
-
-        FunctionReference methodReference = (FunctionReference) parent;
-        PsiReference psiReference = methodReference.getReference();
-        if (null == psiReference) {
+        PsiReference psiReference = getElementReference(parent);
+        if (psiReference == null) {
             return null;
         }
 
@@ -63,7 +58,9 @@ public class PhpDocUtil {
                     Parameter parameter = implementedParameters[currentIndex.getIndex()];
                     PsiElement implementedParameterList = parameter.getContext();
 
-                    if(implementedParameterList instanceof ParameterList) {
+                    if(implementedParameterList instanceof ParameterList
+                        || implementedParameterList instanceof Method
+                    ) {
                         PhpDocParamTag phpDocParamTag = parameter.getDocTag();
                         if(phpDocParamTag != null) {
                             phpDocParamTags.add(phpDocParamTag);
@@ -79,6 +76,16 @@ public class PhpDocUtil {
         }
 
         return phpDocParamTags;
+    }
+
+    private static PsiReference getElementReference(PsiElement element) {
+        if (element instanceof NewExpression) {
+            return ((NewExpression) element).getClassReference();
+        } else if (element instanceof FunctionReference) {
+            return element.getReference();
+        } else {
+            return null;
+        }
     }
 
     private static Method[] getImplementedMethods(@NotNull Method method) {

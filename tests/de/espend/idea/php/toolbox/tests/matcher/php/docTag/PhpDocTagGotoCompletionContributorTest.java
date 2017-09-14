@@ -46,4 +46,9 @@ public class PhpDocTagGotoCompletionContributorTest extends SymfonyLightCodeInsi
         assertCompletionContains(PhpFileType.INSTANCE,  "<?php car(null, '<caret>');", "DateTime");
         assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php car('<caret>');", "DateTime");
     }
+
+    public void testConstructorSupport() {
+        assertCompletionContains(PhpFileType.INSTANCE,  "<?php new \\TestClass('<caret>', null);", "DateTime");
+        assertCompletionNotContains(PhpFileType.INSTANCE,  "<?php new \\TestClass(null, '<caret>');", "DateTime");
+    }
 }
