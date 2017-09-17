@@ -1,8 +1,11 @@
 Changelog
 =========
 
+## 0.4.6
+* Fix PhpDoc hashes don't work for constructor parameters [#74](https://github.com/Haehnchen/idea-php-toolbox/issues/74) [#50](https://github.com/Haehnchen/idea-php-toolbox/issues/50) @podhy
+
 ## 0.4.5
-* Allow resolving parameter types from new expressions. `foo(new Bar())` [#69](https://github.com/Haehnchen/idea-php-toolbox/issues/69)
+* Allow resolving parameter types from new expressions. `foo(new Bar())` [#69](https://github.com/Haehnchen/idea-php-toolbox/issues/69) @CarsonF
 
 ## 0.4.4
 * Add more validation for type index type resolve [#67](https://github.com/Haehnchen/idea-php-toolbox/issues/67) [#68](https://github.com/Haehnchen/idea-php-toolbox/issues/68)
