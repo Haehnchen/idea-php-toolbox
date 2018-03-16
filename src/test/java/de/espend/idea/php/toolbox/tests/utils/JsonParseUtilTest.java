@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.tests.utils;
 
 import com.intellij.openapi.util.Condition;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.StreamUtil;
 import com.intellij.util.containers.ContainerUtil;
 import de.espend.idea.php.toolbox.dict.json.*;
@@ -10,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -22,7 +24,7 @@ public class JsonParseUtilTest extends Assert {
     @Test
     public void testGetProviderJsonFromFile() {
 
-        File testFile = new File(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").getFile());
+        File testFile = FileUtil.findFirstThatExist("src/test/java/de/espend/idea/php/toolbox/tests/utils/fixtures/ide-toolbox.metadata.json");
 
         Map<String, Collection<JsonRawLookupElement>> elements = JsonParseUtil.getProviderJsonRawLookupElements(JsonParseUtil.getDeserializeConfig(testFile).getProviders());
         assertTrue(elements.keySet().contains("date_format"));
@@ -44,7 +46,7 @@ public class JsonParseUtilTest extends Assert {
     @Test
     public void testGetRegistrarJsonFromFile() {
 
-        File testFile = new File(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").getFile());
+        File testFile = FileUtil.findFirstThatExist("src/test/java/de/espend/idea/php/toolbox/tests/utils/fixtures/ide-toolbox.metadata.json");
 
         Collection<JsonRegistrar> elements = JsonParseUtil.getDeserializeConfig(testFile).getRegistrar();
         JsonRegistrar next = elements.iterator().next();
@@ -59,7 +61,7 @@ public class JsonParseUtilTest extends Assert {
 
     @Test
     public void testGetRegistrarJsonFromFileWithShortcut() {
-        File testFile = new File(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").getFile());
+        File testFile = FileUtil.findFirstThatExist("src/test/java/de/espend/idea/php/toolbox/tests/utils/fixtures/ide-toolbox.metadata.json");
 
         Collection<JsonRegistrar> elements = JsonParseUtil.getDeserializeConfig(testFile).getRegistrar();
         JsonRegistrar next = elements.iterator().next();
@@ -76,7 +78,8 @@ public class JsonParseUtilTest extends Assert {
     public void testConfigDeserialize() {
         JsonConfigFile elements = null;
         try {
-            elements = JsonParseUtil.getDeserializeConfig(StreamUtil.readText(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").openStream(), Charset.defaultCharset()));
+            File file = FileUtil.findFirstThatExist("src/test/java/de/espend/idea/php/toolbox/tests/utils/fixtures/ide-toolbox.metadata.json");
+            elements = JsonParseUtil.getDeserializeConfig(StreamUtil.readText(new FileInputStream(file), Charset.defaultCharset()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,7 +174,7 @@ public class JsonParseUtilTest extends Assert {
 
     @Test
     public void testParameterRegistrarMappedAsObject() {
-        File testFile = new File(this.getClass().getResource("fixtures/ide-toolbox.metadata.json").getFile());
+        File testFile = FileUtil.findFirstThatExist("src/test/java/de/espend/idea/php/toolbox/tests/utils/fixtures/ide-toolbox.metadata.json");
 
         JsonRegistrar next = JsonParseUtil.getDeserializeConfig(testFile).getRegistrar().iterator().next();
 
@@ -206,5 +209,9 @@ public class JsonParseUtilTest extends Assert {
         public boolean value(JsonRawLookupElement element) {
             return string.equals(element.getLookupString());
         }
+    }
+
+    private String getTestDataPath() {
+        return "src/test/java/de/espend/idea/php/toolbox/tests/utils/";
     }
 }

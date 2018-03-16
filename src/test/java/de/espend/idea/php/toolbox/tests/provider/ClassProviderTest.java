@@ -1,15 +1,11 @@
 package de.espend.idea.php.toolbox.tests.provider;
 
-import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import de.espend.idea.php.toolbox.provider.php.ClassInterfaceProvider;
 import de.espend.idea.php.toolbox.provider.php.ClassProvider;
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
-
-import java.io.File;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -22,7 +18,7 @@ public class ClassProviderTest extends SymfonyLightCodeInsightFixtureTestCase {
     }
 
     public String getTestDataPath() {
-        return new File(this.getClass().getResource("fixtures").getFile()).getAbsolutePath();
+        return "src/test/java/de/espend/idea/php/toolbox/tests/provider/fixtures";
     }
 
     /**

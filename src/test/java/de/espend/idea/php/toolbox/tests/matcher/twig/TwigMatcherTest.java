@@ -7,8 +7,6 @@ import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.twig.TwigFileType;
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
-import java.io.File;
-
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
@@ -21,7 +19,7 @@ public class TwigMatcherTest extends SymfonyLightCodeInsightFixtureTestCase {
     }
 
     public String getTestDataPath() {
-        return new File(this.getClass().getResource("fixtures").getFile()).getAbsolutePath();
+        return "src/test/java/de/espend/idea/php/toolbox/tests/matcher/twig/fixtures";
     }
 
     public void testFunction() {

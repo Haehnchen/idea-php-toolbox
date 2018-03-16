@@ -4,8 +4,6 @@ import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.jetbrains.php.lang.PhpFileType;
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
-import java.io.File;
-
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
@@ -18,7 +16,7 @@ public class JsonProviderTest extends SymfonyLightCodeInsightFixtureTestCase {
     }
 
     public String getTestDataPath() {
-        return new File(this.getClass().getResource("fixtures").getFile()).getAbsolutePath();
+        return "src/test/java/de/espend/idea/php/toolbox/tests/provider/fixtures";
     }
 
     public void testClassProvider() {

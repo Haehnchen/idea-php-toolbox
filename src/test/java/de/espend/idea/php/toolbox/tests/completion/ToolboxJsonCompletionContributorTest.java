@@ -3,8 +3,6 @@ package de.espend.idea.php.toolbox.tests.completion;
 
 import de.espend.idea.php.toolbox.tests.SymfonyLightCodeInsightFixtureTestCase;
 
-import java.io.File;
-
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  *
@@ -17,7 +15,7 @@ public class ToolboxJsonCompletionContributorTest extends SymfonyLightCodeInsigh
     }
 
     public String getTestDataPath() {
-        return new File(this.getClass().getResource("fixtures").getFile()).getAbsolutePath();
+        return "src/test/java/de/espend/idea/php/toolbox/tests/completion/fixtures";
     }
 
     public void testProvider() {

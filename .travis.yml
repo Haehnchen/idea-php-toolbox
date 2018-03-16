@@ -25,5 +25,4 @@ env:
   - IDEA_VERSION="IU-2017.3.5" PHP_PLUGIN_VERSION="173.4301.34" TWIG_PLUGIN_VERSION="173.4301.7"
 
 script:
-- "./gradlew check"
-- "./gradlew buildPlugin"
+- "./gradlew check buildPlugin"
