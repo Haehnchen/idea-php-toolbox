@@ -16,7 +16,7 @@ import java.io.File;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-@State(name = "PHP Toolbox", storages = @Storage(id = "php-toolbox-application", file = "$APP_CONFIG$/php-toolbox.xml"))
+@State(name = "PHP Toolbox", storages = @Storage(file = "$APP_CONFIG$/php-toolbox.xml"))
 public class PhpToolboxApplicationService implements ApplicationComponent, PersistentStateComponent<PhpToolboxApplicationService> {
 
     final public static Logger LOG = Logger.getInstance("Symfony-Plugin");
