@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenCentral()
+
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.2.18"
+}
+
+apply plugin: 'idea'
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+
+intellij {
+    version ideaVersion
+    plugins = ["com.jetbrains.php:${phpPluginVersion}", 'CSS', 'java-i18n', 'properties']
+    pluginName 'PHP Toolbox'
+
+    patchPluginXml {
+        sinceBuild '173'
+        untilBuild '181.*'
+    }
+}
+
+group 'de.espend.idea.php.toolbox'
+version '0.4.6'
+
+wrapper {
+    gradleVersion '4.3.1'
+}
