@@ -25,7 +25,8 @@ public class TwigUtil {
             .withParent(PlatformPatterns.or(
                 PlatformPatterns.psiElement(TwigElementTypes.PRINT_BLOCK),
                 PlatformPatterns.psiElement(TwigElementTypes.SET_TAG),
-                PlatformPatterns.psiElement(TwigElementTypes.IF_TAG)
+                PlatformPatterns.psiElement(TwigElementTypes.IF_TAG),
+                PlatformPatterns.psiElement(TwigElementTypes.FUNCTION_CALL)
             ))
             .afterLeafSkipping(
                 PlatformPatterns.or(
