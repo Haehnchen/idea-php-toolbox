@@ -18,7 +18,6 @@ before_install:
 - "export ORG_GRADLE_PROJECT_ideaVersion=${IDEA_VERSION}"
 - "export ORG_GRADLE_PROJECT_phpPluginVersion=${PHP_PLUGIN_VERSION}"
 - "export ORG_GRADLE_PROJECT_twigPluginVersion=${TWIG_PLUGIN_VERSION}"
-- java -version
 
 env:
   - IDEA_VERSION="IU-181.4203.6" PHP_PLUGIN_VERSION="181.4096.20" TWIG_PLUGIN_VERSION="181.3741.23"
