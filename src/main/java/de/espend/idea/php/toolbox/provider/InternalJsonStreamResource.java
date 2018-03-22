@@ -38,8 +38,9 @@ public class InternalJsonStreamResource implements JsonStreamResource {
         };
 
         for (String s : strings) {
+            String resourceName = "json/" + s + "/.ide-toolbox.metadata.json";
             InputStream stream = ExtensionProviderUtil.class.getClassLoader()
-                .getResourceAsStream("resources/json/" + s + "/.ide-toolbox.metadata.json");
+                .getResourceAsStream(resourceName);
 
             if (stream == null) {
                 continue;
