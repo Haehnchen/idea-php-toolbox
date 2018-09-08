@@ -265,6 +265,16 @@ public class JsonParseUtil {
                 }
                 continue;
             }
+
+            // foo[]
+            matcher = Pattern.compile("^([\\w\\\\-]+)\\[\\]$").matcher(signature);
+            if (matcher.find()) {
+                try {
+                    jsonSignatures.add(JsonSignature.createArrayAccess(matcher.group(1)));
+                } catch (NumberFormatException ignored) {
+                }
+                continue;
+            }
         }
 
         return jsonSignatures;

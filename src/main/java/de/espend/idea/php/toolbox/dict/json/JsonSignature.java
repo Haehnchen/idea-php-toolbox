@@ -31,6 +31,10 @@ public class JsonSignature {
     @Nullable
     private String field;
 
+    @Nullable
+    @SerializedName("array_access")
+    private String arrayAccess;
+
     public int getIndex() {
         return index;
     }
@@ -65,6 +69,11 @@ public class JsonSignature {
         return field;
     }
 
+    @Nullable
+    public String getArrayAccess() {
+        return arrayAccess;
+    }
+
     @NotNull
     public static JsonSignature createFunction(@NotNull String function, int index) {
         JsonSignature signature = new JsonSignature();
@@ -79,6 +88,13 @@ public class JsonSignature {
         signature.clazz = clazz;
         signature.method = method;
         signature.index = index;
+        return signature;
+    }
+
+    @NotNull
+    public static JsonSignature createArrayAccess(@NotNull String arrayAccess) {
+        JsonSignature signature = new JsonSignature();
+        signature.arrayAccess = arrayAccess;
         return signature;
     }
 }

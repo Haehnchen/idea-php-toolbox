@@ -95,6 +95,7 @@
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.MethodParameterRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.PhpFunctionRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ArrayKeySignatureRegistrarMatcher"/>
+        <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ArrayAccessSignatureRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ArrayKeyValueSignatureRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ReturnStringSignatureRegistrarMatcher"/>
         <LanguageRegistrarMatcher implementation="de.espend.idea.php.toolbox.matcher.php.ReturnArraySignatureRegistrarMatcher"/>

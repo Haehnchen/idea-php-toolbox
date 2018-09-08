@@ -1,0 +1,27 @@
+{
+  "registrar": [
+    {
+      "signature": [
+        "ArrayLikeA[]"
+      ],
+      "signatures": [
+        {
+          "array_access": "ArrayLike"
+        }
+      ],
+      "provider": "array_items",
+      "language": "php"
+    }
+  ],
+  "providers": [
+    {
+      "name": "array_items",
+      "items": [
+        {
+          "lookup_string": "car",
+          "return": "DateTime"
+        }
+      ]
+    }
+  ]
+}
