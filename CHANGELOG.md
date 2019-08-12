@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.5.0
+* Fix json load exception during index process [#87](https://github.com/Haehnchen/idea-php-toolbox/issues/87) [#90](https://github.com/Haehnchen/idea-php-toolbox/issues/90) (Daniel Espendiller)
+
 ## 0.4.6
 * Fix PhpDoc hashes don't work for constructor parameters [#74](https://github.com/Haehnchen/idea-php-toolbox/issues/74) [#50](https://github.com/Haehnchen/idea-php-toolbox/issues/50) @podhy
 

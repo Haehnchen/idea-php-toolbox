@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>0.4.6</version>
+  <version>0.5.0</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -27,17 +27,6 @@
         <li>Json REST-Server inside PhpStorm</li>
 
     ]]></description>
-
-  <change-notes><![CDATA[
-    <ul>
-      <li>Fix PhpDoc hashes don't work for constructor parameters <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/74">#74</a> <a href="https://github.com/Haehnchen/idea-php-toolbox/issues/50">#50</a> @podhy</li>
-    </ul>
-
-    <br/>
-
-    <a href="https://github.com/Haehnchen/idea-php-toolbox/blob/master/CHANGELOG.md">see full changelog</a> | <a href="https://www.paypal.me/DanielEspendiller">Donate</a>
-    ]]>
-  </change-notes>
 
   <idea-version since-build="171.3780"/>
 
