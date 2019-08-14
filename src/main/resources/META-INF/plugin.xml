@@ -28,7 +28,7 @@
 
     ]]></description>
 
-  <idea-version since-build="171.3780"/>
+  <idea-version since-build="192.0"/>
 
   <depends>com.jetbrains.twig</depends>
   <depends>com.jetbrains.php</depends>
