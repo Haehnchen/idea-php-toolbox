@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.5.1
+* Fix setting since build on build [#92](https://github.com/Haehnchen/idea-php-toolbox/issues/92) (Daniel Espendiller)
+
 ## 0.5.0
 * Fix json load exception during index process [#87](https://github.com/Haehnchen/idea-php-toolbox/issues/87) [#90](https://github.com/Haehnchen/idea-php-toolbox/issues/90) (Daniel Espendiller)
 
