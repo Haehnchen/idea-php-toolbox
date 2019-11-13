@@ -13,7 +13,7 @@ To build the plugin, execute the gradle task `buildPlugin`.
 ./gradlew clean buildPlugin
 ```
 
-The artifact zip can then be found in `build/distrubutions`. This is the
+The artifact zip can then be found in `build/distributions`. This is the
 final result which can be uploaded to the JetBrains repository.
 
 The checklist for a new release should be the following:
@@ -46,5 +46,10 @@ automatically. This will include the changelog generated earlier.
 Execute the following gradle task:
 
 ```bash
-IJ_REPO_USERNAME=youruser IJ_REPO_PASSWORD=yourpassword ./gradlew clean buildPlugin publishPlugin
+IJ_TOKEN=yourtoken ./gradlew clean buildPlugin publishPlugin
 ```
+
+Token documentation:
+
+* http://www.jetbrains.org/intellij/sdk/docs/plugin_repository/api/plugin_upload.html
+* https://www.jetbrains.com/help/hub/Manage-Permanent-Tokens.html
