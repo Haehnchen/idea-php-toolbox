@@ -52,7 +52,7 @@ foo('\\DateTime::format');
 
 All files in project named `.ide-toolbox.metadata.json` or application folder with pattern `/php-toolbox/*-toolbox.metadata.json`. Find your application "Settings > Languages & Framework > PHP Toolbox"
 
-```javascript
+```json
 {
   "registrar":[
     {
@@ -79,7 +79,7 @@ All files in project named `.ide-toolbox.metadata.json` or application folder wi
 
 ### Registrar
 
-```javascript
+```json
 {
   "provider":"date_format",
   "language":"php",
@@ -115,7 +115,7 @@ All files in project named `.ide-toolbox.metadata.json` or application folder wi
 foo('<caret>')
 ```
 
-```javascript
+```json
 {
   "function": "foo"
 }
@@ -125,7 +125,7 @@ foo('<caret>')
 foo('', '<caret>')
 ```
 
-```javascript
+```json
 {
   "function": "foo",
   "index": 1
@@ -139,7 +139,7 @@ foo('', '<caret>')
 $f->foo('<caret>')
 ```
 
-```javascript
+```json
 {
   "class": "FooClass",
   "method": "foo"
@@ -151,7 +151,7 @@ $f->foo('<caret>')
 $f->foo('', '<caret>')
 ```
 
-```javascript
+```json
 {
   "class": "FooClass",
   "method": "foo",
@@ -169,7 +169,7 @@ $f->foo(new DateTime())->format<caret>
 $f->bar('', 'date_time')->format<caret>
 ```
 
-```javascript
+```json
 {
   "registrar":[
     {
@@ -233,7 +233,7 @@ function foo($foo) {}
 foo(['<caret>'])
 ```
 
-```javascript
+```json
 {
   "function": "foo",
   "type": "array_key"
@@ -244,7 +244,7 @@ foo(['<caret>'])
 foo(['foo' => '<caret>'])
 ```
 
-```javascript
+```json
 {
   "function": "foo",
   "array": "foo"
@@ -253,7 +253,7 @@ foo(['foo' => '<caret>'])
 
 #### Signature shortcut
 
-```javascript
+```json
 {
   "provider":"class_interface",
   "language":"php",
@@ -274,7 +274,7 @@ foo(['foo' => '<caret>'])
 {{ 'bar'|foo('<caret>') }}
 ```
 
-```javascript
+```json
 {
   "provider":"date_format",
   "language":"twig",
@@ -288,7 +288,7 @@ foo(['foo' => '<caret>'])
 
 ### Providers
 
-```javascript
+```json
 {
   "name": "date_format",
   "items":[
@@ -310,7 +310,7 @@ foo(['foo' => '<caret>'])
 
 #### Lookup shortcut
 
-```javascript
+```json
 {
   "name": "date_format",
   "lookup_strings": ["car", "apple"]
@@ -319,7 +319,7 @@ foo(['foo' => '<caret>'])
 
 #### Lookup defaults
 
-```javascript
+```json
 {
   "name": "date_format",
   "defaults": {
@@ -354,7 +354,7 @@ class WebProfilerExtension extends Twig_ExtensionInterface
 }
 ```
 
-```javascript
+```json
 {
   "name": "twig_extensions",
   "source": {
@@ -383,7 +383,7 @@ class TopicAdmin extends AdminInterface
 }
 ```
 
-```javascript
+```json
 {
   "name": "sonata_admin_export_formats",
   "source": {
@@ -400,7 +400,7 @@ class Foo implements BehatContext {}
 class Foo extends BehatContext {}
 ```
 
-```javascript
+```json
 {
   "name": "behat_context_classes",
   "source": {
@@ -411,7 +411,7 @@ class Foo extends BehatContext {}
 ```
 
 ###### traits
-```javascript
+```json
 {
   "provider": "trait",
   "language": "php"
