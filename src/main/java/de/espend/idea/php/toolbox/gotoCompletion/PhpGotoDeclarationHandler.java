@@ -31,7 +31,7 @@ public class PhpGotoDeclarationHandler extends CompletionContributor implements 
         for (final GotoCompletionContributor contributor : CONTRIBUTORS) {
             extend(CompletionType.BASIC, contributor.getPattern(), new CompletionProvider<CompletionParameters>() {
                 @Override
-                protected void addCompletions(@NotNull CompletionParameters completionParameters, ProcessingContext processingContext, @NotNull CompletionResultSet completionResultSet) {
+                protected void addCompletions(@NotNull CompletionParameters completionParameters, @NotNull ProcessingContext processingContext, @NotNull CompletionResultSet completionResultSet) {
                     contributor.addCompletions(completionParameters, processingContext, completionResultSet);
                 }
             });
@@ -61,7 +61,7 @@ public class PhpGotoDeclarationHandler extends CompletionContributor implements 
 
     @Nullable
     @Override
-    public String getActionText(DataContext dataContext) {
+    public String getActionText(@NotNull DataContext dataContext) {
         return null;
     }
 }

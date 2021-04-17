@@ -63,7 +63,7 @@ public class PhpToolboxApplicationService implements ApplicationComponent, Persi
     }
 
     @Override
-    public void loadState(PhpToolboxApplicationService applicationService) {
+    public void loadState(@NotNull PhpToolboxApplicationService applicationService) {
         XmlSerializerUtil.copyBean(applicationService, this);
     }
 }

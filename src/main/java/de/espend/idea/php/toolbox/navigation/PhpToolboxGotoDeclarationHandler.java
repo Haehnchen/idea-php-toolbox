@@ -16,6 +16,7 @@ import de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface;
 import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.utils.RegistrarMatchUtil;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -81,7 +82,7 @@ public class PhpToolboxGotoDeclarationHandler implements GotoDeclarationHandler 
 
     @Nullable
     @Override
-    public String getActionText(DataContext dataContext) {
+    public String getActionText(@NotNull DataContext dataContext) {
         return null;
     }
 
