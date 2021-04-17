@@ -19,7 +19,6 @@ public class TwigUtil {
      * @param functionName twig function name
      */
     public static ElementPattern<PsiElement> getPrintBlockFunctionPattern(String... functionName) {
-        //noinspection unchecked
         return PlatformPatterns
             .psiElement(TwigTokenTypes.STRING_TEXT)
             .withParent(PlatformPatterns.or(
