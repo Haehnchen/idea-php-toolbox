@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.utils;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
@@ -84,7 +85,7 @@ public class ExtensionProviderUtil {
 
     @NotNull
     public static Collection<PhpToolboxProviderInterface> getProvidersInner(@NotNull Project project) {
-        PhpToolboxApplicationService phpToolboxApplicationService = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
+        PhpToolboxApplicationService phpToolboxApplicationService = ServiceManager.getService(PhpToolboxApplicationService.class);
 
         Collection<PhpToolboxProviderInterface> providers = new ArrayList<>(
             Arrays.asList(TOOLBOX_PROVIDER_EP.getExtensions())
@@ -171,7 +172,7 @@ public class ExtensionProviderUtil {
     @NotNull
     private static Collection<JsonRegistrar> getTypesInner(@NotNull Project project) {
         Collection<JsonRegistrar> jsonRegistrars = new ArrayList<>();
-        PhpToolboxApplicationService component = ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class);
+        PhpToolboxApplicationService component = ServiceManager.getService(PhpToolboxApplicationService.class);
         if(component == null) {
             return jsonRegistrars;
         }

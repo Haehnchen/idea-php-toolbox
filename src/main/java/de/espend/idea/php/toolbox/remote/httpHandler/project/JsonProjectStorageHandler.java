@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.remote.httpHandler.project;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
 import de.espend.idea.php.toolbox.dict.json.JsonConfigFile;
@@ -27,7 +28,7 @@ public class JsonProjectStorageHandler extends ProjectHttpActionAbstract {
         ApplicationManager.getApplication().runReadAction(() -> {
             files.addAll(ExtensionProviderUtil.getJsonConfigs(
                 project,
-                ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class)
+                ServiceManager.getService(PhpToolboxApplicationService.class)
             ));
         });
 

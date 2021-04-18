@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.type;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
@@ -113,7 +114,7 @@ public class PhpToolboxTypeProvider implements PhpTypeProvider3 {
 
         Map<String, Collection<JsonRawLookupElement>> providerMap = ExtensionProviderUtil.getProviders(
             project,
-            ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class)
+            ServiceManager.getService(PhpToolboxApplicationService.class)
         );
 
         Set<Pair<String, Integer>> providers = getProviderNames(project, (Function) phpNamedElement);
