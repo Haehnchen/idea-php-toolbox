@@ -295,7 +295,7 @@ foo(['foo' => '<caret>'])
     {
       "lookup_string": "d",
       "type_text": "Day of month (01..31)",
-      "icon": "com.jetbrains.php.PhpIcons.METHOD"
+      "icon": "com.jetbrains.php.PhpIcons.METHOD",
       "presentable_text": "foo",
       "tail_text": "foo",
       "type": "DateTime",
@@ -415,7 +415,7 @@ class Foo extends BehatContext {}
 {
   "provider": "trait",
   "language": "php"
-},
+}
 ```
 
 
