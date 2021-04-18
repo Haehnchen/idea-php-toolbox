@@ -45,6 +45,8 @@
 
   <extensions defaultExtensionNs="com.intellij">
 
+    <applicationService serviceImplementation="de.espend.idea.php.toolbox.PhpToolboxApplicationService" />
+
     <applicationConfigurable instance="de.espend.idea.php.toolbox.ui.application.ToolboxApplicationForm"
                              displayName="PHP Toolbox"
                              groupId="language"
@@ -98,10 +100,6 @@
     </extensions>
 
     <application-components>
-        <component>
-            <implementation-class>de.espend.idea.php.toolbox.PhpToolboxApplicationService</implementation-class>
-        </component>
-
         <component>
             <implementation-class>de.espend.idea.php.toolbox.remote.RemoteListenerComponent</implementation-class>
         </component>

@@ -1,5 +1,6 @@
 package de.espend.idea.php.toolbox.ui.application;
 
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
@@ -21,12 +22,6 @@ public class ToolboxApplicationForm extends JDialog implements Configurable {
     private JCheckBox checkBoxServerListenAll;
     private JCheckBox checkBoxServerEnabled;
     private JTextField textBoxServerPort;
-    private PhpToolboxApplicationService applicationService;
-
-    public ToolboxApplicationForm(@NotNull PhpToolboxApplicationService applicationService) {
-        this.applicationService = applicationService;
-        setContentPane(contentPane);
-    }
 
     @Nls
     @Override
@@ -78,6 +73,8 @@ public class ToolboxApplicationForm extends JDialog implements Configurable {
 
     @Override
     public boolean isModified() {
+        PhpToolboxApplicationService applicationService = getApplicationService();
+
         Integer integer = 0;
         try {
             integer = Integer.parseInt(textBoxServerPort.getText());
@@ -93,6 +90,7 @@ public class ToolboxApplicationForm extends JDialog implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        PhpToolboxApplicationService applicationService = getApplicationService();
 
         Integer port = 0;
         try {
@@ -111,13 +109,14 @@ public class ToolboxApplicationForm extends JDialog implements Configurable {
 
     @Override
     public void reset() {
+        PhpToolboxApplicationService applicationService = getApplicationService();
+
         checkBoxServerEnabled.setSelected(applicationService.serverEnabled);
         checkBoxServerListenAll.setSelected(applicationService.listenAll);
         textBoxServerPort.setText(Integer.toString(applicationService.serverPort));
     }
 
-    @Override
-    public void disposeUIResources() {
-
+    protected static PhpToolboxApplicationService getApplicationService() {
+        return ServiceManager.getService(PhpToolboxApplicationService.class);
     }
 }
