@@ -25,15 +25,6 @@ public class PhpToolboxApplicationService implements ApplicationComponent, Persi
     public boolean listenAll = false;
     public int serverPort = 48734;
 
-    @Override
-    public void initComponent() {
-    }
-
-    @Override
-    public void disposeComponent() {
-
-    }
-
     public File[] getApplicationJsonFiles() {
 
         File file = new File(getApplicationFolder());
