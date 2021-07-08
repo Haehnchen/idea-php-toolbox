@@ -27,16 +27,6 @@ public class PhpToolboxProjectComponent implements ProjectComponent {
         PersistentStorageUtil.write(project);
     }
 
-    @Override
-    public void initComponent() {
-
-    }
-
-    @Override
-    public void disposeComponent() {
-
-    }
-
     @NotNull
     @Override
     public String getComponentName() {

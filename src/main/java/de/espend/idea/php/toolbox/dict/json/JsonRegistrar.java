@@ -1,6 +1,5 @@
 package de.espend.idea.php.toolbox.dict.json;
 
-import com.intellij.util.containers.HashMap;
 import de.espend.idea.php.toolbox.utils.JsonParseUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -2,6 +2,7 @@ package de.espend.idea.php.toolbox.remote;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.ui.Messages;
 import com.sun.net.httpserver.HttpServer;
 import de.espend.idea.php.toolbox.PhpToolboxApplicationService;
@@ -14,16 +15,11 @@ import java.net.InetSocketAddress;
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 public class RemoteListenerComponent implements ApplicationComponent {
-
-    private final PhpToolboxApplicationService settings;
     private HttpServer server;
     private Thread listenerThread;
 
-    public RemoteListenerComponent(PhpToolboxApplicationService settings) {
-        this.settings = settings;
-    }
-
     public void initComponent() {
+        PhpToolboxApplicationService settings = ServiceManager.getService(PhpToolboxApplicationService.class);
         if(!settings.serverEnabled) {
             return;
         }

@@ -1,8 +1,13 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
-    id "org.jetbrains.intellij" version "0.4.11"
-    id 'com.palantir.git-version' version "0.11.0"
+    id "org.jetbrains.intellij" version "0.7.2"
+    id 'com.palantir.git-version' version "0.12.3"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
 }
 
 def htmlFixer = { htmlFile -> file(htmlFile).text.replace('<html>', '').replace('</html>', '') }
@@ -39,7 +44,7 @@ intellij {
 }
 
 patchPluginXml {
-    sinceBuild '192'
+    sinceBuild '211'
     changeNotes = htmlFixer('src/main/resources/META-INF/change-notes.html')
 }
 
@@ -57,7 +62,7 @@ if (details.isCleanTag) {
 }
 
 wrapper {
-    gradleVersion '5.5.1'
+    gradleVersion '7.0.0'
 }
 
 test.testLogging.exceptionFormat = TestExceptionFormat.FULL

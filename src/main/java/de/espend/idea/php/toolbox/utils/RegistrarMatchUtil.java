@@ -1,6 +1,7 @@
 package de.espend.idea.php.toolbox.utils;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.*;
@@ -23,7 +24,7 @@ public class RegistrarMatchUtil {
     @NotNull
     public static Map<PhpToolboxProviderInterface, Set<JsonRegistrar>> getProviders(@NotNull PsiElement psiElement) {
 
-        Collection<JsonRegistrar> registrars = ExtensionProviderUtil.getRegistrar(psiElement.getProject(), ApplicationManager.getApplication().getComponent(PhpToolboxApplicationService.class));
+        Collection<JsonRegistrar> registrars = ExtensionProviderUtil.getRegistrar(psiElement.getProject(), ServiceManager.getService(PhpToolboxApplicationService.class));
         if(registrars.size() == 0) {
             return Collections.emptyMap();
         }

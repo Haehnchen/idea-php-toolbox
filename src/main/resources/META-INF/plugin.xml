@@ -28,7 +28,7 @@
 
     ]]></description>
 
-  <idea-version since-build="192.0"/>
+  <idea-version since-build="211.0"/>
 
   <depends>com.jetbrains.twig</depends>
   <depends>com.jetbrains.php</depends>
@@ -44,6 +44,8 @@
   </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
+
+    <applicationService serviceImplementation="de.espend.idea.php.toolbox.PhpToolboxApplicationService" />
 
     <applicationConfigurable instance="de.espend.idea.php.toolbox.ui.application.ToolboxApplicationForm"
                              displayName="PHP Toolbox"
@@ -98,10 +100,6 @@
     </extensions>
 
     <application-components>
-        <component>
-            <implementation-class>de.espend.idea.php.toolbox.PhpToolboxApplicationService</implementation-class>
-        </component>
-
         <component>
             <implementation-class>de.espend.idea.php.toolbox.remote.RemoteListenerComponent</implementation-class>
         </component>
