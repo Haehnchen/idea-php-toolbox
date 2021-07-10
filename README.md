@@ -1,7 +1,7 @@
 Intellij / PhpStorm Plugin for PHP Improvements
 ========================
 
-[![Build Status](https://travis-ci.org/Haehnchen/idea-php-toolbox.svg?branch=master)](https://travis-ci.org/Haehnchen/idea-php-toolbox)
+[![Build Status](https://github.com/Haehnchen/idea-php-toolbox/actions/workflows/gradle.yml/badge.svg?branch=master)](https://github.com/Haehnchen/idea-php-toolbox/actions/workflows/gradle.yml)
 [![Version](http://phpstorm.espend.de/badge/8133/version)](https://plugins.jetbrains.com/plugin/8133)
 [![Downloads](http://phpstorm.espend.de/badge/8133/downloads)](https://plugins.jetbrains.com/plugin/8133)
 [![Downloads last month](http://phpstorm.espend.de/badge/8133/last-month)](https://plugins.jetbrains.com/plugin/8133)
