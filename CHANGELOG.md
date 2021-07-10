@@ -1,6 +1,21 @@
 Changelog
 =========
 
+## 6.0.0
+* travis to github actions migration (Daniel Espendiller)
+* Use ServiceManager to retrieve PhpToolboxApplicationService (Cedric Ziel)
+* Migrate PhpToolboxApplicationService to Service (Cedric Ziel)
+* Use current classloader for icon (Cedric Ziel)
+* Remove unused methods with default implementations (Cedric Ziel)
+* Remove unused imports (Cedric Ziel)
+* Fix json in docs (Cedric Ziel)
+* Remove inapplicable inspection (Cedric Ziel)
+* Add NotNull annotation where applicable (Cedric Ziel)
+* Use BasePlatformTestCase instead of LightCodeInsightFixtureTestCase (Cedric Ziel)
+* Fix code fences (Cedric Ziel)
+* Upgrade platform dependencies to 211 (Cedric Ziel)
+* Upgrade Gradle wrapper to 7.0.0 (Cedric Ziel)
+
 ## 0.5.1
 * Fix setting since build on build [#92](https://github.com/Haehnchen/idea-php-toolbox/issues/92) (Daniel Espendiller)
 
