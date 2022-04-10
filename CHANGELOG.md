@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 6.0.1
+* Prepare dynamic plugin feature (Daniel Espendiller)
+* Update vendor link (Daniel Espendiller)
+
 ## 6.0.0
 * travis to github actions migration (Daniel Espendiller)
 * Use ServiceManager to retrieve PhpToolboxApplicationService (Cedric Ziel)
