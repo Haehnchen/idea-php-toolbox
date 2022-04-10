@@ -61,15 +61,18 @@
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
     <completion.contributor language="PHP" implementationClass="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
 
+    <postStartupActivity implementation="de.espend.idea.php.toolbox.PhpToolboxProjectComponent$PostStartupActivity"/>
+    <projectService serviceImplementation="de.espend.idea.php.toolbox.PhpToolboxProjectComponent$ProjectCloseService"/>
+
   </extensions>
 
   <extensionPoints>
-    <extensionPoint name="extension.PhpToolboxProviderInterface" interface="de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface"/>
-    <extensionPoint name="extension.SourceContributorInterface" interface="de.espend.idea.php.toolbox.extension.SourceContributorInterface"/>
-    <extensionPoint name="extension.LanguageRegistrarMatcher" interface="de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface"/>
-    <extensionPoint name="extension.PhpToolboxTargetLocator" interface="de.espend.idea.php.toolbox.extension.PhpToolboxTargetLocator"/>
-    <extensionPoint name="extension.ToolboxJsonFileCompletion" interface="de.espend.idea.php.toolbox.extension.ToolboxJsonFileCompletion"/>
-    <extensionPoint name="extension.JsonStreamResource" interface="de.espend.idea.php.toolbox.extension.JsonStreamResource"/>
+    <extensionPoint dynamic="true" name="extension.PhpToolboxProviderInterface" interface="de.espend.idea.php.toolbox.extension.PhpToolboxProviderInterface"/>
+    <extensionPoint dynamic="true" name="extension.SourceContributorInterface" interface="de.espend.idea.php.toolbox.extension.SourceContributorInterface"/>
+    <extensionPoint dynamic="true" name="extension.LanguageRegistrarMatcher" interface="de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface"/>
+    <extensionPoint dynamic="true" name="extension.PhpToolboxTargetLocator" interface="de.espend.idea.php.toolbox.extension.PhpToolboxTargetLocator"/>
+    <extensionPoint dynamic="true" name="extension.ToolboxJsonFileCompletion" interface="de.espend.idea.php.toolbox.extension.ToolboxJsonFileCompletion"/>
+    <extensionPoint dynamic="true" name="extension.JsonStreamResource" interface="de.espend.idea.php.toolbox.extension.JsonStreamResource"/>
   </extensionPoints>
 
     <extensions defaultExtensionNs="de.espend.idea.php.toolbox.extension">
@@ -104,12 +107,6 @@
             <implementation-class>de.espend.idea.php.toolbox.remote.RemoteListenerComponent</implementation-class>
         </component>
     </application-components>
-
-    <project-components>
-        <component>
-            <implementation-class>de.espend.idea.php.toolbox.PhpToolboxProjectComponent</implementation-class>
-        </component>
-    </project-components>
 
   <actions>
     <!-- Add your actions here -->
