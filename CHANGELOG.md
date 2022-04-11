@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 6.1.0
+* Remove http server features (Daniel Espendiller)
+* Dynamic plugin support (Daniel Espendiller)
+
 ## 6.0.1
 * Prepare dynamic plugin feature (Daniel Espendiller)
 * Update vendor link (Daniel Espendiller)
