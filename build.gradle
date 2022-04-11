@@ -7,7 +7,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 def htmlFixer = { htmlFile -> file(htmlFile).text.replace('<html>', '').replace('</html>', '') }
@@ -17,8 +16,8 @@ apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
 
 compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 intellij {

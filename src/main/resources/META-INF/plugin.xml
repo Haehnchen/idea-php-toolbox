@@ -47,11 +47,6 @@
 
     <applicationService serviceImplementation="de.espend.idea.php.toolbox.PhpToolboxApplicationService" />
 
-    <applicationConfigurable instance="de.espend.idea.php.toolbox.ui.application.ToolboxApplicationForm"
-                             displayName="PHP Toolbox"
-                             groupId="language"
-                             id="PhpToolbox.ApplicationForm"/>
-
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.navigation.PhpToolboxGotoDeclarationHandler"/>
     <completion.contributor language="any" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxCompletionContributor"/>
     <completion.contributor language="JSON" implementationClass="de.espend.idea.php.toolbox.completion.ToolboxJsonCompletionContributor"/>
@@ -60,10 +55,6 @@
 
     <gotoDeclarationHandler implementation="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
     <completion.contributor language="PHP" implementationClass="de.espend.idea.php.toolbox.gotoCompletion.PhpGotoDeclarationHandler"/>
-
-    <postStartupActivity implementation="de.espend.idea.php.toolbox.PhpToolboxProjectComponent$PostStartupActivity"/>
-    <projectService serviceImplementation="de.espend.idea.php.toolbox.PhpToolboxProjectComponent$ProjectCloseService"/>
-
   </extensions>
 
   <extensionPoints>
@@ -101,15 +92,5 @@
 
         <JsonStreamResource implementation="de.espend.idea.php.toolbox.provider.InternalJsonStreamResource"/>
     </extensions>
-
-    <application-components>
-        <component>
-            <implementation-class>de.espend.idea.php.toolbox.remote.RemoteListenerComponent</implementation-class>
-        </component>
-    </application-components>
-
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
 
 </idea-plugin>
