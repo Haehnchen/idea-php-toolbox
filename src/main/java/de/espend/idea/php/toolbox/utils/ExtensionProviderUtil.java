@@ -1,6 +1,5 @@
 package de.espend.idea.php.toolbox.utils;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.DumbService;
@@ -24,8 +23,6 @@ import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.extension.cache.JsonFileCache;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.provider.SourceProvider;
-import de.espend.idea.php.toolbox.remote.RemoteStorage;
-import de.espend.idea.php.toolbox.remote.provider.ProviderStorageInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -256,15 +253,6 @@ public class ExtensionProviderUtil {
 
         // resources files by plugins
         jsonConfigFiles.addAll(getResourceFiles());
-
-        // @TODO: solve object and cache issue
-        ProviderStorageInterface providerStorage = RemoteStorage.getInstance(project).get("php-toolbox-json");
-        if(providerStorage != null) {
-            Object data = providerStorage.getData();
-            if(data instanceof JsonConfigFile) {
-                jsonConfigFiles.add((JsonConfigFile) data);
-            }
-        }
 
         return jsonConfigFiles;
     }

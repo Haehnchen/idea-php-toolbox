@@ -17,11 +17,7 @@ import java.io.File;
 @State(name = "PHP Toolbox", storages = @Storage(file = "$APP_CONFIG$/php-toolbox.xml"))
 public class PhpToolboxApplicationService implements PersistentStateComponent<PhpToolboxApplicationService> {
 
-    final public static Logger LOG = Logger.getInstance("Symfony-Plugin");
-
-    public boolean serverEnabled = false;
-    public boolean listenAll = false;
-    public int serverPort = 48734;
+    final public static Logger LOG = Logger.getInstance("Toolbox-Plugin");
 
     public File[] getApplicationJsonFiles() {
 
