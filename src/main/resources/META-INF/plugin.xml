@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Haehnchen/idea-php-toolbox">
   <id>de.espend.idea.php.toolbox</id>
   <name>PHP Toolbox</name>
-  <version>6.1.0</version>
+  <version>6.2.0</version>
   <vendor email="daniel@espendiller.net" url="http://espend.de?p=de.espend.idea.php.toolbox">Daniel Espendiller</vendor>
 
   <description><![CDATA[
@@ -27,7 +27,7 @@
 
     ]]></description>
 
-  <idea-version since-build="211.0"/>
+  <idea-version since-build="223"/>
 
   <depends>com.jetbrains.twig</depends>
   <depends>com.jetbrains.php</depends>
