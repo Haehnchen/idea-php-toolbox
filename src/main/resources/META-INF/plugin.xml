@@ -39,7 +39,9 @@
   -->
 
   <extensions defaultExtensionNs="com.jetbrains.php">
+      <!--
     <typeProvider3 implementation="de.espend.idea.php.toolbox.type.PhpToolboxTypeProvider"/>
+      -->
   </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
