@@ -1,8 +1,11 @@
 Changelog
 =========
 
+## 6.3.0
+* Just a new build (Daniel Espendiller)
+ 
 ## 6.2.0
-* [#107](https://github.com/Haehnchen/idea-php-toolbox/issues/107) type provider disable for PhpStorm 2023.1 support (Daniel Espendiller)
+* [#107](https://github.com/Haehnchen/idea-php-toolbox/issues/107) type provider disable for PhpStorm 2023.1 support (Daniel Espendiller)]()
 
 ## 6.1.0
 * Remove http server features (Daniel Espendiller)
