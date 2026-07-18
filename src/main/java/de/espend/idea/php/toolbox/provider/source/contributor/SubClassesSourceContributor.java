@@ -8,7 +8,7 @@ import com.jetbrains.php.lang.psi.elements.PhpClass;
 import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

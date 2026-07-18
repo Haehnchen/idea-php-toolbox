@@ -14,7 +14,7 @@ import de.espend.idea.php.toolbox.extension.SourceContributorInterface;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorDeclarationHandlerParameter;
 import de.espend.idea.php.toolbox.provider.source.SourceContributorParameter;
 import de.espend.idea.php.toolbox.provider.source.contributor.utils.ReturnSourceUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import de.espend.idea.php.toolbox.dict.json.JsonRawLookupElement;
 import de.espend.idea.php.toolbox.utils.JsonParseUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

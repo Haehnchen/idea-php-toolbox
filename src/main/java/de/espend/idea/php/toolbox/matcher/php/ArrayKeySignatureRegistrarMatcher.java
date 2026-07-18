@@ -14,7 +14,7 @@ import de.espend.idea.php.toolbox.extension.LanguageRegistrarMatcherInterface;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.matcher.php.util.PhpMatcherUtil;
 import de.espend.idea.php.toolbox.symfony.util.MethodMatcher;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -9,7 +9,7 @@ import de.espend.idea.php.toolbox.dict.json.JsonSignature;
 import de.espend.idea.php.toolbox.matcher.php.container.ContainerConditions;
 import de.espend.idea.php.toolbox.symfony.Symfony2InterfacesUtil;
 import de.espend.idea.php.toolbox.symfony.utils.PhpElementsUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

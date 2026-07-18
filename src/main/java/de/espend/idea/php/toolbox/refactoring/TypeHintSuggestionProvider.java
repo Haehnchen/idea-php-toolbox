@@ -7,7 +7,7 @@ import com.intellij.refactoring.rename.NameSuggestionProvider;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.psi.elements.Parameter;
 import com.jetbrains.php.refactoring.PhpNameSuggestionUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

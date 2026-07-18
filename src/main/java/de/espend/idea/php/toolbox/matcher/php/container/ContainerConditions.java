@@ -2,7 +2,7 @@ package de.espend.idea.php.toolbox.matcher.php.container;
 
 import com.intellij.openapi.util.Condition;
 import de.espend.idea.php.toolbox.dict.json.JsonSignature;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
