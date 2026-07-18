@@ -14,7 +14,7 @@ import java.io.File;
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
 @Service
-@State(name = "PHP Toolbox", storages = @Storage(file = "$APP_CONFIG$/php-toolbox.xml"))
+@State(name = "PHP Toolbox", storages = @Storage("$APP_CONFIG$/php-toolbox.xml"))
 public class PhpToolboxApplicationService implements PersistentStateComponent<PhpToolboxApplicationService> {
 
     final public static Logger LOG = Logger.getInstance("Toolbox-Plugin");
