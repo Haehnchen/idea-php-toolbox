@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 6.3.1
+* Replace deprecated Commons Lang StringUtils imports (Daniel Espendiller)
+
 ## 6.3.0
 * Just a new build (Daniel Espendiller)
  
