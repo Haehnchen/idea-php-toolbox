@@ -11,7 +11,7 @@ import de.espend.idea.php.toolbox.navigation.dict.PhpToolboxDeclarationHandlerPa
 import de.espend.idea.php.toolbox.navigation.locator.utils.TargetLocatorUtil;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderArguments;
 import de.espend.idea.php.toolbox.type.PhpToolboxTypeProviderInterface;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
