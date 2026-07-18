@@ -21,14 +21,14 @@ import java.util.Set;
  */
 public class PhpGotoDeclarationHandler extends CompletionContributor implements GotoDeclarationHandler {
 
-    private static GotoCompletionContributor[] CONTRIBUTORS = new GotoCompletionContributor[] {
+    private static final GotoCompletionContributor<?>[] CONTRIBUTORS = new GotoCompletionContributor<?>[] {
         new PhpArrayCallbackGotoCompletion(),
         new GlobalStringClassGoto(),
         new PhpDocTagGotoCompletionContributor(),
     };
 
     public PhpGotoDeclarationHandler() {
-        for (final GotoCompletionContributor contributor : CONTRIBUTORS) {
+        for (final GotoCompletionContributor<?> contributor : CONTRIBUTORS) {
             extend(CompletionType.BASIC, contributor.getPattern(), new CompletionProvider<CompletionParameters>() {
                 @Override
                 protected void addCompletions(@NotNull CompletionParameters completionParameters, @NotNull ProcessingContext processingContext, @NotNull CompletionResultSet completionResultSet) {
@@ -46,7 +46,7 @@ public class PhpGotoDeclarationHandler extends CompletionContributor implements 
         }
 
         Set<PsiElement> psiElements = new HashSet<>();
-        for (final GotoCompletionContributor contributor : CONTRIBUTORS) {
+        for (final GotoCompletionContributor<?> contributor : CONTRIBUTORS) {
             if(!contributor.getPattern().accepts(psiElement)) {
                 continue;
             }

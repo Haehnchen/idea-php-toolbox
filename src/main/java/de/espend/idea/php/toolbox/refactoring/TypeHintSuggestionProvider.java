@@ -8,7 +8,6 @@ import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.php.lang.psi.elements.Parameter;
 import com.jetbrains.php.refactoring.PhpNameSuggestionUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +51,7 @@ public class TypeHintSuggestionProvider implements NameSuggestionProvider
 
                 // remove starting
                 if(item.toLowerCase().startsWith(end)) {
-                    item = WordUtils.uncapitalize(item.substring(end.length()));
+                    item = StringUtils.uncapitalize(item.substring(end.length()));
                 }
             }
 
